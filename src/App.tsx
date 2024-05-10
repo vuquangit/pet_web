@@ -1,12 +1,14 @@
-import React from 'react';
-import logo from './logo.svg';
+import logoIcon from '@/assets/icons/logo.svg?url'
+import LogoIcon from '@/assets/icons/logo.svg'
+
 import './App.css';
 
-function App() {
+const App = () =>{
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        <img src={logoIcon} className="App-logo" alt="logo" />
+        <LogoIcon className="App-logo" />
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
@@ -23,4 +25,4 @@ function App() {
   );
 }
 
-export default App;
+export default App
