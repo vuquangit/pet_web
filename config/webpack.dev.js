@@ -7,6 +7,9 @@ const { merge } = require('webpack-merge')
 const common = require('./webpack.common.js')
 const paths = require('./paths')
 
+const APP_PORT = process.argv.filter(item => item.startsWith('--port=')).map(item => item.split('=')[1])[0]
+const PORT = parseInt(APP_PORT, 10) || 3000;
+
 module.exports = merge(common('development'), {
   mode: 'development',
 
@@ -24,7 +27,7 @@ module.exports = merge(common('development'), {
   devServer: {
     historyApiFallback: true,
     open: true,
-    port: 3000,
+    port: PORT,
     compress: true,
     // hot: true,
     // inline: true,
