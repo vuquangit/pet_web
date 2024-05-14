@@ -34,7 +34,7 @@ module.exports = function (webpackEnv) {
           {
             inject: true,
             template: paths.appHtml,
-            title: 'React App',
+            title: 'App',
             favicon: paths.favicon,
             manifest: paths.manifest,
             publicPath: paths.publicUrlOrPath,
@@ -123,6 +123,21 @@ module.exports = function (webpackEnv) {
                 sassOptions: {
                   includePaths: [paths.appSrc, 'node_modules'],
                 },
+              },
+            },
+            {
+              // process tailwind stuff
+              // https://webpack.js.org/loaders/postcss-loader/
+              loader: "postcss-loader",
+              options: {
+                  sourceMap: isEnvDevelopment,
+                  postcssOptions: {
+                      plugins: [
+                          require("tailwindcss"),
+                          // add addtional postcss plugins here
+                          // easily find plugins at https://www.postcss.parts/
+                      ]
+                  }
               },
             },
           ],

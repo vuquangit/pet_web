@@ -21,3 +21,8 @@ Builds the app for staging to the `build` folder.
 ### `yarn build:prod`
 
 Builds the app for production to the `build` folder.
+
+## Requires:
+```
+  node: v20
+```

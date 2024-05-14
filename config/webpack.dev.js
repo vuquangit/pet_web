@@ -29,7 +29,7 @@ module.exports = merge(common('development'), {
     open: true,
     port: PORT,
     compress: true,
-    // hot: true,
+    hot: true,
     // inline: true,
     // contentBase: paths.appBuild,
     // publicPath: paths.publicUrlOrPath,

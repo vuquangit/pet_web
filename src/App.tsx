@@ -1,28 +1,28 @@
-import logoIcon from '@/assets/icons/logo.svg?url'
-import LogoIcon from '@/assets/icons/logo.svg'
+import { useEffect } from 'react'
+import { RouterProvider } from 'react-router-dom'
 
-import './App.css';
+import '@/styles/index.scss'
+import '@/styles/tailwind.scss'
 
-const App = () =>{
+import router from '@/router'
+import useProfile from '@/hooks/useProfile'
+import LoadingPage from '@/components/LoadingPage'
+
+const App: React.FC = () => {
+  const { fetchProfile } = useProfile()
+
+  useEffect(() => {
+    fetchProfile()
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logoIcon} className="App-logo" alt="logo" />
-        <LogoIcon className="App-logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <>
+      <RouterProvider
+        router={router}
+        fallbackElement={<LoadingPage />}
+      />
+    </>
+  )
 }
 
 export default App
