@@ -6,4 +6,5 @@ export const ROUTER_NAMES = Object.freeze({
   LOGOUT: '/logout',
   NOT_FOUND: '/404',
   PROFILE: '/profile',
+  REACT: '/react'
 })

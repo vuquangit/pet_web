@@ -27,7 +27,7 @@ export const customBaseQuery: BaseQueryFn = async (args, api, extraOptions) => {
   const body = args.body instanceof FormData ? args.body : decamelizeKeys(args.body)
   const params = decamelizeKeys(args.params)
   const argsCustom = { ...args, body, params }
-  const refreshToken = storageKeys.AUTH_PROFILE
+  const refreshToken = StorageService.get(storageKeys.AUTH_PROFILE)
 
   let result: any = await baseQuery(argsCustom, api, extraOptions)
 

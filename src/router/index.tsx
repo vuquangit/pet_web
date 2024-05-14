@@ -40,7 +40,6 @@ const publicRoutes: RouteObject[] = [
     path: ROUTER_NAMES.AUTH,
     loader: loginLoader,
     Component: AuthLayout,
-    errorElement: <RootErrorBoundary />,
     children: [
       {
         path: 'login',
@@ -54,7 +53,6 @@ const protectedRoutes: RouteObject[] = [
   {
     index: true, // Default route
     loader: protectedLoader,
-    errorElement: <RootErrorBoundary />,
     async lazy() {
       // Multiple routes in lazy file
       let { HomePage } = await import('../pages/HomePage')
