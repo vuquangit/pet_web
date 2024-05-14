@@ -1,10 +1,9 @@
 import { useState } from 'react'
 import { useLocation, useNavigate, Link } from 'react-router-dom'
-import { useLazyGetProfileQuery, useLoginMutation } from '@/services/auth'
 
+import { useLoginMutation } from '@/services/auth'
 import { storageKeys } from '@/constants/storage-keys'
 import StorageService from '@/services/local-storage'
-import { useAppDispatch } from '@/store/hook'
 import useProfile from '@/hooks/useProfile'
 
 export function Component() {
@@ -17,7 +16,7 @@ export function Component() {
   const { fetchProfile } = useProfile()
 
   const [email, setEmail] = useState('email@example.com')
-  const [password, setPassword] = useState('123456')
+  const [password, setPassword] = useState('Password@123')
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -30,7 +29,7 @@ export function Component() {
     try {
       const loginResponse = await login({ email, password }).unwrap()
       const tokens = loginResponse.data
-      await StorageService.set(storageKeys.AUTH_PROFILE, tokens)
+      StorageService.set(storageKeys.AUTH_PROFILE, tokens)
 
       fetchProfile()
 
@@ -115,6 +114,7 @@ export function Component() {
             <button
               type="submit"
               className="btn-primary"
+              disabled={isLoading}
             >
               Sign in
             </button>

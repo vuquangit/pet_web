@@ -16,12 +16,12 @@ const App: React.FC = () => {
   }, [])
 
   return (
-    <>
+    <div className='app'>
       <RouterProvider
         router={router}
         fallbackElement={<LoadingPage />}
       />
-    </>
+    </div>
   )
 }
 

@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  .app {
+    @apply bg-white text-black dark:bg-[#161617] dark:text-white;
+  }
+}
+
 @layer components {
   .btn-default {
     @apply cursor-pointer rounded border border-[#707070] bg-white

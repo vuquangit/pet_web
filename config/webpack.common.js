@@ -167,6 +167,7 @@ module.exports = function (webpackEnv) {
           ],
         },
 
+        // LESS
         {
           test: /\.less$/,
           use: [
