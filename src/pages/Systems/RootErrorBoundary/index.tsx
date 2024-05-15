@@ -1,4 +1,5 @@
-import { isRouteErrorResponse, useRouteError } from "react-router-dom";
+import React from 'react'
+import { isRouteErrorResponse, useRouteError } from 'react-router-dom';
 
 export function RootErrorBoundary() {
   const error = useRouteError() as Error;
@@ -16,7 +17,7 @@ export function RootErrorBoundary() {
       <h1>Uh oh, something went terribly wrong 😩</h1>
 
       <pre>{error.message || JSON.stringify(error)}</pre>
-      <button onClick={() => (window.location.href = "/")}>
+      <button onClick={() => (window.location.href = '/')}>
         Click here to reload the app
       </button>
     </div>

@@ -36,21 +36,24 @@ export const customBaseQuery: BaseQueryFn = async (args, api, extraOptions) => {
     result.error.status === 401 &&
     result.error.data?.error?.code === ERROR_CODE.ACCESS_TOKEN_EXPIRED
   ) {
-      try {
-        let refreshResult: any = await baseQuery(
-          { url: '/auth/refresh', method: 'POST', body: { refresh_token: refreshToken } },
-          api,
-          extraOptions
-        )
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      let refreshResult: any = await baseQuery(
+        { url: '/auth/refresh', method: 'POST', body: { refresh_token: refreshToken } },
+        api,
+        extraOptions
+      )
 
-        if (refreshResult.data) {
-          refreshResult = camelizeKeys(refreshResult)
+      if (refreshResult.data) {
+        refreshResult = camelizeKeys(refreshResult)
 
-          result = await baseQuery(args, api, extraOptions)
-        } else {
-          handleNotification(api, result)
-        }
-      } finally {}
+        result = await baseQuery(args, api, extraOptions)
+      } else {
+        handleNotification(api, result)
+      }
+    } finally {
+      //..
+    }
   }
   // show notification and redirect
   else if (result.error && refreshToken) {
@@ -64,6 +67,7 @@ export const customBaseQuery: BaseQueryFn = async (args, api, extraOptions) => {
   return result
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const handleNotification = (api: BaseQueryApi, result: any) => {
   const errorStatus = result.error.status
   const error = result?.error?.data?.error

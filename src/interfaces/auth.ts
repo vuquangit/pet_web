@@ -10,7 +10,6 @@ export interface IAuthResponse {
   refreshToken: string
 }
 
-
 // Auth
 export interface IAuthMe {
   id: string

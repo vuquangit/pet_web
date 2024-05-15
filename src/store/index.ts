@@ -1,5 +1,5 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
-import logger from 'redux-logger'
+// import logger from 'redux-logger'
 
 import authReducer from './auth'
 
@@ -21,8 +21,8 @@ export const setupStore = (preloadedState?: Partial<RootState>) =>
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware()
         .concat(authApi.middleware)
-        .concat(testApi.middleware)
-        .concat(logger),
+        .concat(testApi.middleware),
+    // .concat(logger),
     preloadedState,
   })
 

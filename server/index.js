@@ -1,7 +1,9 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const express = require('express')
 const app = express()
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const cors = require('cors')
-const { error } = require('console')
+// const { error } = require('console')
 const port = 8080
 
 app.use(cors())
