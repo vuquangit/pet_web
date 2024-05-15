@@ -10,12 +10,16 @@ const useProfile = () => {
   const dispatch = useAppDispatch()
 
   const fetchProfile = async () => {
-    const tokens = StorageService.get(storageKeys.AUTH_PROFILE)
-    if (!tokens) return
+    try {
+      const tokens = StorageService.get(storageKeys.AUTH_PROFILE)
+      if (!tokens) return
 
-    const profileResponse = await getProfile().unwrap()
-    const profile = profileResponse?.data as IAuthMe
-    dispatch(setCredentials(profile))
+      const profileResponse = await getProfile().unwrap()
+      const profile = profileResponse?.data as IAuthMe
+      dispatch(setCredentials(profile))
+    } catch (error) {
+      console.log('fetch profile error', error)
+    }
   }
 
   return { fetchProfile }

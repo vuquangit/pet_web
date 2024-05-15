@@ -1,4 +1,4 @@
-import { json } from 'react-router-dom'
+import React from 'react'
 
 import logoIcon from '@/assets/icons/logo.svg?url'
 import LogoIcon from '@/assets/icons/logo.svg'

@@ -1,3 +1,4 @@
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import NavigationApp from '@/components/Navigation'
@@ -23,18 +24,23 @@ const Header: React.FC = () => {
   }
 
   return (
-    <header className="flex items-center justify-between bg-white dark:bg-[#282829] px-5 py-3 dark:text-white shadow-md">
+    <header className="flex items-center justify-between border-b border-solid border-gray-300 bg-white px-5 py-3 shadow-xl dark:border-none dark:bg-[#282829] dark:text-white">
       <LogoIcon className="h-8" />
 
       {isAuthenticated && (
         <>
           <NavigationApp />
-          <div className="flex">
-            <ThemeSwitch />
-            <button onClick={handleLogout}>Logout</button>
-          </div>
         </>
       )}
+
+      <div className="flex">
+        <ThemeSwitch />
+        {isAuthenticated && (
+          <>
+            <button onClick={handleLogout}>Logout</button>
+          </>
+        )}
+      </div>
     </header>
   )
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useLocation, useNavigate, Link } from 'react-router-dom'
 
 import { useLoginMutation } from '@/services/auth'
@@ -7,9 +7,9 @@ import StorageService from '@/services/local-storage'
 import useProfile from '@/hooks/useProfile'
 
 export function Component() {
-  let location = useLocation()
-  let params = new URLSearchParams(location.search)
-  let from = params.get('from') || '/'
+  const location = useLocation()
+  const params = new URLSearchParams(location.search)
+  const from = params.get('from') || '/'
 
   const navigate = useNavigate()
   const [login, { isLoading }] = useLoginMutation()

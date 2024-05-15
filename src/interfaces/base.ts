@@ -13,6 +13,7 @@ export interface IMeta {
   total: number // total number of records in the database
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface IBaseResponse<T = any> {
   status?: number
   success?: boolean

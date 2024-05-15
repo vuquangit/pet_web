@@ -32,40 +32,47 @@
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "prettier",
-    "plugin:react/recommended",
-    "plugin:jest/recommended",
-    "plugin:cypress/recommended"
+    "plugin:react/recommended"
+    // "plugin:jest/recommended",
+    // "plugin:cypress/recommended"
   ],
-  "plugins": ["react-hooks", "@typescript-eslint", "prettier", "jest", "cypress"],
+  "plugins": [
+    "react-hooks",
+    "@typescript-eslint",
+    "prettier"
+    // "jest",
+    // "cypress"
+  ],
   "rules": {
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "off",
     "@typescript-eslint/member-delimiter-style": 0,
     "@typescript-eslint/interface-name-prefix": 0,
+    "@typescript-eslint/no-explicit-any":"off",
     "react/prop-types": 0,
     "indent": ["error", 2, { "SwitchCase": 1 }],
     "linebreak-style": ["error", "unix"],
     "quotes": ["error", "single"],
     "no-multiple-empty-lines": ["error", { "max": 1 }],
-    "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/ban-ts-comment": "off"
 
-    "cypress/no-assigning-return-values": "error",
-    "cypress/no-unnecessary-waiting": "error",
-    "cypress/assertion-before-screenshot": "warn",
-    "cypress/no-force": "off",
-    "cypress/no-async-tests": "error",
-    "cypress/no-pause": "error",
+    // "cypress/no-assigning-return-values": "error",
+    // "cypress/no-unnecessary-waiting": "error",
+    // "cypress/assertion-before-screenshot": "warn",
+    // "cypress/no-force": "off",
+    // "cypress/no-async-tests": "error",
+    // "cypress/no-pause": "error",
 
-    "jest/expect-expect": "off",
-    "jest/valid-expect": "off",
-    "jest/no-export": "off"
+    // "jest/expect-expect": "off",
+    // "jest/valid-expect": "off",
+    // "jest/no-export": "off"
   },
   "env": {
-    "jest": true,
     "browser": true,
-    "node": true,
-    "jest/globals": true,
-    "cypress/globals": true
+    "node": true
+    // "jest": true,
+    // "jest/globals": true,
+    // "cypress/globals": true
   },
   "settings": {
     "react": {

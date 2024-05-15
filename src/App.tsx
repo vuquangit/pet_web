@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { RouterProvider } from 'react-router-dom'
 
 import '@/styles/index.scss'
@@ -16,7 +16,7 @@ const App: React.FC = () => {
   }, [])
 
   return (
-    <div className='app'>
+    <div className="h-full app">
       <RouterProvider
         router={router}
         fallbackElement={<LoadingPage />}

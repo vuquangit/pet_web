@@ -54,8 +54,8 @@ module.exports = function (webpackEnv) {
                   minifyURLs: true,
                 },
               }
-            : undefined
-        )
+            : undefined,
+        ),
       ),
 
       // Makes some environment variables available to the JS code.
@@ -63,8 +63,8 @@ module.exports = function (webpackEnv) {
         path: isStaging
           ? '.env.staging'
           : isEnvDevelopment
-          ? './.env.development'
-          : './.env.production',
+            ? './.env.development'
+            : './.env.production',
       }),
 
       // Copies files from target to destination folder
@@ -128,16 +128,16 @@ module.exports = function (webpackEnv) {
             {
               // process tailwind stuff
               // https://webpack.js.org/loaders/postcss-loader/
-              loader: "postcss-loader",
+              loader: 'postcss-loader',
               options: {
-                  sourceMap: isEnvDevelopment,
-                  postcssOptions: {
-                      plugins: [
-                          require("tailwindcss"),
-                          // add addtional postcss plugins here
-                          // easily find plugins at https://www.postcss.parts/
-                      ]
-                  }
+                sourceMap: isEnvDevelopment,
+                postcssOptions: {
+                  plugins: [
+                    require('tailwindcss'),
+                    // add addtional postcss plugins here
+                    // easily find plugins at https://www.postcss.parts/
+                  ],
+                },
               },
             },
           ],
@@ -230,7 +230,7 @@ module.exports = function (webpackEnv) {
                   ],
                 },
               },
-            }
+            },
           ],
           resourceQuery: { not: [/url/] }, // exclude react component if *.svg?
         },
