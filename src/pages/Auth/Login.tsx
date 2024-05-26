@@ -15,14 +15,14 @@ export function Component() {
   const [login, { isLoading }] = useLoginMutation()
   const { fetchProfile } = useProfile()
 
-  const [email, setEmail] = useState('email@example.com')
-  const [password, setPassword] = useState('Password@123')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     if (!email) {
-      console.log('You must provide a username to log in')
+      console.log('You must provide a email to log in')
     }
 
     // Sign in and redirect to the proper destination if successful.
@@ -48,7 +48,7 @@ export function Component() {
           src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
           alt="Your Company"
         />
-        <h2 className="mt-10 text-2xl font-bold leading-9 tracking-tight text-center text-gray-900">
+        <h2 className="mt-10 text-2xl font-bold leading-9 tracking-tight text-center">
           Sign in to your account
         </h2>
       </div>
@@ -61,7 +61,7 @@ export function Component() {
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium leading-6 text-gray-900"
+              className="block text-sm font-medium leading-6"
             >
               Email address
             </label>
@@ -83,14 +83,15 @@ export function Component() {
             <div className="flex items-center justify-between">
               <label
                 htmlFor="password"
-                className="block text-sm font-medium leading-6 text-gray-900"
+                className="block text-sm font-medium leading-6"
               >
                 Password
               </label>
               <div className="text-sm">
                 <Link
-                  to='/reset-password'
+                  to='/auth/reset-password'
                   className="font-semibold text-indigo-600 hover:text-indigo-500"
+                  data-cy="btn-reset-password"
                 >
                   Forgot password?
                 </Link>
@@ -114,7 +115,8 @@ export function Component() {
             <button
               type="submit"
               className="btn-primary"
-              disabled={isLoading}
+              disabled={isLoading || !email || !password}
+              data-cy="login-submit"
             >
               Sign in
             </button>

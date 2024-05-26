@@ -2,6 +2,7 @@
 import {
   IAuthMe,
   IAuthRequest,
+  IAuthResetPasswordRequest,
   IAuthResponse
 } from '@/interfaces/auth'
 import { IBaseResponse } from '@/interfaces/base'
@@ -37,6 +38,14 @@ export const authApi = createApi({
       }),
     }),
 
+    resetPassword: builder.mutation<IBaseResponse<IAuthResponse>, IAuthResetPasswordRequest>({
+      query: (credentials) => ({
+        url: '/auth/reset-password',
+        method: 'POST',
+        body: credentials,
+      }),
+    }),
+
   }),
 })
 
@@ -45,5 +54,6 @@ export const authApi = createApi({
 export const {
   useLoginMutation,
   useLazyGetProfileQuery,
-  useLogoutMutation
+  useLogoutMutation,
+  useResetPasswordMutation
 } = authApi

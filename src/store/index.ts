@@ -4,7 +4,7 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import authReducer from './auth'
 
 import { authApi } from '@/services/auth'
-import { testApi } from '@/services/test'
+import { testApi } from '@/services/test-service'
 
 const rootReducer = combineReducers({
   // services
