@@ -29,8 +29,16 @@
   "include": [
     "src",
     "custom.d.ts",
+    "src/tests/e2e/support/index.d.ts"
   ],
   "exclude": [
     "node_modules",
+    "src/tests",
+    "cypress",
+    "./cypress.config.ts",
+    "**/*.cy.js",
+    "**/*.cy.jsx",
+    "**/*.cy.ts",
+    "**/*.cy.tsx",
   ],
 }

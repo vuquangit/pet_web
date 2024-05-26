@@ -90,10 +90,9 @@ module.exports = function (webpackEnv) {
         {
           test: /\.(tsx|ts)$/,
           exclude: /node_modules/,
-          use: 'ts-loader',
-          // use: isEnvDevelopment
-          //   ? ['@jsdevtools/coverage-istanbul-loader', 'ts-loader'] // cypress coverage
-          //   : 'ts-loader',
+          use: isEnvDevelopment
+            ? ['@jsdevtools/coverage-istanbul-loader', 'ts-loader'] // cypress coverage
+            : 'ts-loader',
         },
 
         // JavaScript: Use Babel to transpile JavaScript files

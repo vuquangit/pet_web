@@ -17,3 +17,7 @@ export interface IAuthMe {
   email: string
   role: ERoles
 }
+
+export interface IAuthResetPasswordRequest {
+  email: string
+}

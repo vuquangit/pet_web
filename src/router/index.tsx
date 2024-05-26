@@ -47,6 +47,10 @@ const publicRoutes: RouteObject[] = [
         path: 'login',
         lazy: () => import('../pages/Auth/Login'), // Single route in lazy file
       },
+      {
+        path: 'reset-password',
+        lazy: () => import('../pages/Auth/ResetPassword'), // Single route in lazy file
+      },
     ],
   },
 ]

@@ -29,3 +29,9 @@ yarn-error.log*
 .env.test.local
 .env.production
 .env.staging
+
+# Cypress
+coverage
+coverage-cy
+.nyc_output
+# cypress.env.json

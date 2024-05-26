@@ -1,9 +1,9 @@
 import React from 'react'
 
-import logoIcon from '@/assets/icons/logo.svg?url'
 import LogoIcon from '@/assets/icons/logo.svg'
+
 import './HomePage.scss'
-import { useLazyTestUnauthenticatedQuery } from '@/services/test'
+import { useLazyTestUnauthenticatedQuery } from '@/services/test-service'
 
 export function HomePage() {
   const [testUnauthenticated] = useLazyTestUnauthenticatedQuery()
@@ -13,13 +13,8 @@ export function HomePage() {
   }
 
   return (
-    <div className="App">
+    <div className="App" data-cy="home-page">
       <div className="App-header">
-        <img
-          src={logoIcon}
-          className="App-logo"
-          alt="logo"
-        />
         <LogoIcon className="App-logo" />
         <p>
           Edit <code>src/App.tsx</code> and save to reload.

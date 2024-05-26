@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HomePage tests renders the component 1`] = `
+<DocumentFragment>
+  <div
+    class="App"
+    data-cy="home-page"
+  >
+    <div
+      class="App-header"
+    >
+      <svg
+        class="App-logo"
+        data-file-name="SvgLogo"
+      />
+      <p>
+        Edit 
+        <code>
+          src/App.tsx
+        </code>
+         and save to reload.
+      </p>
+      <a
+        class="App-link"
+        href="https://reactjs.org"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Learn React
+      </a>
+      <button
+        class="btn-default"
+      >
+        Test Unauthenticated
+      </button>
+    </div>
+  </div>
+</DocumentFragment>
+`;
