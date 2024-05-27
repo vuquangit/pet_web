@@ -17,7 +17,8 @@ interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
 
 export function renderWithProviders(
   ui: React.ReactElement,
-  { preloadedState = {}, route = '/', ...renderOptions }: ExtendedRenderOptions = {}
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  { preloadedState = {}, route = '/', ...renderOptions }: ExtendedRenderOptions = {},
 ) {
   // window.history.pushState({}, 'Test page', route)
   const store = setupStore(preloadedState)

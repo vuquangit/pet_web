@@ -17,7 +17,7 @@ export const authToken: Omit<IAuthResponse, 'tokenType'> = {
   refreshToken,
 }
 
-function loginViaAuth0Ui(username: string, password: string, role: ERoles) {
+function loginViaAuth0Ui(username: string, password: string) {
   cy.intercept('POST', '**/auth/login', { fixture: 'auth/login.json' }).as('loginApi')
 
   // redirects to auth.
@@ -56,7 +56,7 @@ Cypress.Commands.add('login', (role: ERoles) => {
   cy.session(
     `auth-${role}-${email}`,
     () => {
-      loginViaAuth0Ui(email, password, role)
+      loginViaAuth0Ui(email, password)
     },
     {
       validate: () => {
