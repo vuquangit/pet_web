@@ -16,7 +16,7 @@ const App: React.FC = () => {
   }, [])
 
   return (
-    <div className="h-full app">
+    <div className="app h-full">
       <RouterProvider
         router={router}
         fallbackElement={<LoadingPage />}

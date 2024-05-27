@@ -10,6 +10,7 @@
 // https://on.cypress.io/custom-commands
 // ***********************************************
 //
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 Cypress.on('uncaught:exception', (err) => {
   return false
 })
