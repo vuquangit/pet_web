@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react'
 
 import { storageKeys } from '@/constants/storage-keys'
 import StorageService from '@/services/local-storage'
-
-enum ETheme {
-  LIGHT = 'light',
-  DARK = 'dark',
-}
+import { useAppDispatch } from '@/store/hook'
+import { setTheme } from '@/store/theme'
+import { ETheme } from '@/enums/theme'
 
 const ThemeSwitch: React.FC = () => {
+  const dispatch = useAppDispatch()
+
   const [darkTheme, setDarkTheme] = useState<boolean>(() => {
     const currentTheme = StorageService.get(storageKeys.THEME)
     return currentTheme === ETheme.DARK
@@ -19,10 +19,12 @@ const ThemeSwitch: React.FC = () => {
   }
 
   useEffect(() => {
+    const theme = darkTheme ? ETheme.DARK : ETheme.LIGHT
     document.body.classList.remove(ETheme.LIGHT, ETheme.DARK)
-    document.body.classList.add(darkTheme ? ETheme.DARK : ETheme.LIGHT)
+    document.body.classList.add(theme)
 
-    StorageService.set(storageKeys.THEME, darkTheme ? ETheme.DARK : ETheme.LIGHT)
+    StorageService.set(storageKeys.THEME, theme)
+    dispatch(setTheme(theme))
   }, [darkTheme])
 
   return (

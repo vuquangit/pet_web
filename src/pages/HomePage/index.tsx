@@ -13,9 +13,12 @@ export function HomePage() {
   }
 
   return (
-    <div className="App" data-cy="home-page">
+    <div
+      className="App"
+      data-cy="home-page"
+    >
       <div className="App-header">
-        <LogoIcon className="App-logo" />
+        <LogoIcon className="App-logo mb-10 fill-gray-800 dark:fill-white" />
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>

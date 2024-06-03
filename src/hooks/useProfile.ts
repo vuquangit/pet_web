@@ -15,7 +15,7 @@ const useProfile = () => {
       if (!tokens) return
 
       const profileResponse = await getProfile().unwrap()
-      const profile = profileResponse?.data as IAuthMe
+      const profile = profileResponse.result?.data as IAuthMe
       dispatch(setCredentials(profile))
     } catch (error) {
       console.log('fetch profile error', error)
