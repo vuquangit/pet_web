@@ -1,10 +1,5 @@
 // Need to use the React-specific entry point to import createApi
-import {
-  IAuthMe,
-  IAuthRequest,
-  IAuthResetPasswordRequest,
-  IAuthResponse
-} from '@/interfaces/auth'
+import { IAuthMe, IAuthRequest, IAuthResetPasswordRequest, IAuthResponse } from '@/interfaces/auth'
 import { IBaseResponse } from '@/interfaces/base'
 import { customBaseQuery } from '@/services/base'
 import { createApi } from '@reduxjs/toolkit/query/react'
@@ -39,13 +34,20 @@ export const authApi = createApi({
     }),
 
     resetPassword: builder.mutation<IBaseResponse<IAuthResponse>, IAuthResetPasswordRequest>({
-      query: (credentials) => ({
+      query: (body) => ({
         url: '/auth/reset-password',
         method: 'POST',
-        body: credentials,
+        body,
       }),
     }),
 
+    forgotPassword: builder.mutation<IBaseResponse<{ success: boolean }>, string>({
+      query: (email) => ({
+        url: '/auth/forgot-password',
+        method: 'POST',
+        body: { email },
+      }),
+    }),
   }),
 })
 
@@ -55,5 +57,6 @@ export const {
   useLoginMutation,
   useLazyGetProfileQuery,
   useLogoutMutation,
-  useResetPasswordMutation
+  useResetPasswordMutation,
+  useForgotPasswordMutation,
 } = authApi

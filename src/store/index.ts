@@ -2,9 +2,10 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit'
 // import logger from 'redux-logger'
 
 import authReducer from './auth'
+import themeReducer from './theme'
 
-import { authApi } from '@/services/auth'
 import { testApi } from '@/services/test-service'
+import { authApi } from '@/services/auth'
 
 const rootReducer = combineReducers({
   // services
@@ -13,15 +14,14 @@ const rootReducer = combineReducers({
 
   // reducers
   auth: authReducer,
+  theme: themeReducer,
 })
 
 export const setupStore = (preloadedState?: Partial<RootState>) =>
   configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware()
-        .concat(authApi.middleware)
-        .concat(testApi.middleware),
+      getDefaultMiddleware().concat(authApi.middleware).concat(testApi.middleware),
     // .concat(logger),
     preloadedState,
   })

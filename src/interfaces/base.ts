@@ -17,7 +17,9 @@ export interface IMeta {
 export interface IBaseResponse<T = any> {
   status?: number
   success?: boolean
-  data?: T
+  result?: {
+    data?: T
+  }
   meta?: IMeta
   error?: IError
 }

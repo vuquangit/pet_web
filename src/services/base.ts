@@ -3,6 +3,7 @@ import { BaseQueryApi } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
 import type { BaseQueryFn } from '@reduxjs/toolkit/query'
 import { camelizeKeys, decamelizeKeys } from 'humps'
 import { get, isEmpty } from 'lodash'
+import { toast } from 'react-toastify'
 
 import errorMessage from '@/constants/errorMessage'
 import { storageKeys } from '@/constants/storage-keys'
@@ -41,7 +42,7 @@ export const customBaseQuery: BaseQueryFn = async (args, api, extraOptions) => {
       let refreshResult: any = await baseQuery(
         { url: '/auth/refresh', method: 'POST', body: { refresh_token: refreshToken } },
         api,
-        extraOptions
+        extraOptions,
       )
 
       if (refreshResult.data) {
@@ -56,7 +57,7 @@ export const customBaseQuery: BaseQueryFn = async (args, api, extraOptions) => {
     }
   }
   // show notification and redirect
-  else if (result.error && refreshToken) {
+  else if (result.error) {
     handleNotification(api, result)
   }
 
@@ -108,9 +109,11 @@ const handleNotification = (api: BaseQueryApi, result: any) => {
   if (!isEmpty(error)) {
     const errorCode: string = error?.code || ''
     const messageVal = get(errorMessage, errorCode) || 'Something wrong'
-    console.log('ERROR:', messageVal);
+    console.log('ERROR:', messageVal)
+    toast(messageVal)
   } else if (message) {
-    console.log('ERROR:', message);
+    console.log('ERROR:', message)
+    toast(message)
   }
 
   // redirect

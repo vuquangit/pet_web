@@ -19,5 +19,6 @@ export interface IAuthMe {
 }
 
 export interface IAuthResetPasswordRequest {
-  email: string
+  token: string
+  new_password: string
 }

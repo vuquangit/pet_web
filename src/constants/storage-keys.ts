@@ -1,4 +1,4 @@
 export const storageKeys = {
-  AUTH_PROFILE: '__react-19-auth_profile__',
-  THEME: '__react-19-theme__',
+  AUTH_PROFILE: '__pet-auth_profile__',
+  THEME: '__pet-theme__',
 }

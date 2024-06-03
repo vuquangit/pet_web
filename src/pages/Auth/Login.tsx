@@ -1,19 +1,25 @@
 import React, { useState } from 'react'
 import { useLocation, useNavigate, Link } from 'react-router-dom'
+import { GoogleLogin } from '@react-oauth/google'
+import { GoogleOAuthProvider } from '@react-oauth/google'
 
 import { useLoginMutation } from '@/services/auth'
 import { storageKeys } from '@/constants/storage-keys'
 import StorageService from '@/services/local-storage'
-import useProfile from '@/hooks/useProfile'
+import InputField from '@/components/Form/InputField'
+import { currentTheme } from '@/store/theme'
+import { useAppSelector } from '@/store/hook'
+import { ETheme } from '@/enums/theme'
 
 export function Component() {
   const location = useLocation()
   const params = new URLSearchParams(location.search)
   const from = params.get('from') || '/'
+  const clientId: string = process.env.GOOGLE_CLIENT_ID || ''
 
   const navigate = useNavigate()
   const [login, { isLoading }] = useLoginMutation()
-  const { fetchProfile } = useProfile()
+  const theme = useAppSelector(currentTheme)
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -28,10 +34,8 @@ export function Component() {
     // Sign in and redirect to the proper destination if successful.
     try {
       const loginResponse = await login({ email, password }).unwrap()
-      const tokens = loginResponse.data
+      const tokens = loginResponse.result?.data
       StorageService.set(storageKeys.AUTH_PROFILE, tokens)
-
-      fetchProfile()
 
       const path = from || '/'
       navigate(path)
@@ -40,15 +44,18 @@ export function Component() {
     }
   }
 
+  const loginGoogleSuccess = (response: any) => {
+    console.log(response)
+  }
+
+  const loginGoogleError = () => {
+    console.log('Login error')
+  }
+
   return (
-    <div className="flex flex-col justify-center min-h-full px-6 py-12 lg:px-8">
+    <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <img
-          className="w-auto h-10 mx-auto"
-          src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-          alt="Your Company"
-        />
-        <h2 className="mt-10 text-2xl font-bold leading-9 tracking-tight text-center">
+        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight">
           Sign in to your account
         </h2>
       </div>
@@ -58,60 +65,50 @@ export function Component() {
           className="space-y-6"
           onSubmit={onSubmit}
         >
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium leading-6"
-            >
-              Email address
-            </label>
-            <div className="mt-2">
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                className="input-default"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-          </div>
+          <InputField
+            type="email"
+            value={email}
+            label="New password"
+            placeholder="Enter your email"
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-          <div>
-            <div className="flex items-center justify-between">
+          <InputField
+            type="password"
+            value={password}
+            label="Password"
+            placeholder="Enter your password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <input
+                id="remember_me"
+                name="remember_me"
+                type="checkbox"
+                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+              />
               <label
-                htmlFor="password"
-                className="block text-sm font-medium leading-6"
+                htmlFor="remember_me"
+                className="ml-2 block text-sm text-gray-900 dark:text-gray-300"
               >
-                Password
+                Remember me
               </label>
-              <div className="text-sm">
-                <Link
-                  to='/auth/reset-password'
-                  className="font-semibold text-indigo-600 hover:text-indigo-500"
-                  data-cy="btn-reset-password"
-                >
-                  Forgot password?
-                </Link>
-              </div>
             </div>
-            <div className="mt-2">
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                className="input-default"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
+
+            <div className="text-sm">
+              <Link
+                to="/auth/forgot-password"
+                className="font-semibold text-indigo-600 hover:text-indigo-500"
+                data-cy="btn-forgot-password"
+              >
+                Forgot password?
+              </Link>
             </div>
           </div>
 
-          <div>
+          <div className="flex flex-col justify-center gap-5">
             <button
               type="submit"
               className="btn-primary"
@@ -122,6 +119,27 @@ export function Component() {
             </button>
           </div>
         </form>
+
+        <div className="mt-6">
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className=" px-2 text-gray-500">Or continue with</span>
+            </div>
+          </div>
+
+          <div className="mt-6">
+            <GoogleOAuthProvider clientId={clientId}>
+              <GoogleLogin
+                theme={theme === ETheme.DARK ? 'filled_black' : 'filled_blue'}
+                onSuccess={loginGoogleSuccess}
+                onError={loginGoogleError}
+              ></GoogleLogin>
+            </GoogleOAuthProvider>
+          </div>
+        </div>
       </div>
     </div>
   )

@@ -1,21 +1,30 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 
 import { useResetPasswordMutation } from '@/services/auth'
+import { toast } from 'react-toastify'
+import LoadingPage from '@/components/LoadingPage'
+import InputField from '@/components/Form/InputField'
 
 export function Component() {
   const [resetPassword, { isLoading }] = useResetPasswordMutation()
+  const [searchParams] = useSearchParams()
+  const token: string = searchParams.get('token') || ''
 
-  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState<string>('')
+  const [confirmPassword, setConfirmPassword] = useState<string>('')
   const [isResetSended, setIsResetSended] = useState<boolean>(false)
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
+    if (!token) {
+      toast('Invalid token')
+    }
+
     // Sign in and redirect to the proper destination if successful.
     try {
-      await resetPassword({ email }).unwrap()
-      // TODO: check is email sent
+      await resetPassword({ token, new_password: password }).unwrap()
       setIsResetSended(true)
     } catch (error) {
       console.log('reset password error', error)
@@ -25,51 +34,41 @@ export function Component() {
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <img
-          className="mx-auto h-10 w-auto"
-          src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-          alt="Your Company"
-        />
         <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight">
           Reset Password
         </h2>
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        {isResetSended ? (
+        {!isResetSended ? (
           <form
             className="space-y-6"
             onSubmit={onSubmit}
           >
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium leading-6"
-              >
-                Email address
-              </label>
-              <div className="mt-2">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  className="input-default"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-            </div>
+            <InputField
+              type="password"
+              value={password}
+              label="New password"
+              placeholder="Enter new password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
 
-            <div>
+            <InputField
+              type="password"
+              value={confirmPassword}
+              label="Confirm password"
+              placeholder="Confirm new password"
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+
+            <div className="flex flex-col justify-center gap-5">
               <button
                 type="submit"
                 className="btn-primary"
-                disabled={isLoading || !email}
+                disabled={isLoading || !password || password !== confirmPassword}
                 data-cy="login-submit"
               >
-                Sign in
+                Change Password
               </button>
             </div>
           </form>
@@ -93,8 +92,10 @@ export function Component() {
           </div>
         )}
       </div>
+
+      {isLoading && <LoadingPage />}
     </div>
   )
 }
 
-Component.displayName = 'AboutPage'
+Component.displayName = 'ResetPasswordPage'
