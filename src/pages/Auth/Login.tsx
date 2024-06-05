@@ -1,25 +1,25 @@
 import React, { useState } from 'react'
 import { useLocation, useNavigate, Link } from 'react-router-dom'
-import { GoogleLogin } from '@react-oauth/google'
-import { GoogleOAuthProvider } from '@react-oauth/google'
+import { GoogleOAuthProvider, useGoogleLogin } from '@react-oauth/google'
 
 import { useLoginMutation } from '@/services/auth'
 import { storageKeys } from '@/constants/storage-keys'
 import StorageService from '@/services/local-storage'
 import InputField from '@/components/Form/InputField'
-import { currentTheme } from '@/store/theme'
-import { useAppSelector } from '@/store/hook'
-import { ETheme } from '@/enums/theme'
+import GoogleIcon from '@/assets/icons/google.svg'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { useLazyOauthGoogleQuery, useOauthLoginMutation } from '@/services/oauth'
 
-export function Component() {
+const LoginPage = () => {
   const location = useLocation()
   const params = new URLSearchParams(location.search)
   const from = params.get('from') || '/'
-  const clientId: string = process.env.GOOGLE_CLIENT_ID || ''
 
   const navigate = useNavigate()
   const [login, { isLoading }] = useLoginMutation()
-  const theme = useAppSelector(currentTheme)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [oauthGoogle, { isLoading: isGoogleLoading }] = useLazyOauthGoogleQuery()
+  // const [oauthLogin, { isLoading: isOauthLoginLoading }] = useOauthLoginMutation()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -44,13 +44,29 @@ export function Component() {
     }
   }
 
-  const loginGoogleSuccess = (response: any) => {
-    console.log(response)
-  }
+  const googleLogin = useGoogleLogin({
+    // prompt: 'consent',
+    flow: 'auth-code',
+    // scope:'profile, email',
+    onSuccess: async (res) => {
+      console.log(res)
+      const { code } = res
 
-  const loginGoogleError = () => {
-    console.log('Login error')
-  }
+      const data = await oauthGoogle({ code }).unwrap()
+      console.log('data', data)
+      // const loginRes = await oauthLogin({
+      //   idToken: data.result?.data?.id_token,
+      // }).unwrap()
+
+      // const tokens = loginRes.result?.data
+      // console.log('tokens', tokens);
+      // StorageService.set(storageKeys.AUTH_PROFILE, tokens)
+
+      // const path = from || '/'
+      // navigate(path)
+    },
+    onError: (error) => console.log(error),
+  })
 
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
@@ -131,17 +147,27 @@ export function Component() {
           </div>
 
           <div className="mt-6">
-            <GoogleOAuthProvider clientId={clientId}>
-              <GoogleLogin
-                theme={theme === ETheme.DARK ? 'filled_black' : 'filled_blue'}
-                onSuccess={loginGoogleSuccess}
-                onError={loginGoogleError}
-              ></GoogleLogin>
-            </GoogleOAuthProvider>
+            <button
+              className="btn-primary flex w-full items-center justify-center gap-2"
+              onClick={() => googleLogin()}
+            >
+              <GoogleIcon className="h-4 w-4" />
+              Sign in with Google
+            </button>
           </div>
         </div>
       </div>
     </div>
+  )
+}
+
+export function Component() {
+  const clientId: string = process.env.GOOGLE_CLIENT_ID || ''
+
+  return (
+    <GoogleOAuthProvider clientId={clientId}>
+      <LoginPage />
+    </GoogleOAuthProvider>
   )
 }
 

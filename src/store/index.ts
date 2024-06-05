@@ -6,11 +6,13 @@ import themeReducer from './theme'
 
 import { testApi } from '@/services/test-service'
 import { authApi } from '@/services/auth'
+import { oauthApi } from '@/services/oauth'
 
 const rootReducer = combineReducers({
   // services
   [authApi.reducerPath]: authApi.reducer,
   [testApi.reducerPath]: testApi.reducer,
+  [oauthApi.reducerPath]: oauthApi.reducer,
 
   // reducers
   auth: authReducer,
@@ -21,7 +23,10 @@ export const setupStore = (preloadedState?: Partial<RootState>) =>
   configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(authApi.middleware).concat(testApi.middleware),
+      getDefaultMiddleware()
+        .concat(authApi.middleware)
+        .concat(testApi.middleware)
+        .concat(oauthApi.middleware),
     // .concat(logger),
     preloadedState,
   })
