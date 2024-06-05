@@ -5,7 +5,7 @@ import { camelizeKeys, decamelizeKeys } from 'humps'
 import { get, isEmpty } from 'lodash'
 import { toast } from 'react-toastify'
 
-import errorMessage from '@/constants/errorMessage'
+import ERROR_MESSAGES from '@/constants/errorMessage'
 import { storageKeys } from '@/constants/storage-keys'
 import StorageService from '@/services/local-storage'
 import { resetCredentials } from '@/store/auth'
@@ -15,7 +15,7 @@ import { ROUTER_NAMES } from '@/constants/routerNames'
 export const baseQuery = fetchBaseQuery({
   baseUrl: process.env.APP_API_ENDPOINT,
   prepareHeaders: (headers) => {
-    const accessToken = storageKeys.AUTH_PROFILE
+    const accessToken = StorageService.get(storageKeys.AUTH_PROFILE)?.accessToken
 
     if (accessToken) {
       headers.set('Authorization', `Bearer ${accessToken}`)
@@ -28,14 +28,14 @@ export const customBaseQuery: BaseQueryFn = async (args, api, extraOptions) => {
   const body = args.body instanceof FormData ? args.body : decamelizeKeys(args.body)
   const params = decamelizeKeys(args.params)
   const argsCustom = { ...args, body, params }
-  const refreshToken = StorageService.get(storageKeys.AUTH_PROFILE)
+  const refreshToken = StorageService.get(storageKeys.AUTH_PROFILE)?.refreshToken
 
   let result: any = await baseQuery(argsCustom, api, extraOptions)
 
   if (
     result.error &&
     result.error.status === 401 &&
-    result.error.data?.error?.code === ERROR_CODE.ACCESS_TOKEN_EXPIRED
+    result.error.data?.error?.code === ERROR_CODE.AUTH.ACCESS_TOKEN_EXPIRED
   ) {
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -108,7 +108,7 @@ const handleNotification = (api: BaseQueryApi, result: any) => {
   // show notification
   if (!isEmpty(error)) {
     const errorCode: string = error?.code || ''
-    const messageVal = get(errorMessage, errorCode) || 'Something wrong'
+    const messageVal = get(ERROR_MESSAGES, errorCode) || 'Something wrong'
     console.log('ERROR:', messageVal)
     toast(messageVal)
   } else if (message) {

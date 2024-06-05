@@ -1,25 +1,127 @@
-import React, { useState } from 'react'
-import { useLocation, useNavigate, Link } from 'react-router-dom'
-import { GoogleLogin } from '@react-oauth/google'
-import { GoogleOAuthProvider } from '@react-oauth/google'
+import React, { useEffect, useState } from 'react'
+import { useNavigate, Link, useSearchParams } from 'react-router-dom'
+import { GoogleOAuthProvider, useGoogleLogin } from '@react-oauth/google'
 
 import { useLoginMutation } from '@/services/auth'
 import { storageKeys } from '@/constants/storage-keys'
 import StorageService from '@/services/local-storage'
 import InputField from '@/components/Form/InputField'
-import { currentTheme } from '@/store/theme'
-import { useAppSelector } from '@/store/hook'
-import { ETheme } from '@/enums/theme'
+import GoogleIcon from '@/assets/icons/google.svg'
+import { useLazyOauthGoogleQuery, useLazyOauthLoginQuery } from '@/services/oauth'
+import { toast } from 'react-toastify'
+import { EXCEPTION_CODE } from '@/constants/errorCode'
+import ERROR_MESSAGES from '@/constants/errorMessage'
+import { get } from 'lodash'
+import useProfile from '@/hooks/useProfile'
 
-export function Component() {
-  const location = useLocation()
-  const params = new URLSearchParams(location.search)
-  const from = params.get('from') || '/'
-  const clientId: string = process.env.GOOGLE_CLIENT_ID || ''
+interface Props {
+  isLoginGoogle: boolean
+}
 
+interface GoogleLoginButtonProps {
+  saveToken: (tokens: any) => void
+}
+
+const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({ saveToken }) => {
+  const [searchParams, setSearchParams] = useSearchParams()
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [oauthGoogle, { isLoading: isGoogleLoading }] = useLazyOauthGoogleQuery()
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [oauthLogin, { isLoading: isOauthLoginLoading }] = useLazyOauthLoginQuery()
+
+  const googleLogin = useGoogleLogin({
+    flow: 'auth-code',
+    ux_mode: 'redirect',
+    redirect_uri: process.env.GOOGLE_CLIENT_REDIRECT_URL,
+    onSuccess: async (res) => {
+      const { code } = res
+
+      try {
+        await oauthGoogle({ code }).unwrap()
+      } catch (error) {
+        console.log('Google login error:', error)
+      }
+    },
+    onError: (error) => console.log(error),
+  })
+
+  const googleLoginGuard = useGoogleLogin({
+    flow: 'auth-code',
+    ux_mode: 'redirect',
+    redirect_uri: process.env.GOOGLE_CLIENT_REDIRECT_URL_CALLBACK,
+    onSuccess: async () => {
+      try {
+        await oauthLogin().unwrap()
+      } catch (error) {
+        console.log('Google login guard error:', error)
+      }
+    },
+    onError: (error) => console.log(error),
+  })
+
+  const getGoogleTokens = () => {
+    const accessToken = searchParams.get('access_token') || ''
+    const refreshToken = searchParams.get('refresh_token') || ''
+
+    if (accessToken && refreshToken) {
+      saveToken({ accessToken, refreshToken })
+      searchParams.delete('access_token')
+      searchParams.delete('refresh_token')
+      return
+    }
+
+    const code = searchParams.get('code')
+    if (!code) return
+
+    let message: string = 'Login failed'
+    switch (code) {
+      case EXCEPTION_CODE.USER.EMAIL_NOT_FOUND:
+        message = get(ERROR_MESSAGES, EXCEPTION_CODE.USER.EMAIL_NOT_FOUND)
+    }
+
+    const autoClose = 5000
+    toast(message, {
+      autoClose,
+    })
+
+    // clear params
+    setTimeout(() => {
+      setSearchParams({ code: '' })
+    }, autoClose)
+  }
+
+  useEffect(() => {
+    getGoogleTokens()
+  }, [])
+
+  return (
+    <div className="mt-6">
+      <button
+        className="btn-primary flex w-full items-center justify-center gap-2"
+        onClick={() => googleLogin()}
+      >
+        <GoogleIcon className="h-4 w-4" />
+        Sign in with Google
+      </button>
+
+      <button
+        className="btn-primary mt-5 flex w-full items-center justify-center gap-2"
+        onClick={() => googleLoginGuard()}
+      >
+        <GoogleIcon className="h-4 w-4" />
+        Sign in with Google (Guard)
+      </button>
+    </div>
+  )
+}
+
+const LoginPage: React.FC<Props> = (props) => {
+  const { isLoginGoogle } = props
+
+  const [searchParams] = useSearchParams()
+  const { fetchProfile } = useProfile()
   const navigate = useNavigate()
   const [login, { isLoading }] = useLoginMutation()
-  const theme = useAppSelector(currentTheme)
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -35,21 +137,18 @@ export function Component() {
     try {
       const loginResponse = await login({ email, password }).unwrap()
       const tokens = loginResponse.result?.data
-      StorageService.set(storageKeys.AUTH_PROFILE, tokens)
-
-      const path = from || '/'
-      navigate(path)
+      saveToken(tokens)
     } catch (error) {
       console.log('Invalid login attempt')
     }
   }
 
-  const loginGoogleSuccess = (response: any) => {
-    console.log(response)
-  }
+  const saveToken = async (tokens: any) => {
+    StorageService.set(storageKeys.AUTH_PROFILE, tokens)
+    await fetchProfile()
 
-  const loginGoogleError = () => {
-    console.log('Login error')
+    const path = searchParams.get('from') || '/'
+    navigate(path)
   }
 
   return (
@@ -68,7 +167,7 @@ export function Component() {
           <InputField
             type="email"
             value={email}
-            label="New password"
+            label="Email"
             placeholder="Enter your email"
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -130,19 +229,29 @@ export function Component() {
             </div>
           </div>
 
-          <div className="mt-6">
-            <GoogleOAuthProvider clientId={clientId}>
-              <GoogleLogin
-                theme={theme === ETheme.DARK ? 'filled_black' : 'filled_blue'}
-                onSuccess={loginGoogleSuccess}
-                onError={loginGoogleError}
-              ></GoogleLogin>
-            </GoogleOAuthProvider>
-          </div>
+          {isLoginGoogle && <GoogleLoginButton saveToken={saveToken} />}
         </div>
       </div>
     </div>
   )
+}
+
+export function Component() {
+  const clientId: string = process.env.GOOGLE_CLIENT_ID || ''
+
+  if (!clientId) {
+    console.error('GOOGLE_CLIENT_ID is not defined')
+  }
+
+  if (clientId) {
+    return (
+      <GoogleOAuthProvider clientId={clientId}>
+        <LoginPage isLoginGoogle={true} />
+      </GoogleOAuthProvider>
+    )
+  }
+
+  return <LoginPage isLoginGoogle={false} />
 }
 
 Component.displayName = 'AboutPage'
