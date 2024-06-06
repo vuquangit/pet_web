@@ -74,7 +74,7 @@ const LoginPage = () => {
     redirect_uri: process.env.GOOGLE_CLIENT_REDIRECT_URL_CALLBACK,
     onSuccess: async () => {
       try {
-        await oauthLogin({}).unwrap()
+        await oauthLogin().unwrap()
       } catch (error) {
         console.log('Google login guard error:', error)
       }
