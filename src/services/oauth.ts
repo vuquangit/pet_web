@@ -2,7 +2,7 @@ import { createApi } from '@reduxjs/toolkit/query/react'
 
 import { IBaseResponse } from '@/interfaces/base'
 import { customBaseQuery } from '@/services/base'
-import { IOauthResponse, IOauthRequest, IOauthLoginResponse } from '@/interfaces/oauth'
+import { IOauthRequest } from '@/interfaces/oauth'
 
 // Define a service using a base URL and expected endpoints
 export const oauthApi = createApi({
@@ -11,7 +11,7 @@ export const oauthApi = createApi({
   tagTypes: ['Oauth'],
 
   endpoints: (builder) => ({
-    oauthGoogle: builder.query<IBaseResponse<IOauthResponse>, IOauthRequest>({
+    oauthGoogle: builder.query<IBaseResponse<void>, IOauthRequest>({
       query: (params) => ({
         url: '/oauth/google',
         method: 'GET',
@@ -19,7 +19,7 @@ export const oauthApi = createApi({
       }),
     }),
 
-    oauthLogin: builder.query<IBaseResponse<IOauthLoginResponse>, void>({
+    oauthLogin: builder.query<IBaseResponse<void>, void>({
       query: () => ({
         url: '/oauth/google/guard',
         method: 'GET',
