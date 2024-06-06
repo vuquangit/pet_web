@@ -1,4 +1,4 @@
-const errorMessage = {
+const ERROR_MESSAGES = {
   400: 'Bad Request',
   401: 'Unauthorized',
   403: 'Forbidden',
@@ -9,7 +9,7 @@ const errorMessage = {
   429: 'Too Many Requests',
   422: 'Unprocessable Entity',
   ACCESS_TOKEN_EXPIRED: 'Access token expired',
-  'USER.EMAIL_NOT_FOUND': 'User email not found',
+  'USER.EMAIL_NOT_FOUND': 'Email not found, please register first',
   'USER.EMAIL_EXIST': 'User email exist',
   'USER.WRONG_PASSWORD': 'Wrong password',
   'USER.ID_NOT_FOUND': 'User id not found',
@@ -20,4 +20,4 @@ const errorMessage = {
   'AUTH.ACCESS_TOKEN_EXPIRED': 'Access token expired',
 }
 
-export default errorMessage
+export default ERROR_MESSAGES
