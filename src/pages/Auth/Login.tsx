@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { useLocation, useNavigate, Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useNavigate, Link, useSearchParams } from 'react-router-dom'
 import { GoogleOAuthProvider, useGoogleLogin } from '@react-oauth/google'
 
 import { useLoginMutation } from '@/services/auth'
@@ -7,19 +7,22 @@ import { storageKeys } from '@/constants/storage-keys'
 import StorageService from '@/services/local-storage'
 import InputField from '@/components/Form/InputField'
 import GoogleIcon from '@/assets/icons/google.svg'
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { useLazyOauthGoogleQuery, useOauthLoginMutation } from '@/services/oauth'
+import { useLazyOauthGoogleQuery, useLazyOauthLoginQuery } from '@/services/oauth'
+import { toast } from 'react-toastify'
+import { EXCEPTION_CODE } from '@/constants/errorCode'
+import ERROR_MESSAGES from '@/constants/errorMessage'
+import { get } from 'lodash'
+import useProfile from '@/hooks/useProfile'
 
 const LoginPage = () => {
-  const location = useLocation()
-  const params = new URLSearchParams(location.search)
-  const from = params.get('from') || '/'
-
+  const [searchParams, setSearchParams] = useSearchParams()
+  const { fetchProfile } = useProfile()
   const navigate = useNavigate()
   const [login, { isLoading }] = useLoginMutation()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [oauthGoogle, { isLoading: isGoogleLoading }] = useLazyOauthGoogleQuery()
-  // const [oauthLogin, { isLoading: isOauthLoginLoading }] = useOauthLoginMutation()
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [oauthLogin, { isLoading: isOauthLoginLoading }] = useLazyOauthLoginQuery()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -35,38 +38,84 @@ const LoginPage = () => {
     try {
       const loginResponse = await login({ email, password }).unwrap()
       const tokens = loginResponse.result?.data
-      StorageService.set(storageKeys.AUTH_PROFILE, tokens)
-
-      const path = from || '/'
-      navigate(path)
+      saveToken(tokens)
     } catch (error) {
       console.log('Invalid login attempt')
     }
   }
 
+  const saveToken = async (tokens: any) => {
+    StorageService.set(storageKeys.AUTH_PROFILE, tokens)
+    await fetchProfile()
+
+    const path = searchParams.get('from') || '/'
+    navigate(path)
+  }
+
   const googleLogin = useGoogleLogin({
-    // prompt: 'consent',
     flow: 'auth-code',
-    // scope:'profile, email',
+    ux_mode: 'redirect',
+    redirect_uri: process.env.GOOGLE_CLIENT_REDIRECT_URL,
     onSuccess: async (res) => {
-      console.log(res)
       const { code } = res
 
-      const data = await oauthGoogle({ code }).unwrap()
-      console.log('data', data)
-      // const loginRes = await oauthLogin({
-      //   idToken: data.result?.data?.id_token,
-      // }).unwrap()
-
-      // const tokens = loginRes.result?.data
-      // console.log('tokens', tokens);
-      // StorageService.set(storageKeys.AUTH_PROFILE, tokens)
-
-      // const path = from || '/'
-      // navigate(path)
+      try {
+        await oauthGoogle({ code }).unwrap()
+      } catch (error) {
+        console.log('Google login error:', error)
+      }
     },
     onError: (error) => console.log(error),
   })
+
+  const googleLoginGuard = useGoogleLogin({
+    flow: 'auth-code',
+    ux_mode: 'redirect',
+    redirect_uri: process.env.GOOGLE_CLIENT_REDIRECT_URL_CALLBACK,
+    onSuccess: async () => {
+      try {
+        await oauthLogin({}).unwrap()
+      } catch (error) {
+        console.log('Google login guard error:', error)
+      }
+    },
+    onError: (error) => console.log(error),
+  })
+
+  const getGoogleTokens = () => {
+    const accessToken = searchParams.get('access_token') || ''
+    const refreshToken = searchParams.get('refresh_token') || ''
+
+    if (accessToken && refreshToken) {
+      saveToken({ accessToken, refreshToken })
+      searchParams.delete('access_token')
+      searchParams.delete('refresh_token')
+      return
+    }
+
+    const code = searchParams.get('code')
+    if (!code) return
+
+    let message: string = 'Login failed'
+    switch (code) {
+      case EXCEPTION_CODE.USER.EMAIL_NOT_FOUND:
+        message = get(ERROR_MESSAGES, EXCEPTION_CODE.USER.EMAIL_NOT_FOUND)
+    }
+
+    const autoClose = 5000
+    toast(message, {
+      autoClose,
+    })
+
+    // clear params
+    setTimeout(() => {
+      setSearchParams({ code: '' })
+    }, autoClose)
+  }
+
+  useEffect(() => {
+    getGoogleTokens()
+  }, [])
 
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
@@ -153,6 +202,14 @@ const LoginPage = () => {
             >
               <GoogleIcon className="h-4 w-4" />
               Sign in with Google
+            </button>
+
+            <button
+              className="btn-primary mt-5 flex w-full items-center justify-center gap-2"
+              onClick={() => googleLoginGuard()}
+            >
+              <GoogleIcon className="h-4 w-4" />
+              Sign in with Google (Guard)
             </button>
           </div>
         </div>
