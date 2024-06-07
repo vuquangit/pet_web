@@ -17,10 +17,28 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx"
+    "noEmit": false,
+    "jsx": "react-jsx",
+    "baseUrl": "src",
+    "paths": {
+      "@/*": [
+        "*"
+      ]
+    },
   },
   "include": [
-    "src"
-  ]
+    "src",
+    "custom.d.ts",
+    "src/tests/e2e/support/index.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "src/tests",
+    "cypress",
+    "./cypress.config.ts",
+    "**/*.cy.js",
+    "**/*.cy.jsx",
+    "**/*.cy.ts",
+    "**/*.cy.tsx",
+  ],
 }

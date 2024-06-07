@@ -1,0 +1,27 @@
+# Dockerfile
+# 1. Build
+FROM node:20-alpine As builder
+RUN mkdir -p /app
+WORKDIR /app
+COPY package*.json /app
+RUN yarn install
+COPY . /app
+RUN yarn build
+
+
+# 2. Use Nginx as the production server
+FROM nginx:alpine
+
+WORKDIR /usr/share/nginx/html
+
+# Remove default nginx static assets
+RUN rm -rf ./*
+
+# Copy static assets from builder stage
+COPY --from=builder /app/dist .
+
+# Expose port 80 for the Nginx server
+EXPOSE 80
+
+# Start Nginx when the container runs
+CMD ["nginx", "-g", "daemon off;"]

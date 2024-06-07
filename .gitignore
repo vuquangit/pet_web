@@ -21,3 +21,17 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# env
+.env
+.env.local
+.env.development
+.env.test.local
+.env.production
+.env.staging
+
+# Cypress
+coverage
+coverage-cy
+.nyc_output
+# cypress.env.json
