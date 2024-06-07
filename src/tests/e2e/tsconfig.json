@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["es5", "dom"],
+    "allowJs": true,
+    "esModuleInterop": true,
+    "jsx": "react",
+    // "isolatedModules": true,
+    "types": ["cypress", "cypress-file-upload", "node"],
+    "baseUrl": "../../",
+    "paths": {
+      "@/*": ["*"]
+    }
+  },
+  "include": ["**/*.cy.js", "**/*.cy.jsx", "**/*.cy.ts", "**/*.cy.tsx", "./support/index.d.ts"],
+  "exclude": ["**/*.test.js", "**/*.test.jsx", "**/*.test.ts", "**/*.test.tsx"]
+}
