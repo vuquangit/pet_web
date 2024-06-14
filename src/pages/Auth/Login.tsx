@@ -14,7 +14,13 @@ import ERROR_MESSAGES from '@/constants/errorMessage'
 import { get } from 'lodash'
 import useProfile from '@/hooks/useProfile'
 
-const LoginPage = () => {
+interface Props {
+  isLoginGoogle: boolean
+}
+
+const LoginPage: React.FC<Props> = (props) => {
+  const { isLoginGoogle } = props
+
   const [searchParams, setSearchParams] = useSearchParams()
   const { fetchProfile } = useProfile()
   const navigate = useNavigate()
@@ -133,7 +139,7 @@ const LoginPage = () => {
           <InputField
             type="email"
             value={email}
-            label="New password"
+            label="Email"
             placeholder="Enter your email"
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -195,23 +201,25 @@ const LoginPage = () => {
             </div>
           </div>
 
-          <div className="mt-6">
-            <button
-              className="btn-primary flex w-full items-center justify-center gap-2"
-              onClick={() => googleLogin()}
-            >
-              <GoogleIcon className="h-4 w-4" />
-              Sign in with Google
-            </button>
+          {isLoginGoogle && (
+            <div className="mt-6">
+              <button
+                className="btn-primary flex w-full items-center justify-center gap-2"
+                onClick={() => googleLogin()}
+              >
+                <GoogleIcon className="h-4 w-4" />
+                Sign in with Google
+              </button>
 
-            <button
-              className="btn-primary mt-5 flex w-full items-center justify-center gap-2"
-              onClick={() => googleLoginGuard()}
-            >
-              <GoogleIcon className="h-4 w-4" />
-              Sign in with Google (Guard)
-            </button>
-          </div>
+              <button
+                className="btn-primary mt-5 flex w-full items-center justify-center gap-2"
+                onClick={() => googleLoginGuard()}
+              >
+                <GoogleIcon className="h-4 w-4" />
+                Sign in with Google (Guard)
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -221,11 +229,19 @@ const LoginPage = () => {
 export function Component() {
   const clientId: string = process.env.GOOGLE_CLIENT_ID || ''
 
-  return (
-    <GoogleOAuthProvider clientId={clientId}>
-      <LoginPage />
-    </GoogleOAuthProvider>
-  )
+  if (!clientId) {
+    console.error('GOOGLE_CLIENT_ID is not defined')
+  }
+
+  if (clientId) {
+    return (
+      <GoogleOAuthProvider clientId={clientId}>
+        <LoginPage isLoginGoogle={true} />
+      </GoogleOAuthProvider>
+    )
+  }
+
+  return <LoginPage isLoginGoogle={false} />
 }
 
 Component.displayName = 'AboutPage'
