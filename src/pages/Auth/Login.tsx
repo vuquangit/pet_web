@@ -170,6 +170,7 @@ const LoginPage: React.FC<Props> = (props) => {
             label="Email"
             placeholder="Enter your email"
             onChange={(e) => setEmail(e.target.value)}
+            dataCy="email"
           />
 
           <InputField
@@ -178,6 +179,7 @@ const LoginPage: React.FC<Props> = (props) => {
             label="Password"
             placeholder="Enter your password"
             onChange={(e) => setPassword(e.target.value)}
+            dataCy="password"
           />
 
           <div className="flex items-center justify-between">
@@ -225,7 +227,7 @@ const LoginPage: React.FC<Props> = (props) => {
               <div className="w-full border-t border-gray-300"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className=" px-2 text-gray-500">Or continue with</span>
+              <span className="px-2 text-gray-500 ">Or continue with</span>
             </div>
           </div>
 

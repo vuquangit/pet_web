@@ -12,6 +12,7 @@ interface PropType {
   autoComplete?: string
   required?: boolean
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
+  dataCy?: string
 }
 
 const InputField: React.FC<PropType> = (props) => {
@@ -43,6 +44,7 @@ const InputField: React.FC<PropType> = (props) => {
           value={props.value}
           placeholder={props.placeholder}
           onChange={props.onChange}
+          data-cy={props.dataCy}
         />
         {props.type === 'password' && (
           <button
