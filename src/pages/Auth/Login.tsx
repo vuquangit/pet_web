@@ -18,85 +18,46 @@ interface Props {
   isLoginGoogle: boolean
 }
 
-const LoginPage: React.FC<Props> = (props) => {
-  const { isLoginGoogle } = props
+interface GoogleLoginButtonProps {
+  saveToken: (tokens: any) => void
+}
 
+const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({ saveToken }) => {
   const [searchParams, setSearchParams] = useSearchParams()
-  const { fetchProfile } = useProfile()
-  const navigate = useNavigate()
-  const [login, { isLoading }] = useLoginMutation()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [oauthGoogle, { isLoading: isGoogleLoading }] = useLazyOauthGoogleQuery()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [oauthLogin, { isLoading: isOauthLoginLoading }] = useLazyOauthLoginQuery()
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const googleLogin = useGoogleLogin({
+    flow: 'auth-code',
+    ux_mode: 'redirect',
+    redirect_uri: process.env.GOOGLE_CLIENT_REDIRECT_URL,
+    onSuccess: async (res) => {
+      const { code } = res
 
-  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+      try {
+        await oauthGoogle({ code }).unwrap()
+      } catch (error) {
+        console.log('Google login error:', error)
+      }
+    },
+    onError: (error) => console.log(error),
+  })
 
-    if (!email) {
-      console.log('You must provide a email to log in')
-    }
-
-    // Sign in and redirect to the proper destination if successful.
-    try {
-      const loginResponse = await login({ email, password }).unwrap()
-      const tokens = loginResponse.result?.data
-      saveToken(tokens)
-    } catch (error) {
-      console.log('Invalid login attempt')
-    }
-  }
-
-  const saveToken = async (tokens: any) => {
-    StorageService.set(storageKeys.AUTH_PROFILE, tokens)
-    await fetchProfile()
-
-    const path = searchParams.get('from') || '/'
-    navigate(path)
-  }
-
-  const googleLogin = () => {
-    if (!isLoginGoogle) return
-
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    return useGoogleLogin({
-      flow: 'auth-code',
-      ux_mode: 'redirect',
-      redirect_uri: process.env.GOOGLE_CLIENT_REDIRECT_URL,
-      onSuccess: async (res) => {
-        const { code } = res
-
-        try {
-          await oauthGoogle({ code }).unwrap()
-        } catch (error) {
-          console.log('Google login error:', error)
-        }
-      },
-      onError: (error) => console.log(error),
-    })
-  }
-
-  const googleLoginGuard = () => {
-    if (!isLoginGoogle) return
-
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    return useGoogleLogin({
-      flow: 'auth-code',
-      ux_mode: 'redirect',
-      redirect_uri: process.env.GOOGLE_CLIENT_REDIRECT_URL_CALLBACK,
-      onSuccess: async () => {
-        try {
-          await oauthLogin().unwrap()
-        } catch (error) {
-          console.log('Google login guard error:', error)
-        }
-      },
-      onError: (error) => console.log(error),
-    })
-  }
+  const googleLoginGuard = useGoogleLogin({
+    flow: 'auth-code',
+    ux_mode: 'redirect',
+    redirect_uri: process.env.GOOGLE_CLIENT_REDIRECT_URL_CALLBACK,
+    onSuccess: async () => {
+      try {
+        await oauthLogin().unwrap()
+      } catch (error) {
+        console.log('Google login guard error:', error)
+      }
+    },
+    onError: (error) => console.log(error),
+  })
 
   const getGoogleTokens = () => {
     const accessToken = searchParams.get('access_token') || ''
@@ -132,6 +93,63 @@ const LoginPage: React.FC<Props> = (props) => {
   useEffect(() => {
     getGoogleTokens()
   }, [])
+
+  return (
+    <div className="mt-6">
+      <button
+        className="btn-primary flex w-full items-center justify-center gap-2"
+        onClick={() => googleLogin()}
+      >
+        <GoogleIcon className="h-4 w-4" />
+        Sign in with Google
+      </button>
+
+      <button
+        className="btn-primary mt-5 flex w-full items-center justify-center gap-2"
+        onClick={() => googleLoginGuard()}
+      >
+        <GoogleIcon className="h-4 w-4" />
+        Sign in with Google (Guard)
+      </button>
+    </div>
+  )
+}
+
+const LoginPage: React.FC<Props> = (props) => {
+  const { isLoginGoogle } = props
+
+  const [searchParams] = useSearchParams()
+  const { fetchProfile } = useProfile()
+  const navigate = useNavigate()
+  const [login, { isLoading }] = useLoginMutation()
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
+    if (!email) {
+      console.log('You must provide a email to log in')
+    }
+
+    // Sign in and redirect to the proper destination if successful.
+    try {
+      const loginResponse = await login({ email, password }).unwrap()
+      const tokens = loginResponse.result?.data
+      saveToken(tokens)
+    } catch (error) {
+      console.log('Invalid login attempt')
+    }
+  }
+
+  const saveToken = async (tokens: any) => {
+    StorageService.set(storageKeys.AUTH_PROFILE, tokens)
+    await fetchProfile()
+
+    const path = searchParams.get('from') || '/'
+    navigate(path)
+  }
 
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
@@ -211,25 +229,7 @@ const LoginPage: React.FC<Props> = (props) => {
             </div>
           </div>
 
-          {isLoginGoogle && (
-            <div className="mt-6">
-              <button
-                className="btn-primary flex w-full items-center justify-center gap-2"
-                onClick={() => googleLogin()}
-              >
-                <GoogleIcon className="h-4 w-4" />
-                Sign in with Google
-              </button>
-
-              <button
-                className="btn-primary mt-5 flex w-full items-center justify-center gap-2"
-                onClick={() => googleLoginGuard()}
-              >
-                <GoogleIcon className="h-4 w-4" />
-                Sign in with Google (Guard)
-              </button>
-            </div>
-          )}
+          {isLoginGoogle && <GoogleLoginButton saveToken={saveToken} />}
         </div>
       </div>
     </div>
