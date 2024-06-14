@@ -58,35 +58,45 @@ const LoginPage: React.FC<Props> = (props) => {
     navigate(path)
   }
 
-  const googleLogin = useGoogleLogin({
-    flow: 'auth-code',
-    ux_mode: 'redirect',
-    redirect_uri: process.env.GOOGLE_CLIENT_REDIRECT_URL,
-    onSuccess: async (res) => {
-      const { code } = res
+  const googleLogin = () => {
+    if (!isLoginGoogle) return
 
-      try {
-        await oauthGoogle({ code }).unwrap()
-      } catch (error) {
-        console.log('Google login error:', error)
-      }
-    },
-    onError: (error) => console.log(error),
-  })
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    return useGoogleLogin({
+      flow: 'auth-code',
+      ux_mode: 'redirect',
+      redirect_uri: process.env.GOOGLE_CLIENT_REDIRECT_URL,
+      onSuccess: async (res) => {
+        const { code } = res
 
-  const googleLoginGuard = useGoogleLogin({
-    flow: 'auth-code',
-    ux_mode: 'redirect',
-    redirect_uri: process.env.GOOGLE_CLIENT_REDIRECT_URL_CALLBACK,
-    onSuccess: async () => {
-      try {
-        await oauthLogin().unwrap()
-      } catch (error) {
-        console.log('Google login guard error:', error)
-      }
-    },
-    onError: (error) => console.log(error),
-  })
+        try {
+          await oauthGoogle({ code }).unwrap()
+        } catch (error) {
+          console.log('Google login error:', error)
+        }
+      },
+      onError: (error) => console.log(error),
+    })
+  }
+
+  const googleLoginGuard = () => {
+    if (!isLoginGoogle) return
+
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    return useGoogleLogin({
+      flow: 'auth-code',
+      ux_mode: 'redirect',
+      redirect_uri: process.env.GOOGLE_CLIENT_REDIRECT_URL_CALLBACK,
+      onSuccess: async () => {
+        try {
+          await oauthLogin().unwrap()
+        } catch (error) {
+          console.log('Google login guard error:', error)
+        }
+      },
+      onError: (error) => console.log(error),
+    })
+  }
 
   const getGoogleTokens = () => {
     const accessToken = searchParams.get('access_token') || ''
