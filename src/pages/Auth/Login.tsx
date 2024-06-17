@@ -32,7 +32,7 @@ const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({ saveToken }) => {
   const googleLogin = useGoogleLogin({
     flow: 'auth-code',
     ux_mode: 'redirect',
-    redirect_uri: process.env.APP_API_ENDPOINT + '/auth/google',
+    redirect_uri: process.env.APP_API_ENDPOINT + '/oauth/google',
     onSuccess: async (res) => {
       const { code } = res
 
@@ -48,7 +48,7 @@ const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({ saveToken }) => {
   const googleLoginGuard = useGoogleLogin({
     flow: 'auth-code',
     ux_mode: 'redirect',
-    redirect_uri: process.env.APP_API_ENDPOINT + '/auth/google/callback',
+    redirect_uri: process.env.APP_API_ENDPOINT + '/oauth/google/callback',
     onSuccess: async () => {
       try {
         await oauthLogin().unwrap()
