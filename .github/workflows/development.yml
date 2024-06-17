@@ -99,8 +99,6 @@ jobs:
           cp .env.development.sample .env.development
           echo APP_API_ENDPOINT=${{ secrets.APP_API_ENDPOINT }} >> .env.development
           echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> .env.development
-          echo GOOGLE_CLIENT_REDIRECT_URL=${{ secrets.GOOGLE_CLIENT_REDIRECT_URL }} >> .env.development
-          echo GOOGLE_CLIENT_REDIRECT_URL_CALLBACK=${{ secrets.GOOGLE_CLIENT_REDIRECT_URL_CALLBACK }} >> .env.development
 
       - name: Install Vercel CLI
         run: yarn global add vercel@latest
