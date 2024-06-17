@@ -2,9 +2,15 @@ name: CI/CD
 
 on: [push]
 
+env:
+  NODE_VERSION: 18
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
 jobs:
-  cypress-run:
+  ci:
     runs-on: ubuntu-latest
+
     # Runs tests in parallel with matrix strategy https://docs.cypress.io/guides/guides/parallelization
     # https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs
     # Also see warning here https://github.com/cypress-io/github-action#parallel
@@ -20,12 +26,13 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '18'
+          node-version: ${{env.NODE_VERSION}}
 
       - name: Install dependencies
         run: yarn install
 
       - name: Cypress run
+        id: cypress
         # Uses the official Cypress GitHub action https://github.com/cypress-io/github-action
         uses: cypress-io/github-action@v6
         with:
@@ -52,3 +59,65 @@ jobs:
 
           # Creating a token https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
           # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set message if code frontend fail
+        if: steps.cypress.outcome == 'failure'
+        run: echo "fe_failed_message=[NEWS] Some test in frontend fail" >> $GITHUB_ENV
+
+      - name: Notify to slack if code fail
+        if: steps.cypress.outcome == 'failure'
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_CHANNEL:  pet-bots
+          SLACK_COLOR:    '#BD7532'
+          SLACK_ICON:     https://www.petisland.icu/favicon.ico
+          SLACK_MESSAGE:  ${{ env.fe_failed_message }}
+          SLACK_TITLE:    CI Message
+          SLACK_USERNAME: Pet NEWS - Github Action
+          SLACK_WEBHOOK:  ${{ secrets.WEBHOOK }}
+
+      # Break CI pipeline when error occur
+      - name: Exit if fail
+        if: steps.cypress.outcome == 'failure'
+        run: exit 1
+
+  cd:
+    runs-on: ubuntu-latest
+    needs: ci
+    if: github.ref == 'refs/heads/develop' && success()
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Vercel CLI
+        run: yarn global add vercel@latest
+
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build Project Artifacts
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy Project Artifacts to Vercel
+        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+
+      # Set message env for success or failure
+      - if: success()
+        run: echo "message=Congratulations on your successful release for develop :rocket:" >> $GITHUB_ENV
+
+      - if: failure()
+        run: echo "message=Release develop failed, Please try again or release manually :uongtra:" >> $GITHUB_ENV
+
+      # Noti to slack for sucess or failure
+      - name: Notify to slack
+        if: always()
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_CHANNEL:  pet-bots
+          SLACK_COLOR:    '#32BD52'
+          SLACK_ICON:     https://www.petisland.icu/favicon.ico
+          SLACK_MESSAGE:  ${{ env.message }}
+          SLACK_TITLE:    CD Message
+          SLACK_USERNAME: Pet NEWS - Github Action
+          SLACK_WEBHOOK:  ${{ secrets.WEBHOOK }}
