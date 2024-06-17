@@ -2,8 +2,8 @@ name: CI/CD STAGING
 
 on:
   push:
-      branches:
-          - staing
+    branches:
+      - staging
 
 env:
   NODE_VERSION: 20
