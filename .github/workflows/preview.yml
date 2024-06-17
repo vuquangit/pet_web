@@ -72,7 +72,7 @@ jobs:
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_CHANNEL:  pet-bots
-          SLACK_COLOR:    '#BD7532'
+          SLACK_COLOR:    '#ff0000'
           SLACK_ICON:     https://www.petisland.icu/favicon.ico
           SLACK_MESSAGE:  ${{ env.fe_failed_message }}
           SLACK_TITLE:    CI Message
@@ -131,7 +131,7 @@ jobs:
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_CHANNEL:  pet-bots
-          SLACK_COLOR:    '#32BD52'
+          SLACK_COLOR:    ${{ env.is_success && 'good' || 'danger' }}
           SLACK_ICON:     https://www.petisland.icu/favicon.ico
           SLACK_MESSAGE:  ${{ env.message }}
           SLACK_TITLE:    CD Message
