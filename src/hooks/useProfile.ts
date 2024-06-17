@@ -10,10 +10,10 @@ const useProfile = () => {
   const dispatch = useAppDispatch()
 
   const fetchProfile = async () => {
-    try {
-      const tokens = StorageService.get(storageKeys.AUTH_PROFILE)
-      if (!tokens) return
+    const tokens = StorageService.get(storageKeys.AUTH_PROFILE)?.accessToken
+    if (!tokens) return
 
+    try {
       const profileResponse = await getProfile().unwrap()
       const profile = profileResponse.result?.data as IAuthMe
       dispatch(setCredentials(profile))
