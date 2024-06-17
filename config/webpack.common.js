@@ -60,8 +60,11 @@ module.exports = function (webpackEnv) {
 
       // Makes some environment variables available to the JS code.
       new Dotenv({
-        path: isStaging ? '.env.staging' : isEnvDevelopment ? './.env.development' : './.env', // fix auto deploy env not found
-        // : './.env.production',
+        path: isStaging
+          ? '.env.staging'
+          : isEnvDevelopment
+            ? './.env.development'
+            : './.env.production',
       }),
 
       // Copies files from target to destination folder

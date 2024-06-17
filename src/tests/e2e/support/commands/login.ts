@@ -23,9 +23,9 @@ function loginViaAuth0Ui(username: string, password: string) {
   // redirects to auth.
   cy.visit('/')
 
-  cy.get('input[id=email]').type(username)
+  cy.get('[data-cy=email]').type(username)
   // cy.get('input[id=password]').type(`${password}{enter}`, { log: false })
-  cy.get('input[id=password]').type(password)
+  cy.get('[data-cy=password]').type(password)
   cy.get('[data-cy=login-submit]').click()
   cy.wait(['@loginApi'])
 

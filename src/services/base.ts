@@ -40,7 +40,7 @@ export const customBaseQuery: BaseQueryFn = async (args, api, extraOptions) => {
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let refreshResult: any = await baseQuery(
-        { url: '/auth/refresh', method: 'POST', body: { refresh_token: refreshToken } },
+        { url: '/auth/refresh-token', method: 'POST', body: { refresh_token: refreshToken } },
         api,
         extraOptions,
       )
@@ -118,5 +118,8 @@ const handleNotification = (api: BaseQueryApi, result: any) => {
 
   // redirect
   // TODO: handle redirect outside react component
-  if (navigateTo) window.location.href = navigateTo
+  const pathname = window.location.pathname
+  if (pathname !== navigateTo) {
+    window.location.href = `${window.location.origin}${navigateTo}`
+  }
 }
