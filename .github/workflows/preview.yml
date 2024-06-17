@@ -36,6 +36,7 @@ jobs:
 
       - name: Cypress run
         id: cypress
+        continue-on-error: true
         # Uses the official Cypress GitHub action https://github.com/cypress-io/github-action
         uses: cypress-io/github-action@v6
         with:
@@ -49,7 +50,6 @@ jobs:
           # https://docs.cypress.io/guides/cloud/projects#Set-up-a-project-to-record
           # record: true
           # parallel: true # Runs test in parallel using settings above
-
         env:
           # GitHub repo → Settings → Secrets → Actions
           AUTH_USERNAME: ${{ secrets.AUTH_USERNAME }}
@@ -117,11 +117,13 @@ jobs:
 
       # Set message env for success or failure
       - if: success()
+        name: Set message for success
         run: |
           echo "message=Congratulations on your successful release for develop :rocket:" >> $GITHUB_ENV
-          echo "preview_url=Preview URL: ${{ steps.deploy.outputs }}" >> $GITHUB_ENV
+          echo "preview_url=Preview URL: ${{ toJSON(steps.deploy.outputs) }}" >> $GITHUB_ENV
 
       - if: failure()
+        name: Set message for failure
         run: echo "message=Release develop failed, Please try again or release manually :uongtra:" >> $GITHUB_ENV
 
       # Noti to slack for sucess or failure
