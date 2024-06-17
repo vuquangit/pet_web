@@ -120,7 +120,6 @@ jobs:
         name: Set message for success
         run: |
           echo "message=Congratulations on your successful release for develop :rocket:" >> $GITHUB_ENV
-          echo "preview_url=Preview URL: ${{ toJSON(steps.deploy.outputs) }}" >> $GITHUB_ENV
 
       - if: failure()
         name: Set message for failure
@@ -134,7 +133,7 @@ jobs:
           SLACK_CHANNEL:  pet-bots
           SLACK_COLOR:    '#32BD52'
           SLACK_ICON:     https://www.petisland.icu/favicon.ico
-          SLACK_MESSAGE:  ${{ env.message }} \n ${{ env.deployment_url }}
+          SLACK_MESSAGE:  ${{ env.message }}
           SLACK_TITLE:    CD Message
           SLACK_USERNAME: Pet NEWS - Github Action
           SLACK_WEBHOOK:  ${{ secrets.SLACK_WEBHOOK }}
