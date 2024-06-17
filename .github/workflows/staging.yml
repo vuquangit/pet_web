@@ -67,7 +67,7 @@ jobs:
   cd:
     runs-on: ubuntu-latest
     needs: ci
-    if: github.ref == 'refs/heads/develop' && success()
+    if: github.ref == 'refs/heads/staging' && success()
 
     steps:
       - name: Checkout
