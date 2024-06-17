@@ -29,7 +29,9 @@ const protectedLoader = async ({ request }: LoaderFunctionArgs) => {
   // them to `/login` with a `from` parameter that allows login to redirect back
   // to this page upon successful authentication
   const isAuthenticated = !!StorageService.get(storageKeys.AUTH_PROFILE)?.accessToken
-  if (!isAuthenticated) {
+  const pathname = new URL(window.location.href).pathname
+
+  if (!isAuthenticated && pathname !== '/auth/login') {
     const params = new URLSearchParams()
     params.set('from', new URL(request.url).pathname)
     return redirect('/auth/login?' + params.toString())
@@ -39,8 +41,9 @@ const protectedLoader = async ({ request }: LoaderFunctionArgs) => {
 
 const loginLoader = () => {
   const isAuthenticated = !!StorageService.get(storageKeys.AUTH_PROFILE)?.accessToken
+  const pathname = new URL(window.location.href).pathname
 
-  if (isAuthenticated) {
+  if (isAuthenticated && pathname === '/auth/login') {
     return redirect('/')
   }
   return null

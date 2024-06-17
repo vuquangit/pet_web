@@ -4,7 +4,7 @@ export default {
   },
 
   get: (key: string) => {
-    const data = localStorage.getItem(key) as string
+    const data = localStorage.getItem(key) || '{}'
     return JSON.parse(data)
   },
 

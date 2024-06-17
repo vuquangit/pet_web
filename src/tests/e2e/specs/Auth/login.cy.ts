@@ -59,7 +59,7 @@ describe('Login Page', () => {
 
   it('redirect reset password', () => {
     cy.visit('/auth/login')
-    cy.getByCy('btn-reset-password').click()
-    cy.url().should('equal', 'http://localhost:3000/auth/reset-password')
+    cy.getByCy('btn-forgot-password').click()
+    cy.url().should('equal', 'http://localhost:3000/auth/forgot-password')
   })
 })
