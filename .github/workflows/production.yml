@@ -56,7 +56,7 @@ jobs:
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_CHANNEL:  pet-bots
-          SLACK_COLOR:    '#BD7532'
+          SLACK_COLOR:    '#ff0000'
           SLACK_ICON:     https://www.petisland.icu/favicon.ico
           SLACK_MESSAGE:  ${{ env.fe_failed_message }}
           SLACK_TITLE:    CI Message
@@ -100,7 +100,9 @@ jobs:
       # Set message env for success or failure
       - if: success()
         name: Set message for success
-        run: echo "message=Congratulations on your successful release for PRODUCTION :rocket:" >> $GITHUB_ENV
+        run: |
+          echo "message=Congratulations on your successful release for PRODUCTION :rocket:" >> $GITHUB_ENV
+          echo "is_success=true" >> $GITHUB_ENV
 
       - if: failure()
         name: Set message for failure
@@ -112,7 +114,7 @@ jobs:
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_CHANNEL:  pet-bots
-          SLACK_COLOR:    '#32BD52'
+          SLACK_COLOR:    ${{ env.is_success && 'good' || 'danger' }}
           SLACK_ICON:     https://www.petisland.icu/favicon.ico
           SLACK_MESSAGE:  ${{ env.message }}
           SLACK_TITLE:    CD Message
