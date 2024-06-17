@@ -114,14 +114,12 @@ jobs:
         id: deploy
         run: |
           vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
-          DEPLOYMENT_URL=$(vercel --token ${{ secrets.VERCEL_TOKEN }} --confirm --env VERCEL_ENV=preview --scope your-vercel-scope)
-          echo "deployment_url=${DEPLOYMENT_URL}" >> $GITHUB_ENV
 
       # Set message env for success or failure
       - if: success()
         run: |
           echo "message=Congratulations on your successful release for develop :rocket:" >> $GITHUB_ENV
-          echo "preview_url=Preview URL: ${{ steps.deploy.outputs.VERCEL_URL }}" >> $GITHUB_ENV
+          echo "preview_url=Preview URL: ${{ steps.deploy.outputs }}" >> $GITHUB_ENV
 
       - if: failure()
         run: echo "message=Release develop failed, Please try again or release manually :uongtra:" >> $GITHUB_ENV
