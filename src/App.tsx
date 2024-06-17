@@ -16,8 +16,10 @@ import { ETheme } from '@/enums/theme'
 const App: React.FC = () => {
   const { fetchProfile } = useProfile()
   const theme = useAppSelector(currentTheme)
+  const isProfileFetched = useAppSelector((state) => !!state.auth.role)
 
   useEffect(() => {
+    if (isProfileFetched) return
     fetchProfile()
   }, [])
 
