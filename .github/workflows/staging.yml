@@ -1,9 +1,9 @@
-name: CI/CD
+name: CI/CD STAGING
 
 on:
   push:
-      branches-ignore:
-          - main
+      branches:
+          - staing
 
 env:
   NODE_VERSION: 20
