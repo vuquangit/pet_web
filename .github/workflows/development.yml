@@ -98,7 +98,7 @@ jobs:
       - name: Setup file
         run: |
           cp .env.development.sample .env.development
-          echo APP_API_ENDPOINT=${{ secrets.APP_API_ENDPOINT }} >> .env.development
+          echo APP_API_ENDPOINT=${{ secrets.APP_API_ENDPOINT_DEV }} >> .env.development
           echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> .env.development
 
       - name: Install Vercel CLI
