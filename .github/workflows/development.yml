@@ -1,9 +1,10 @@
-name: CI/CD
+name: CI/CD DEVELOPMENT
 
 on:
   push:
       branches-ignore:
           - main
+          - staging
 
 env:
   NODE_VERSION: 20
