@@ -1,14 +1,16 @@
 #!/bin/bash
 
-echo "Deploying to $VERCEL_ENV"
+VERCEL_ENV="staging"
 
-if [[ $VERCEL_ENV == "production"  ]] ; then
- echo "Build production"
- yarn build:prod
-elif [[ $VERCEL_ENV == "staging"  ]] ; then
- echo "Build staging"
- yarn build:stg
+echo Deploying to: $VERCEL_ENV
+
+if [ $VERCEL_ENV = "production" ]; then
+  echo "Build production"
+  yarn build:prod
+elif [ $VERCEL_ENV = "staging" ]; then
+  echo "Build staging"
+  yarn build:stg
 else
- echo "Build development"
- yarn build:dev
+  echo "Build development"
+  yarn build:dev
 fi
