@@ -36,32 +36,16 @@ jobs:
 
       - name: Cypress run
         id: cypress
-        # Uses the official Cypress GitHub action https://github.com/cypress-io/github-action
+        continue-on-error: true
         uses: cypress-io/github-action@v6
         with:
-          # Starts web server for E2E tests - replace with your own server invocation
-          # https://docs.cypress.io/guides/continuous-integration/introduction#Boot-your-server
-          # start: npm start
           start: yarn test:e2e:ci
           wait-on: 'http://localhost:3000' # Waits for above
-
-          # Records to Cypress Cloud
-          # https://docs.cypress.io/guides/cloud/projects#Set-up-a-project-to-record
-          # record: true
-          # parallel: true # Runs test in parallel using settings above
-
         env:
-          # GitHub repo → Settings → Secrets → Actions
           AUTH_USERNAME: ${{ secrets.AUTH_USERNAME }}
           AUTH_PASSWORD: ${{ secrets.AUTH_PASSWORD }}
           AUTH_ACCESS_TOKEN: ${{ secrets.AUTH_ACCESS_TOKEN }}
           AUTH_REFRESH_TOKEN: ${{ secrets.AUTH_REFRESH_TOKEN }}
-
-          # For recording and parallelization to work you must set your CYPRESS_RECORD_KEY
-          # CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-
-          # Creating a token https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
-          # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set message if code frontend fail
         if: steps.cypress.outcome == 'failure'
@@ -101,7 +85,6 @@ jobs:
           echo GOOGLE_CLIENT_REDIRECT_URL=${{ secrets.GOOGLE_CLIENT_REDIRECT_URL }} >> .env.staging
           echo GOOGLE_CLIENT_REDIRECT_URL_CALLBACK=${{ secrets.GOOGLE_CLIENT_REDIRECT_URL_CALLBACK }} >> .env.staging
 
-
       - name: Install Vercel CLI
         run: yarn global add vercel@latest
 
@@ -116,10 +99,12 @@ jobs:
 
       # Set message env for success or failure
       - if: success()
-        run: echo "message=Congratulations on your successful release for develop :rocket:" >> $GITHUB_ENV
+        name: Set message for success
+        run: echo "message=Congratulations on your successful release for PRODUCTION :rocket:" >> $GITHUB_ENV
 
       - if: failure()
-        run: echo "message=Release develop failed, Please try again or release manually :uongtra:" >> $GITHUB_ENV
+        name: Set message for failure
+        run: echo "message=Release PRODUCTION failed, Please try again or release manually :uongtra:" >> $GITHUB_ENV
 
       # Noti to slack for sucess or failure
       - name: Notify to slack
