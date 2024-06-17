@@ -105,17 +105,23 @@ jobs:
         run: yarn global add vercel@latest
 
       - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel pull --yes --environment=development --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Build Project Artifacts
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy Project Artifacts to Vercel
-        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+        id: deploy
+        run: |
+          vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+          DEPLOYMENT_URL=$(vercel --token ${{ secrets.VERCEL_TOKEN }} --confirm --env VERCEL_ENV=development --scope your-vercel-scope)
+          echo "deployment_url=${DEPLOYMENT_URL}" >> $GITHUB_ENV
 
       # Set message env for success or failure
       - if: success()
-        run: echo "message=Congratulations on your successful release for develop :rocket:" >> $GITHUB_ENV
+        run: |
+          echo "message=Congratulations on your successful release for develop :rocket:" >> $GITHUB_ENV
+          echo "preview_url=Preview URL: ${{ steps.deploy.outputs.VERCEL_URL }}" >> $GITHUB_ENV
 
       - if: failure()
         run: echo "message=Release develop failed, Please try again or release manually :uongtra:" >> $GITHUB_ENV
@@ -128,7 +134,7 @@ jobs:
           SLACK_CHANNEL:  pet-bots
           SLACK_COLOR:    '#32BD52'
           SLACK_ICON:     https://www.petisland.icu/favicon.ico
-          SLACK_MESSAGE:  ${{ env.message }}
+          SLACK_MESSAGE:  ${{ env.message }} \n ${{ env.deployment_url }}
           SLACK_TITLE:    CD Message
           SLACK_USERNAME: Pet NEWS - Github Action
           SLACK_WEBHOOK:  ${{ secrets.SLACK_WEBHOOK }}
