@@ -4,49 +4,85 @@ import className from 'classnames'
 import EyeIcon from '@/assets/icons/eye.svg'
 
 interface PropType {
+  /**
+   * Label input
+   */
   label?: string
-  value: string
+  /**
+   * Value input
+   */
+  value: string | number | readonly string[] | undefined
+  /**
+   * Placeholder
+   */
   placeholder?: string
-  type?: string
+  /**
+   * Type input
+   */
+  type?: React.HTMLInputTypeAttribute | undefined
+  /**
+   * Input name
+   */
   name?: string
+  /**
+   * Autocomplete
+   */
   autoComplete?: string
+  /**
+   * Input require
+   */
   required?: boolean
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
+  /**
+   * Cypress cy
+   */
   dataCy?: string
+  /**
+   * Disable input
+   */
+  disabled?: boolean
+  /**
+   * Event input change
+   * @param value
+   * @returns
+   */
+  onChange?: (value: string) => void
 }
 
 const InputField: React.FC<PropType> = (props) => {
+  const { name, label, type, dataCy, onChange, ...restProps } = props
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false)
 
-  const inputWrapperClass = className('relative', { 'mt-2': props.label })
+  const inputWrapperClass = className('relative', { 'mt-2': label })
   const eyeClass = className('h-4 w-4', {
     'fill-gray-400 ': !isShowPassword,
     'fill-gray-900': isShowPassword,
   })
 
+  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!onChange) return
+    onChange(e.target.value)
+  }
+
   return (
     <div>
       <label
-        htmlFor={props.name}
+        htmlFor={name}
         className="block text-sm font-medium leading-6"
       >
-        {props.label}
+        {label}
       </label>
 
       <div className={inputWrapperClass}>
         <input
-          id={props.name}
-          name={props.name}
-          type={isShowPassword ? 'text' : props.type || 'text'}
-          autoComplete={props.autoComplete}
-          required={props.required}
+          id={name}
+          name={name}
+          type={isShowPassword ? 'text' : type || 'text'}
           className="input-default"
-          value={props.value}
-          placeholder={props.placeholder}
-          onChange={props.onChange}
-          data-cy={props.dataCy}
+          onChange={onInputChange}
+          data-cy={dataCy}
+          {...restProps}
         />
-        {props.type === 'password' && (
+        {type === 'password' && (
           <button
             type="button"
             className="absolute right-0 top-1/2 h-full -translate-y-1/2 px-3"

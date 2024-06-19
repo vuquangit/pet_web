@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 
 import { useForgotPasswordMutation } from '@/services/auth'
 import LoadingPage from '@/components/LoadingPage'
+import { Button, InputField } from '@/components/Form'
 
 export function Component() {
   const [forgotPassword, { isLoading }] = useForgotPasswordMutation()
@@ -38,36 +39,22 @@ export function Component() {
               className="space-y-6"
               onSubmit={onSubmit}
             >
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium leading-6"
-                >
-                  Email address
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    required
-                    className="input-default"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </div>
-              </div>
+              <InputField
+                type="email"
+                value={email}
+                label="Email"
+                placeholder="Enter your email"
+                onChange={setEmail}
+                dataCy="email"
+              />
 
               <div>
-                <button
-                  type="submit"
+                <Button
+                  label="Send mail"
                   className="btn-primary"
                   disabled={isLoading || !email}
                   data-cy="login-submit"
-                >
-                  Send mail
-                </button>
+                />
               </div>
             </form>
           ) : (
@@ -80,12 +67,12 @@ export function Component() {
                 to="/auth/login"
                 className="text-center text-sm text-gray-500"
               >
-                <button
+                <Button
                   type="button"
                   className="btn-primary"
                 >
                   Back to login
-                </button>
+                </Button>
               </Link>
             </div>
           )}

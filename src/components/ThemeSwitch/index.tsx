@@ -20,8 +20,10 @@ const ThemeSwitch: React.FC = () => {
 
   useEffect(() => {
     const theme = darkTheme ? ETheme.DARK : ETheme.LIGHT
-    document.body.classList.remove(ETheme.LIGHT, ETheme.DARK)
-    document.body.classList.add(theme)
+    // document.body.classList.remove(ETheme.LIGHT, ETheme.DARK)
+    // document.body.classList.add(theme)
+    document.documentElement.classList.remove(ETheme.LIGHT, ETheme.DARK)
+    document.documentElement.classList.add(theme)
 
     StorageService.set(storageKeys.THEME, theme)
     dispatch(setTheme(theme))
