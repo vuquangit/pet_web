@@ -213,6 +213,7 @@ const LoginPage: React.FC<Props> = (props) => {
           <div className="flex flex-col justify-center gap-5">
             <Button
               label="Sign in"
+              type="submit"
               className="btn-primary"
               disabled={isLoading || !email || !password}
               dataCy="login-submit"

@@ -51,6 +51,7 @@ export function Component() {
               <div>
                 <Button
                   label="Send mail"
+                  type="submit"
                   className="btn-primary"
                   disabled={isLoading || !email}
                   data-cy="login-submit"
