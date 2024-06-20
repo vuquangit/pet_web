@@ -25,11 +25,18 @@
         "*"
       ]
     },
+    "types": [
+      "cypress",
+      "node",
+      "jest",
+      "@testing-library/jest-dom"
+    ]
   },
   "include": [
     "src",
     "custom.d.ts",
-    "src/tests/e2e/support/index.d.ts"
+    "src/tests/e2e/support/index.d.ts",
+    "/src/tests/unit/jest.setup.ts"
   ],
   "exclude": [
     "node_modules",
