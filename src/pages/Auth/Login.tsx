@@ -124,8 +124,8 @@ const LoginPage: React.FC<Props> = (props) => {
   const navigate = useNavigate()
   const [login, { isLoading }] = useLoginMutation()
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState(process.env.EMAIL_INIT || '')
+  const [password, setPassword] = useState(process.env.PASSWORD_INIT || '')
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()

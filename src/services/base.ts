@@ -38,16 +38,19 @@ export const customBaseQuery: BaseQueryFn = async (args, api, extraOptions) => {
     result.error.data?.error?.code === ERROR_CODE.AUTH.ACCESS_TOKEN_EXPIRED
   ) {
     try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      let refreshResult: any = await baseQuery(
+      const refreshResult = await baseQuery(
         { url: '/auth/refresh-token', method: 'POST', body: { refresh_token: refreshToken } },
         api,
         extraOptions,
       )
 
       if (refreshResult.data) {
-        refreshResult = camelizeKeys(refreshResult)
+        // get new tokens
+        const _refreshResult = camelizeKeys(refreshResult)
+        const tokens = get(_refreshResult, 'data.result.data', {})
+        StorageService.set(storageKeys.AUTH_PROFILE, tokens)
 
+        // retry original query
         result = await baseQuery(args, api, extraOptions)
       } else {
         handleNotification(api, result)
@@ -77,6 +80,7 @@ const handleNotification = (api: BaseQueryApi, result: any) => {
 
   // clear profile and token
   if (errorStatus === 401) {
+    console.log('clear profile and token')
     api.dispatch(resetCredentials())
     // api.dispatch(logOut())
     StorageService.remove(storageKeys.AUTH_PROFILE)

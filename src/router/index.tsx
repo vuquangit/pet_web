@@ -96,22 +96,26 @@ const protectedRoutes: RouteApp[] = [
       return null
     },
   },
+
   {
     path: ROUTER_NAMES.HOME,
     element: <Navigate to={ROUTER_NAMES.ROOT} />,
   },
+
+  // Conversations page
   {
-    path: ROUTER_NAMES.REACT,
+    path: ROUTER_NAMES.CONVERSATIONS,
     async lazy() {
       // Multiple routes in lazy file
-      const { ReactPage } = await import('../pages/React')
-      return { Component: ReactPage }
+      const { ConversationPage } = await import('../pages/Conversations/ConversationPage')
+      return { Component: ConversationPage }
     },
     loader: () => {
-      setTitlePage('React')
+      setTitlePage('Conversation')
       return null
     },
   },
+
   // ...other protected routes
 ]
 

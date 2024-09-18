@@ -14,8 +14,8 @@ const NavigationApp: React.FC = () => {
       path: ROUTER_NAMES.HOME,
     },
     {
-      label: 'React 19',
-      path: ROUTER_NAMES.REACT,
+      label: 'Conversations',
+      path: ROUTER_NAMES.CONVERSATIONS,
     },
   ]
 

@@ -24,4 +24,8 @@
       ring-inset ring-gray-300 placeholder:text-gray-400
       focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6;
   }
+
+  .modal-overlay {
+    @apply h-full w-full bg-[rgba(0,0,0,0.5)] fixed top-0 left-0 z-[9999] flex items-center justify-center;
+  }
 }
