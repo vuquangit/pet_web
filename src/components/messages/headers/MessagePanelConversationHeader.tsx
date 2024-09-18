@@ -68,7 +68,7 @@ export const MessagePanelConversationHeader = () => {
   return (
     <header className="flex h-[90px] w-full flex-shrink-0 items-center justify-between border-b border-solid bg-[#49494925] px-8 py-2.5">
       <div>
-        <span>{recipient?.username || 'User'}</span>
+        <span>{recipient?.name || 'User'}</span>
       </div>
       <div className="flex items-center gap-5">
         <PhoneIcon

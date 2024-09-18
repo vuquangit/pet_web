@@ -1,8 +1,8 @@
 import React, { FC } from 'react'
+
 import { CDN_URL } from '@/enums/chat'
-// import { UserAvatarContainer } from '../../utils/styles';
 import { User } from '@/interfaces/chat'
-import defaultAvatar from '../../__assets__/default_avatar.jpg'
+import defaultAvatar from '@/assets/images/default_avatar.jpg'
 
 type Props = {
   user: User

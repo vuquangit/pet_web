@@ -1,9 +1,15 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FriendRequestList } from './components/FriendRequestList'
-// import { fetchFriendRequestThunk } from '../../store/friends/friendsThunk';
+import useFriends from '@/hooks/useFriends'
 
 export const FriendRequestPage = () => {
-  // const dispatch = useAppDispatch()
+  const { fetchFriendRequest, isLoadingFriendRequest } = useFriends()
 
-  return <FriendRequestList />
+  useEffect(() => {
+    ;(async () => {
+      await fetchFriendRequest()
+    })()
+  }, [])
+
+  return <FriendRequestList isLoading={isLoadingFriendRequest} />
 }

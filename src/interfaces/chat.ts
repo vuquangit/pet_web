@@ -1,3 +1,5 @@
+import { IAuthMe } from './auth'
+
 export type CreateUserParams = {
   username: string
   firstName: string
@@ -36,7 +38,7 @@ export type User = {
   profile?: Profile
   presence?: UserPresence
   peer: UserPeer
-}
+} & IAuthMe
 
 export type Conversation = {
   id: string

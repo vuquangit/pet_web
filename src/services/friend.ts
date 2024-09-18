@@ -29,35 +29,36 @@ export const friendApi = createApi({
       }),
     }),
 
-    createFriend: builder.mutation<IBaseResponse<FriendRequest>, { userId: string }>({
-      query: () => ({
+    createFriend: builder.mutation<IBaseResponse<FriendRequest>, { request_id: string }>({
+      query: (data) => ({
         url: '/friends/requests',
         method: 'POST',
+        body: data,
       }),
     }),
 
-    cancelFriend: builder.mutation<IBaseResponse<CancelFriendRequestResponse>, { id: string }>({
+    cancelFriend: builder.mutation<IBaseResponse<CancelFriendRequestResponse>, string>({
       query: (id) => ({
         url: `/friends/requests/${id}/cancel`,
         method: 'DELETE',
       }),
     }),
 
-    acceptFriend: builder.mutation<IBaseResponse<AcceptFriendRequestResponse>, { id: string }>({
+    acceptFriend: builder.mutation<IBaseResponse<AcceptFriendRequestResponse>, string>({
       query: (id) => ({
         url: `/friends/requests/${id}/accept`,
         method: 'PATCH',
       }),
     }),
 
-    rejectFriend: builder.mutation<IBaseResponse<FriendRequest>, { id: string }>({
+    rejectFriend: builder.mutation<IBaseResponse<FriendRequest>, string>({
       query: (id) => ({
         url: `/friends/requests/${id}/reject`,
         method: 'PATCH',
       }),
     }),
 
-    removeFriend: builder.mutation<IBaseResponse<Friend>, { id: string }>({
+    removeFriend: builder.mutation<IBaseResponse<Friend>, string>({
       query: (id) => ({
         url: `/friends/${id}/delete`,
         method: 'DELETE',

@@ -17,6 +17,14 @@ const NavigationApp: React.FC = () => {
       label: 'Conversations',
       path: ROUTER_NAMES.CONVERSATIONS,
     },
+    {
+      label: 'Friends',
+      path: ROUTER_NAMES.FRIENDS,
+    },
+    {
+      label: 'Groups',
+      path: ROUTER_NAMES.GROUPS,
+    },
   ]
 
   return (

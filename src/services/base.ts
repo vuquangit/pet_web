@@ -76,7 +76,7 @@ const handleNotification = (api: BaseQueryApi, result: any) => {
   const errorStatus = result.error.status
   const error = result?.error?.data?.error
   let message = ''
-  let navigateTo = ''
+  let navigateTo: string | null = null
 
   // clear profile and token
   if (errorStatus === 401) {
@@ -99,10 +99,11 @@ const handleNotification = (api: BaseQueryApi, result: any) => {
       break
     case 500:
       message = 'Error 500'
+      // navigateTo = '/500'
       break
-    default:
-      message = ''
-      navigateTo = ''
+    // default:
+    //   message = ''
+    //   navigateTo = null
   }
 
   if (!window.navigator.onLine) {
@@ -123,7 +124,7 @@ const handleNotification = (api: BaseQueryApi, result: any) => {
   // redirect
   // TODO: handle redirect outside react component
   const pathname = window.location.pathname
-  if (pathname !== navigateTo) {
+  if (pathname !== navigateTo && navigateTo) {
     window.location.href = `${window.location.origin}${navigateTo}`
   }
 }

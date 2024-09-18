@@ -22,7 +22,6 @@ export const FriendPageNavbar = () => {
           {friendsNavbarItems.map((item) => (
             <span
               key={item.id}
-              // className="cursor-pointer"
               className={classNames('cursor-pointer', {
                 'underline underline-offset-[14px]': pathname === item.pathname,
               })}
@@ -33,14 +32,13 @@ export const FriendPageNavbar = () => {
           ))}
         </div>
         <Button
-          // size="sm"
-          // flex={true}
-          // variant="primary"
           className="btn-primary"
           onClick={() => setShowModal(true)}
         >
-          <UserAddIcon className="h-[20px]" />
-          <span>Add Friend</span>
+          <div className="flex gap-2">
+            <UserAddIcon className="h-4 dark:fill-white" />
+            <span>Add Friend</span>
+          </div>
         </Button>
       </nav>
     </>

@@ -7,11 +7,11 @@ type Props = {
 }
 
 export const FriendRequestDetails: FC<Props> = ({ details }) => (
-  <div className="details">
+  <div className="flex items-center gap-5">
     <UserAvatar user={details.user} />
-    <div className="name">
+    <div className="flex flex-col text-[20px]">
       <span>{details.displayName}</span>
-      <span className="status">{details.status}</span>
+      <span className="text-[#626626} text-[14px] font-medium italic">{details.status}</span>
     </div>
   </div>
 )

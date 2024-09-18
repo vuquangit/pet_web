@@ -116,6 +116,74 @@ const protectedRoutes: RouteApp[] = [
     },
   },
 
+  // Friend pages
+  {
+    path: ROUTER_NAMES.FRIENDS,
+    async lazy() {
+      // Multiple routes in lazy file
+      const { FriendsLayoutPage } = await import('../pages/Friends/FriendsLayoutPage')
+      return { Component: FriendsLayoutPage }
+    },
+    loader: () => {
+      setTitlePage('Friends')
+      return null
+    },
+    children: [
+      {
+        path: ROUTER_NAMES.FRIEND_REQUEST,
+        async lazy() {
+          // Multiple routes in lazy file
+          const { FriendRequestPage } = await import('../pages/Friends/FriendRequestPage')
+          return { Component: FriendRequestPage }
+        },
+        loader: () => {
+          setTitlePage('Friend Request')
+          return null
+        },
+      },
+      {
+        path: ROUTER_NAMES.FRIEND_BLOCKED,
+        async lazy() {
+          // Multiple routes in lazy file
+          const { FriendRequestBlocked } = await import('../pages/Friends/FriendRequestBlocked')
+          return { Component: FriendRequestBlocked }
+        },
+        loader: () => {
+          setTitlePage('Friend Blocked')
+          return null
+        },
+      },
+    ],
+  },
+
+  // Group pages
+  {
+    path: ROUTER_NAMES.GROUPS,
+    async lazy() {
+      // Multiple routes in lazy file
+      const { GroupPage } = await import('../pages/Groups/GroupPage')
+      return { Component: GroupPage }
+    },
+    loader: () => {
+      setTitlePage('Groups')
+      return null
+    },
+    children: [
+      {
+        path: ROUTER_NAMES.GROUP_DETAIL,
+        async lazy() {
+          // Multiple routes in lazy file
+          const { GroupChannelPage } = await import('../pages/Groups/GroupChannelPage')
+          return { Component: GroupChannelPage }
+        },
+        loader: () => {
+          setTitlePage('Group Detail')
+          return null
+        },
+      },
+    ],
+  },
+
   // ...other protected routes
 ]
 

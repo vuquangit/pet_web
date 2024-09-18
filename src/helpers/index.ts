@@ -77,10 +77,10 @@ export const getFriendRequestDetails = (
   { receiver, sender }: FriendRequest,
   user?: User,
 ): FriendRequestDetailsType => {
-  if (user?.id === receiver.id) {
+  if (user?.id === receiver?.id) {
     return {
       status: 'Incoming Friend Request',
-      displayName: `${sender.firstName} ${sender.lastName}`,
+      displayName: sender.name,
       user: sender,
       incoming: true,
     }
@@ -88,7 +88,7 @@ export const getFriendRequestDetails = (
 
   return {
     status: 'Outgoing Friend Request',
-    displayName: `${receiver.firstName} ${receiver.lastName}`,
+    displayName: receiver.name,
     user: receiver,
     incoming: false,
   }

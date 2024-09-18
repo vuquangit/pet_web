@@ -17,7 +17,7 @@ export const RecipientResultContainer: FC<Props> = ({ userResults, handleUserSel
             className=":hover:cursor-pointer bg-[#0c0c0c] px-[28px] py-5"
             onClick={() => handleUserSelect(user)}
           >
-            <span>{user.username}</span>
+            <span>{user?.name || ''}</span>
           </div>
         ))}
       </div>

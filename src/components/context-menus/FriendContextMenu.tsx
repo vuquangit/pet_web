@@ -1,16 +1,16 @@
 import React, { useContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import classNames from 'classnames'
 
 import { AppDispatch, RootState } from '@/store'
 import { toggleContextMenu } from '@/store/friends'
-import { removeFriendThunk } from '@/store/friends/friendsThunk'
 import { useLazyCheckConversationOrCreateQuery } from '@/services/conversations'
 import { AuthContext } from '@/context/AuthContext'
 import { SocketContext } from '@/context/SocketContext'
 import UserMinusIcon from '@/assets/icons/user-minus-solid.svg'
 import CommentDotsIcon from '@/assets/icons/comment-dots-regular.svg'
-import classNames from 'classnames'
+import useFriends from '@/hooks/useFriends'
 
 export const FriendContextMenu = () => {
   const { user } = useContext(AuthContext)
@@ -19,21 +19,21 @@ export const FriendContextMenu = () => {
   const { points, selectedFriendContextMenu } = useSelector((state: RootState) => state.friends)
   const socket = useContext(SocketContext)
   const [checkConversationOrCreate] = useLazyCheckConversationOrCreateQuery()
+  const { removeFriend } = useFriends()
 
   const getUserFriendInstance = () =>
     user?.id === selectedFriendContextMenu?.sender.id
       ? selectedFriendContextMenu?.receiver
       : selectedFriendContextMenu?.sender
 
-  const removeFriend = () => {
+  const handleRemoveFriend = async () => {
     if (!selectedFriendContextMenu) return
     dispatch(toggleContextMenu(false))
-    dispatch(removeFriendThunk(selectedFriendContextMenu.id)).then(() =>
-      socket.emit('getOnlineFriends'),
-    )
+    await removeFriend(selectedFriendContextMenu.id)
+    socket.emit('getOnlineFriends')
   }
 
-  const sendMessage = async () => {
+  const handleSendMessage = async () => {
     const recipient = getUserFriendInstance()
     if (!recipient) return
 
@@ -57,7 +57,7 @@ export const FriendContextMenu = () => {
     >
       <li
         className={contextMenuItemStyle}
-        onClick={removeFriend}
+        onClick={handleRemoveFriend}
       >
         <UserMinusIcon
           className="h-8"
@@ -68,7 +68,7 @@ export const FriendContextMenu = () => {
 
       <li
         className={contextMenuItemStyle}
-        onClick={sendMessage}
+        onClick={handleSendMessage}
       >
         <CommentDotsIcon
           className="h-8"

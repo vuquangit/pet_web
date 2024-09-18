@@ -26,7 +26,9 @@ export const FriendList = () => {
 
   return (
     <div className="py-15 px-10">
-      {onlineFriends.length > 0 && <span>Online ({onlineFriends.length})</span>}
+      {onlineFriends.length > 0 && (
+        <span className="font-bold">Online ({onlineFriends.length})</span>
+      )}
       {onlineFriends.map((friend) => (
         <FriendListItem
           key={friend.id}
@@ -35,7 +37,8 @@ export const FriendList = () => {
           online={true}
         />
       ))}
-      <span>Offline</span>
+
+      <span className="font-bold">Offline</span>
       {friends
         .filter((friend) => !onlineFriends.find((onlineFriend) => onlineFriend.id === friend.id))
         .map((friend) => (

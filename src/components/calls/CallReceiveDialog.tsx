@@ -32,7 +32,7 @@ export const CallReceiveDialog = () => {
       <UserAvatar user={caller!} />
       <div className="align-center">
         <span>
-          {caller!.username} wants to {callType === 'audio' ? 'voice' : 'video'} call you
+          {caller!.name} wants to {callType === 'audio' ? 'voice' : 'video'} call you
         </span>
       </div>
       <div className="flex justify-center gap-2.5">

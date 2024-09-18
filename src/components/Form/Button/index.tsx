@@ -5,7 +5,7 @@ interface ButtonProps {
   /**
    * Type button
    */
-  type?: 'button' | 'submit' | 'reset' | undefined
+  type?: 'button' | 'submit' | 'reset' | 'text' | undefined
   /**
    * Is this the principal call to action on the page?
    */
@@ -25,7 +25,7 @@ interface ButtonProps {
   /**
    * Optional click handler
    */
-  onClick?: () => void
+  onClick?: (e?: any) => any
 
   /**
    * Class name
@@ -63,6 +63,7 @@ const Button = (props: ButtonProps) => {
     {
       'btn-default': !primary,
       'btn-primary': primary,
+      'btn-text': type === 'text',
       'px-3 py-[2px] text-[12px]': size === 'small',
       'px-5 py-[4px] text-[14px]': size === 'medium',
       'px-7 py-[6px] text-[16px]': size === 'large',
@@ -72,7 +73,7 @@ const Button = (props: ButtonProps) => {
 
   return (
     <button
-      type={type}
+      type={type === 'text' ? 'button' : type}
       className={buttonStyles}
       style={{ backgroundColor }}
       data-cy={dataCy}

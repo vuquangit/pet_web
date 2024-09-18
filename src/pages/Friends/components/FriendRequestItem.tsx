@@ -1,41 +1,34 @@
-import React, { FC, useContext } from 'react'
+import React, { FC } from 'react'
 
-import { AuthContext } from '@/context/AuthContext'
-// import { FriendRequestItemContainer } from '../../utils/styles/friends';
 import { FriendRequest, HandleFriendRequestAction } from '@/interfaces/chat'
-
-import {
-  acceptFriendRequestThunk,
-  cancelFriendRequestThunk,
-  rejectFriendRequestThunk,
-} from '@/store/friends/friendsThunk'
 import { getFriendRequestDetails } from '@/helpers'
 import { FriendRequestDetails } from './friend-request/FriendRequestDetails'
 import { FriendRequestIcons } from './friend-request/FriendRequestIcons'
-import { useAppDispatch } from '@/store/hook'
+import useFriends from '@/hooks/useFriends'
+import { useAppSelector } from '@/store/hook'
 
 type Props = {
   friendRequest: FriendRequest
 }
 export const FriendRequestItem: FC<Props> = ({ friendRequest }) => {
-  const { user } = useContext(AuthContext)
-  const dispatch = useAppDispatch()
+  const user = useAppSelector((state) => state.auth) as any
   const friendRequestDetails = getFriendRequestDetails(friendRequest, user)
+  const { acceptFriendRequest, rejectFriendRequest, removeFriend } = useFriends()
 
-  const handleFriendRequest = (type?: HandleFriendRequestAction) => {
+  const handleFriendRequest = async (type?: HandleFriendRequestAction) => {
     const { id } = friendRequest
     switch (type) {
       case 'accept':
-        return dispatch(acceptFriendRequestThunk(id))
+        return await acceptFriendRequest(id)
       case 'reject':
-        return dispatch(rejectFriendRequestThunk(id))
+        return await rejectFriendRequest(id)
       default:
-        return dispatch(cancelFriendRequestThunk(id))
+        return await removeFriend(id)
     }
   }
 
   return (
-    <div className="flex justify-between border-b border-solid border-[#1f1f1fbf] px-2.5">
+    <div className=":last-child:border-n-none flex justify-between border-b border-solid border-[#1f1f1fbf] p-2.5">
       <FriendRequestDetails details={friendRequestDetails} />
       <FriendRequestIcons
         details={friendRequestDetails}
