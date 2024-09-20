@@ -3,10 +3,9 @@ import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { MessagePanel } from '@/components/messages/MessagePanel'
 import { SocketContext } from '@/context/SocketContext'
-// import { ConversationChannelPageStyle } from '../../utils/styles'
 import { AppDispatch } from '../../store'
 import { editMessage } from '../../store/messages'
-import { fetchMessagesThunk } from '../../store/messages/messageThunk'
+import useMessages from '@/hooks/useMessage'
 
 export const ConversationChannelPage = () => {
   const { id = '' } = useParams()
@@ -15,10 +14,10 @@ export const ConversationChannelPage = () => {
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>()
   const [isTyping, setIsTyping] = useState(false)
   const [isRecipientTyping, setIsRecipientTyping] = useState(false)
+  const { handleFetchMessages } = useMessages()
 
   useEffect(() => {
-    const conversationId = id
-    dispatch(fetchMessagesThunk(conversationId))
+    handleFetchMessages(id)
   }, [id])
 
   useEffect(() => {

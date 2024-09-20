@@ -9,13 +9,15 @@ import { addMessage, deleteMessage } from '@/store/messages'
 import { updateType } from '@/store/selectedType'
 import { SocketContext } from '@/context/SocketContext'
 import { Conversation, MessageEventPayload } from '@/interfaces/chat'
-import { addConversation, fetchConversationsThunk, updateConversation } from '@/store/conversations'
+import { addConversation, updateConversation } from '@/store/conversations'
+import useConversations from '@/hooks/useConversations'
 
 export function ConversationPage() {
   const { id } = useParams()
   const [showSidebar, setShowSidebar] = useState(window.innerWidth > 800)
   const dispatch = useDispatch<AppDispatch>()
   const socket = useContext(SocketContext)
+  const { fetchConversations } = useConversations()
 
   useEffect(() => {
     const handleResize = () => setShowSidebar(window.innerWidth > 800)
@@ -27,7 +29,7 @@ export function ConversationPage() {
 
   useEffect(() => {
     dispatch(updateType('private'))
-    dispatch(fetchConversationsThunk())
+    fetchConversations()
   }, [])
 
   useEffect(() => {

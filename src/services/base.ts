@@ -125,6 +125,9 @@ const handleNotification = (api: BaseQueryApi, result: any) => {
   // TODO: handle redirect outside react component
   const pathname = window.location.pathname
   if (pathname !== navigateTo && navigateTo) {
+    console.log('redirect:::', `${window.location.origin}${navigateTo}`)
+    // eslint-disable-next-line no-debugger
+    debugger
     window.location.href = `${window.location.origin}${navigateTo}`
   }
 }

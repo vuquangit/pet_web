@@ -7,6 +7,7 @@ export const ROUTER_NAMES = Object.freeze({
   NOT_FOUND: '/404',
   PROFILE: '/profile',
   CONVERSATIONS: '/conversations',
+  CONVERSATIONS_DETAIL: '/conversations/:id',
   FRIENDS: '/friends',
   FRIEND_REQUEST: '/friends/requests',
   FRIEND_BLOCKED: '/friends/blocked',

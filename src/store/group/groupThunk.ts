@@ -6,14 +6,6 @@ import {
   UpdateGroupDetailsPayload,
   UpdateGroupOwnerParams,
 } from '@/interfaces/chat'
-// import {
-//   fetchGroups as fetchGroupsAPI,
-//   createGroup as createGroupAPI,
-//   removeGroupRecipient as removeGroupRecipientAPI,
-//   updateGroupOwner as updateGroupOwnerAPI,
-//   leaveGroup as leaveGroupAPI,
-//   updateGroupDetails as updateGroupDetailsAPI,
-// } from '@/services/group';
 import {
   useLazyGroupListQuery,
   useCreateGroupMutation,

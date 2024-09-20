@@ -22,7 +22,7 @@ export const ConversationTab = () => {
       {chatTypes.map((chat) => (
         <section
           className={classNames(
-            'user-select-none cursor-pointer rounded-[5px] bg-[#1f1f1f] px-5 py-2 text-[12px] font-medium',
+            'user-select-none cursor-pointer rounded-[5px] bg-[#1f1f1f] px-5 py-2 text-[12px] font-medium dark:bg-white dark:text-[#000]',
             { 'bg-[#383838]': selectedType === chat.type },
           )}
           // selected={chat.type === selectedType}

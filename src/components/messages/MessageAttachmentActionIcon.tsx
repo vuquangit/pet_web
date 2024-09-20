@@ -40,7 +40,7 @@ export const MessageAttachmentActionIcon = () => {
       onClick={onClick}
     >
       <PersonCirclePlus
-        className="text-[rgb(210, 210, 210)] h-[36px]"
+        className="text-[rgb(210, 210, 210)] h-[36px] dark:fill-white"
         cursor="pointer"
       />
       <input

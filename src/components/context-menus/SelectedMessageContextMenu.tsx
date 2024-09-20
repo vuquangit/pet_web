@@ -1,15 +1,14 @@
 import React, { useContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import classNames from 'classnames'
 
 import { AppDispatch, RootState } from '@/store'
 import { deleteGroupMessageThunk } from '@/store/groupMessage'
 import { setIsEditing, setMessageBeingEdited } from '@/store/messageContainer'
-import { deleteMessageThunk } from '@/store/messages/messageThunk'
 import { selectType } from '@/store/selectedType'
 import { AuthContext } from '@/context/AuthContext'
-import classNames from 'classnames'
-// import { ContextMenu, ContextMenuItem } from '../../utils/styles';
+import useMessages from '@/hooks/useMessage'
 
 export const SelectedMessageContextMenu = () => {
   const { id: routeId } = useParams()
@@ -19,9 +18,9 @@ export const SelectedMessageContextMenu = () => {
   const { selectedMessage: message, points } = useSelector(
     (state: RootState) => state.messageContainer,
   )
+  const { handleDeleteMessage } = useMessages()
 
-  const deleteMessage = () => {
-    // const id = parseInt(routeId!);
+  const deleteMessage = async () => {
     const id = routeId
     if (!id) return
 
@@ -29,7 +28,7 @@ export const SelectedMessageContextMenu = () => {
     if (!message) return
     const messageId = message.id
     return conversationType === 'private'
-      ? dispatch(deleteMessageThunk({ id, messageId: message.id }))
+      ? await handleDeleteMessage({ id, messageId: message.id })
       : dispatch(deleteGroupMessageThunk({ id, messageId }))
   }
 

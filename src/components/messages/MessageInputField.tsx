@@ -29,10 +29,13 @@ export const MessageInputField: FC<Props> = ({
   return (
     <>
       <div
-        className={classNames('relative flex w-full gap-5 rounded-[5px] bg-white px-6 py-5', {
-          'items-start': isMultiLine,
-          'items-center': !isMultiLine,
-        })}
+        className={classNames(
+          'relative flex w-full gap-5 rounded-[5px] bg-white px-6 py-5 dark:bg-[#2f2f2f] dark:text-white',
+          {
+            'items-start': isMultiLine,
+            'items-center': !isMultiLine,
+          },
+        )}
       >
         <MessageAttachmentActionIcon />
         <form
@@ -48,7 +51,7 @@ export const MessageInputField: FC<Props> = ({
             sendMessage={sendMessage}
           />
         </form>
-        <FaceSmileIcon className="color-[rgb(210, 210, 210)] h-[36px]" />
+        <FaceSmileIcon className="color-[rgb(210, 210, 210)] h-[36px] dark:fill-white" />
         {atMaxLength && (
           <span
             className={classNames('b-2 r-[36px] absolute text-[14px] font-medium', {

@@ -23,6 +23,7 @@ import { oauthApi } from '@/services/oauth'
 import { friendApi } from '@/services/friend'
 import { groupApi } from '@/services/group'
 import { conversationsApi } from '@/services/conversations'
+import { userApi } from '@/services/user'
 
 const rootReducer = combineReducers({
   // services
@@ -32,6 +33,7 @@ const rootReducer = combineReducers({
   [friendApi.reducerPath]: friendApi.reducer,
   [groupApi.reducerPath]: groupApi.reducer,
   [conversationsApi.reducerPath]: conversationsApi.reducer,
+  [userApi.reducerPath]: userApi.reducer,
 
   // reducers
   auth: authReducer,
@@ -59,7 +61,8 @@ export const setupStore = (preloadedState?: Partial<RootState>) =>
         .concat(oauthApi.middleware)
         .concat(friendApi.middleware)
         .concat(groupApi.middleware)
-        .concat(conversationsApi.middleware),
+        .concat(conversationsApi.middleware)
+        .concat(userApi.middleware),
     // .concat(logger),
     preloadedState,
   })

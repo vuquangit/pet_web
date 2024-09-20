@@ -1,12 +1,7 @@
-import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
+import { createSelector, createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import { Conversation, CreateConversationParams } from '@/interfaces/chat'
-// import { getConversations, postNewConversation } from '@/services/conversations';
+import { Conversation } from '@/interfaces/chat'
 import { RootState } from '..'
-import {
-  useLazyGetConversationsQuery,
-  usePostNewConversationMutation,
-} from '@/services/conversations'
 
 export interface ConversationsState {
   conversations: Conversation[]
@@ -17,24 +12,6 @@ const initialState: ConversationsState = {
   conversations: [],
   loading: false,
 }
-
-export const fetchConversationsThunk = createAsyncThunk('conversations/fetch', async () => {
-  // return getConversations();
-  const [getConversations] = useLazyGetConversationsQuery()
-  const { result } = await getConversations().unwrap()
-
-  return result
-})
-
-export const createConversationThunk = createAsyncThunk(
-  'conversations/create',
-  async (data: CreateConversationParams) => {
-    // return postNewConversation(data);
-    const [postNewConversation] = usePostNewConversationMutation()
-    const { result } = await postNewConversation(data).unwrap()
-    return result
-  },
-)
 
 export const conversationsSlice = createSlice({
   name: 'conversations',
@@ -51,27 +28,9 @@ export const conversationsSlice = createSlice({
       state.conversations.splice(index, 1)
       state.conversations.unshift(conversation)
     },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchConversationsThunk.fulfilled, (state, action) => {
-        const { data } = action?.payload || {}
-        if (!data) return
-
-        state.conversations = data
-        state.loading = false
-      })
-      .addCase(fetchConversationsThunk.pending, (state) => {
-        state.loading = true
-      })
-      .addCase(createConversationThunk.fulfilled, (state, action) => {
-        const { data } = action?.payload || {}
-        if (!data) return
-
-        console.log('Fulfilled')
-        console.log(data)
-        state.conversations.unshift(data)
-      })
+    setConversations: (state, action: PayloadAction<Conversation[]>) => {
+      state.conversations = action.payload
+    },
   },
 })
 
@@ -84,6 +43,6 @@ export const selectConversationById = createSelector(
 )
 
 // Action creators are generated for each case reducer function
-export const { addConversation, updateConversation } = conversationsSlice.actions
+export const { addConversation, updateConversation, setConversations } = conversationsSlice.actions
 
 export default conversationsSlice.reducer

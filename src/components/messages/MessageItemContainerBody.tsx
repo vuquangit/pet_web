@@ -1,24 +1,35 @@
 import React, { FC } from 'react'
 import { useSelector } from 'react-redux'
-import { RootState } from '../../store'
-// import { MessageItemContent } from '../../utils/styles';
+import classNames from 'classnames'
+
+import { RootState } from '@/store'
 import { GroupMessageType, MessageType } from '@/interfaces/chat'
 import { MessageItemAttachmentContainer } from './attachments/MessageItemAttachmentContainer'
 import { EditMessageContainer } from './EditMessageContainer'
-import classNames from 'classnames'
 
 type Props = {
   message: MessageType | GroupMessageType
   onEditMessageChange: (value: string) => void
   padding: string
+  isMyMessage: boolean
 }
 
-export const MessageItemContainerBody: FC<Props> = ({ message, onEditMessageChange, padding }) => {
+export const MessageItemContainerBody: FC<Props> = ({
+  message,
+  isMyMessage,
+  onEditMessageChange,
+  padding,
+}) => {
   const { isEditingMessage, messageBeingEdited } = useSelector(
     (state: RootState) => state.messageContainer,
   )
 
-  const messageItemContentStyle = classNames('w-full whitespace-pre-wrap text-[#000]')
+  const messageItemContentStyle = classNames(
+    'w-full whitespace-pre-wrap text-[#000] dark:text-white',
+    {
+      'text-end': isMyMessage,
+    },
+  )
 
   return (
     <>

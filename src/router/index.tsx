@@ -114,6 +114,22 @@ const protectedRoutes: RouteApp[] = [
       setTitlePage('Conversation')
       return null
     },
+    children: [
+      {
+        path: ':id',
+        async lazy() {
+          // Multiple routes in lazy file
+          const { ConversationChannelPage } = await import(
+            '../pages/Conversations/ConversationChannelPage'
+          )
+          return { Component: ConversationChannelPage }
+        },
+        loader: () => {
+          setTitlePage('Conversation Detail')
+          return null
+        },
+      },
+    ],
   },
 
   // Friend pages

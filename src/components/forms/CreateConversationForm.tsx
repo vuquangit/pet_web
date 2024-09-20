@@ -1,14 +1,16 @@
 import React, { Dispatch, FC, useEffect, useState } from 'react'
 
-import { useDispatch } from 'react-redux'
-import { createConversationThunk } from '@/store/conversations'
-import { AppDispatch } from '@/store'
+// import { useDispatch } from 'react-redux'
+// import { createConversationThunk } from '@/store/conversations'
+// import { AppDispatch } from '@/store'
 import { useNavigate } from 'react-router-dom'
 import { useLazySearchQuery } from '@/services/user'
 import { RecipientResultContainer } from './recipients/RecipientResultContainer'
 import { RecipientField } from './recipients/RecipientField'
 import { Button, InputField } from '@/components/Form'
 import { User } from '@/interfaces/chat'
+import useConversations from '@/hooks/useConversations'
+import { useToast } from '@/hooks/useToast'
 
 type Props = {
   setShowModal: Dispatch<React.SetStateAction<boolean>>
@@ -22,9 +24,12 @@ export const CreateConversationForm: FC<Props> = ({ setShowModal }) => {
   const [searching, setSearching] = useState(false)
   const [message, setMessage] = useState('')
   // const debouncedQuery = useDebounce(query, 1000);
-  const dispatch = useDispatch<AppDispatch>()
+  // const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
   const [searchUsers] = useLazySearchQuery()
+
+  const { createConversation } = useConversations()
+  const { error } = useToast({ theme: 'dark' })
 
   useEffect(() => {
     if (query) {
@@ -42,14 +47,15 @@ export const CreateConversationForm: FC<Props> = ({ setShowModal }) => {
     e.preventDefault()
     if (!message || !selectedUser) return
 
-    const result = await dispatch(
-      createConversationThunk({ id: selectedUser.id, message }),
-    ).unwrap()
-    const data = result?.data || {}
+    const data = await createConversation({ userId: selectedUser.id, message })
     console.log(data)
     console.log('done')
     setShowModal(false)
     const conversationId = data?.id
+    if (!conversationId) {
+      error('Conversation id not found')
+      return
+    }
     navigate(`/conversations/${conversationId}`)
   }
 
@@ -93,7 +99,12 @@ export const CreateConversationForm: FC<Props> = ({ setShowModal }) => {
       </section>
 
       <div className="flex justify-center">
-        <Button className="btn-primary mt-2 text-[16px]">Create Conversation</Button>
+        <Button
+          type="submit"
+          className="btn-primary mt-2 text-[16px]"
+        >
+          Create Conversation
+        </Button>
       </div>
     </form>
   )

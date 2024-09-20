@@ -1,7 +1,7 @@
-import { AxiosError } from 'axios'
 import React, { FC, useContext, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import { get } from 'lodash'
 
 import { RootState } from '@/store'
 import { selectConversationById } from '@/store/conversations'
@@ -12,12 +12,6 @@ import { useCreateMessageMutation } from '@/services/conversations'
 import { AuthContext } from '@/context/AuthContext'
 import { getRecipientFromConversation } from '@/helpers'
 import { useToast } from '@/hooks/useToast'
-// import {
-//   MessagePanelBody,
-//   MessagePanelFooter,
-//   MessagePanelStyle,
-//   MessageTypingStatus,
-// } from '../../utils/styles'
 import { MessageAttachmentContainer } from './attachments/MessageAttachmentContainer'
 import { MessageContainer } from './MessageContainer'
 import { MessageInputField } from './MessageInputField'
@@ -63,12 +57,16 @@ export const MessagePanel: FC<Props> = ({ sendTypingStatus, isRecipientTyping })
 
     try {
       await createMessage({ id: routeId, type: selectedType, data: formData })
+      // debugger
       setContent('')
       dispatch(removeAllAttachments())
       dispatch(clearAllMessages())
     } catch (err) {
-      const axiosError = err as AxiosError
-      if (axiosError.response?.status === 429) {
+      console.log('sendMessage error', err)
+
+      // TODO: get status code
+      const status = get(err, 'result.error.status')
+      if (status === 429) {
         error('You are rate limited', { toastId })
         dispatch(
           addSystemMessage({
@@ -77,7 +75,7 @@ export const MessagePanel: FC<Props> = ({ sendTypingStatus, isRecipientTyping })
             content: 'You are being rate limited. Slow down.',
           }),
         )
-      } else if (axiosError.response?.status === 404) {
+      } else if (status === 404) {
         dispatch(
           addSystemMessage({
             id: messageCounter,
@@ -93,7 +91,7 @@ export const MessagePanel: FC<Props> = ({ sendTypingStatus, isRecipientTyping })
     <>
       <div className="flex h-full w-full flex-col">
         <MessagePanelHeader />
-        <div className="h-[calc - 600px] min-h-0 flex-1 overflow-auto px-8">
+        <div className="h-[calc - 600px] min-h-0 flex-1 overflow-auto">
           <MessageContainer />
         </div>
         <footer className="mt-0 pb-2.5 pl-8 pr-8">

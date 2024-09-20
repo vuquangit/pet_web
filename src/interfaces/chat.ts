@@ -49,7 +49,8 @@ export type Conversation = {
 }
 
 export type CreateConversationParams = {
-  id: string
+  // id: string
+  userId: string
   message: string
 }
 
