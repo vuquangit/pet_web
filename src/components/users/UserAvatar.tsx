@@ -20,7 +20,7 @@ export const UserAvatar: FC<Props> = ({ user = {}, className, onClick }) => {
 
   return (
     <img
-      className={classNames(className, 'h-[50px] w-[50px] cursor-pointer rounded-[50%]')}
+      className={classNames('h-[50px] w-[50px] cursor-pointer rounded-[50%]', className)}
       src={getProfilePicture()}
       alt="avatar"
       onClick={onClick}

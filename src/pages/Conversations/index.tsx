@@ -4,7 +4,7 @@ import { Outlet, useParams } from 'react-router-dom'
 import { camelizeKeys } from 'humps'
 
 import { ConversationPanel } from '@/components/conversations/ConversationPanel'
-import { ConversationSidebar } from './sidebars/ConversationSidebar'
+import { ConversationSidebar } from '../../components/sidebars/ConversationSidebar'
 import { AppDispatch } from '@/store'
 import { addMessage, deleteMessage } from '@/store/messages'
 import { updateType } from '@/store/selectedType'
@@ -63,11 +63,11 @@ export function ConversationPage() {
   }, [id])
 
   return (
-    <>
+    <div className="flex h-full flex-1">
       {showSidebar && <ConversationSidebar />}
       {!id && !showSidebar && <ConversationSidebar />}
       {!id && showSidebar && <ConversationPanel />}
       <Outlet />
-    </>
+    </div>
   )
 }

@@ -2,7 +2,6 @@ import React, { useContext, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
-// import { UserSidebar } from '@/pages/Conversations/sidebars/UserSidebar';
 import { AppDispatch, RootState } from '@/store'
 import { removeFriendRequest } from '@/store/friends'
 import { SocketContext } from '@/context/SocketContext'

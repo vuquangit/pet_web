@@ -48,8 +48,12 @@ export const ConversationSidebarItem: React.FC<Props> = ({ conversation }) => {
           className="bg-[rgb(49, 100, 255)] h-[56px] w-[56px] rounded-[50%]"
         />
         <div className="flex flex-1 flex-col gap-1 break-all">
-          <span className="block text-[16px] font-medium text-[#1a1a1a]">{recipient?.name}</span>
-          <span className="text-[16px] font-normal text-[#515151]">{lastMessageContent()}</span>
+          <span className="block text-[16px] font-medium text-[#1a1a1a] dark:text-white">
+            {recipient?.name}
+          </span>
+          <span className="text-[16px] font-normal text-[#515151] dark:text-[#b3b3b3]">
+            {lastMessageContent()}
+          </span>
         </div>
       </div>
     </>

@@ -66,8 +66,7 @@ export const ConversationSidebar = () => {
     if (conversationType === 'private') {
       return (
         <CommentAddIcon
-          className="h-[30px]"
-          cursor="pointer"
+          className="h-[30px] cursor-pointer dark:fill-white"
           onClick={() => setShowModal(true)}
         />
       )
@@ -75,8 +74,7 @@ export const ConversationSidebar = () => {
 
     return (
       <UserGroupAddIcon
-        className="h-[30px]"
-        cursor="pointer"
+        className="h-[30px] cursor-pointer dark:fill-white"
         onClick={() => setShowModal(true)}
       />
     )
@@ -90,7 +88,7 @@ export const ConversationSidebar = () => {
       {showModal && conversationType === 'group' && (
         <CreateGroupModal setShowModal={setShowModal} />
       )}
-      <div className="md:w-[calc(100% - 80px)] flex h-full w-[400px] flex-auto-0 flex-col bg-white">
+      <div className="md:w-[calc(100% - 80px)] flex h-full w-[400px] flex-auto-0 flex-col bg-white dark:bg-[#111111]">
         <header className="flex h-[90px] flex-shrink-0 items-center gap-5 border-b border-solid border-[#49494925] px-2.5 py-8">
           <input
             className="w-full rounded-[5px] border-none bg-[#ececec] px-4 py-2.5 text-[14px] outline-none"

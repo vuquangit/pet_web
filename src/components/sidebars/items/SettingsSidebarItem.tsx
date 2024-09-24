@@ -15,7 +15,6 @@ export const SettingsSidebarItem: FC<Props> = ({ item }) => {
   const { pathname } = useLocation()
 
   const Icon = getSettingSidebarIcon(item.id)
-  // const ICON_SIZE = 30;
   const STROKE_WIDTH = 2
 
   return (

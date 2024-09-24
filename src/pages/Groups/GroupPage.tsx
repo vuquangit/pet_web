@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { Outlet, useNavigate, useParams } from 'react-router-dom'
 
 import { ConversationPanel } from '@/components/conversations/ConversationPanel'
-import { ConversationSidebar } from '@/pages/Conversations/sidebars/ConversationSidebar'
+import { ConversationSidebar } from '@/components/sidebars/ConversationSidebar'
 import { AppDispatch } from '@/store'
 import { addGroupMessage } from '@/store/groupMessage'
 import { addGroup, fetchGroupsThunk, removeGroup, updateGroup } from '@/store/group'

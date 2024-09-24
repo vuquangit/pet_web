@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { MessagePanel } from '@/components/messages/MessagePanel'
+
+import { MessagePanel } from '@/components/messages'
 import { SocketContext } from '@/context/SocketContext'
-import { AppDispatch } from '../../store'
-import { editMessage } from '../../store/messages'
+import { AppDispatch } from '@/store'
+import { editMessage } from '@/store/messages'
 import useMessages from '@/hooks/useMessage'
 
 export const ConversationChannelPage = () => {

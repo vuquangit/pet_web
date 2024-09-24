@@ -15,7 +15,7 @@ import CrowIcon from '@/assets/icons/crown.svg'
 import MinusIcon from '@/assets/icons/minus.svg'
 import RotateIcon from '@/assets/icons/rotate.svg'
 import CommentDotsIcon from '@/assets/icons/comment-dots-regular.svg'
-import PersonIcon from '@/assets/icons/person.svg'
+import UserGroupIcon from '@/assets/icons/user-group.svg'
 import Gear from '@/assets/icons/gear.svg'
 import VideoIcon from '@/assets/icons/video.svg'
 import Person from '@/assets/icons/person.svg'
@@ -49,7 +49,7 @@ export const getUserSidebarIcon = (id: UserSidebarRouteType) => {
     case 'conversations':
       return CommentDotsIcon
     case 'friends':
-      return PersonIcon
+      return UserGroupIcon
     case 'connections':
       return RotateIcon
     case 'settings':

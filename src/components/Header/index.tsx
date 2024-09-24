@@ -26,7 +26,7 @@ const Header: React.FC = () => {
   return (
     <header className="flex items-center justify-between border-b border-solid border-gray-300 bg-white px-5 py-3 shadow-xl dark:border-none dark:bg-[#282829] dark:text-white">
       <Link to={ROUTER_NAMES.HOME}>
-        <LogoIcon className="h-8 fill-gray-800 dark:fill-white" />
+        <LogoIcon className="h-10 fill-gray-800 dark:fill-white" />
       </Link>
 
       {isAuthenticated && (

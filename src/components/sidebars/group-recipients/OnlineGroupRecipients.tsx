@@ -1,8 +1,6 @@
 import React, { FC } from 'react'
 
-// import { Crown } from 'akar-icons';
 import CrowIcon from '@/assets/icons/crown.svg'
-// import { GroupRecipientSidebarItem } from '../../../utils/styles';
 import { ContextMenuEvent, Group, User } from '@/interfaces/chat'
 import { UserAvatar } from '@/components/users/UserAvatar'
 

@@ -1,12 +1,9 @@
 import React, { useState } from 'react'
-// import { AiOutlineUserAdd } from 'react-icons/ai';
 import { useLocation, useNavigate } from 'react-router-dom'
 import classNames from 'classnames'
 
 import { Button } from '@/components/Form'
 import { friendsNavbarItems } from '@/constants/chat'
-// import { Button } from '../../utils/styles/button';
-// import { FriendsNavbar, FriendsNavbarItem } from '../../utils/styles/friends';
 import { CreateFriendRequestModal } from '@/components/modals/CreateFriendRequestModal'
 import UserAddIcon from '@/assets/icons/user-plus-solid.svg'
 
@@ -14,6 +11,7 @@ export const FriendPageNavbar = () => {
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const [showModal, setShowModal] = useState(false)
+
   return (
     <>
       {showModal && <CreateFriendRequestModal setShowModal={setShowModal} />}
@@ -22,7 +20,7 @@ export const FriendPageNavbar = () => {
           {friendsNavbarItems.map((item) => (
             <span
               key={item.id}
-              className={classNames('cursor-pointer', {
+              className={classNames('cursor-pointer dark:text-white', {
                 'underline underline-offset-[14px]': pathname === item.pathname,
               })}
               onClick={() => navigate(item.pathname)}
@@ -31,6 +29,7 @@ export const FriendPageNavbar = () => {
             </span>
           ))}
         </div>
+
         <Button
           className="btn-primary"
           onClick={() => setShowModal(true)}

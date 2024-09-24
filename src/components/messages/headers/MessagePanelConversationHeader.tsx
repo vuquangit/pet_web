@@ -64,7 +64,7 @@ export const MessagePanelConversationHeader = () => {
   }
 
   return (
-    <header className="flex w-full flex-shrink-0 items-center justify-between border-b border-solid bg-[#49494925] px-8 py-2.5">
+    <header className="flex w-full flex-shrink-0 items-center justify-between border-b border-solid border-[#63636325] bg-[#49494925] px-8 py-2.5">
       <div className="flex items-center gap-3">
         <UserAvatar
           user={recipient}

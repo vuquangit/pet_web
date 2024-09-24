@@ -82,7 +82,7 @@ export const MessageTextField: FC<Props> = ({
   return (
     <textarea
       ref={ref}
-      className="flex-0 my-1 h-[20px] max-h-[200px] w-full flex-auto resize-none border-none bg-inherit p-0 text-[18px] text-[#000] outline-none scrollbar-none dark:text-white"
+      className="my-1 h-[20px] max-h-[200px] w-full flex-auto-0 resize-none border-none bg-inherit p-0 text-[18px] text-[#000] outline-none scrollbar-none dark:text-white"
       value={message}
       onChange={onMessageChange}
       placeholder="Send a Message"

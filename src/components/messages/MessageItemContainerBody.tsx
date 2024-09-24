@@ -33,45 +33,45 @@ export const MessageItemContainerBody: FC<Props> = ({
     },
   )
 
+  if (isEditingMessage && message.id === messageBeingEdited?.id) {
+    return (
+      <div
+        className={messageItemContentStyle}
+        style={{ padding }}
+      >
+        <EditMessageContainer onEditMessageChange={onEditMessageChange} />
+      </div>
+    )
+  }
+
   return (
-    <>
-      {isEditingMessage && message.id === messageBeingEdited?.id ? (
-        <div
-          className={messageItemContentStyle}
-          style={{ padding }}
-        >
-          <EditMessageContainer onEditMessageChange={onEditMessageChange} />
-        </div>
-      ) : (
-        <div
-          className={messageItemContentStyle}
-          style={{ padding }}
-        >
-          <span
-            className={classNames('rounded-[18px] px-4 py-2', {
-              'bg-[#303030]': !isMyMessage,
-              'bg-blue-500': isMyMessage,
-            })}
-            data-tooltip-id="my-message-tooltip"
-            data-tooltip-content={formatRelative(new Date(message.createdAt), new Date())}
-            data-tooltip-place={isMyMessage ? 'left' : 'right'}
-          >
-            {message.content || null}
-          </span>
+    <div
+      className={messageItemContentStyle}
+      style={{ padding }}
+    >
+      <span
+        className={classNames('rounded-[18px] px-4 py-2', {
+          'bg-[#303030]': !isMyMessage,
+          'bg-blue-500': isMyMessage,
+        })}
+        data-tooltip-id="my-message-tooltip"
+        data-tooltip-content={formatRelative(new Date(message.createdAt), new Date())}
+        data-tooltip-place={isMyMessage ? 'left' : 'right'}
+      >
+        {message.content || null}
+      </span>
 
-          <Tooltip
-            id="my-message-tooltip"
-            style={{
-              fontSize: '12px',
-              backgroundColor: 'rgba(255, 255, 255, 0.75)',
-              color: '#222',
-              borderRadius: '8px',
-            }}
-          />
+      <Tooltip
+        id="my-message-tooltip"
+        style={{
+          fontSize: '12px',
+          backgroundColor: 'rgba(255, 255, 255, 0.75)',
+          color: '#222',
+          borderRadius: '8px',
+        }}
+      />
 
-          <MessageItemAttachmentContainer message={message} />
-        </div>
-      )}
-    </>
+      <MessageItemAttachmentContainer message={message} />
+    </div>
   )
 }

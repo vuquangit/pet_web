@@ -1,12 +1,6 @@
 import React, { useState, useContext } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
-// import {
-//   UserSidebarFooter,
-//   UserSidebarHeader,
-//   UserSidebarScrollableContainer,
-//   UserSidebarStyle,
-// } from '../../utils/styles';
 import { userSidebarItems } from '@/constants/chat'
 import { UserSidebarItem } from './items/UserSidebarItem'
 import { AuthContext } from '@/context/AuthContext'
@@ -19,6 +13,8 @@ import StorageService from '@/services/local-storage'
 import { ROUTER_NAMES } from '@/constants/routerNames'
 import { useAppDispatch } from '@/store/hook'
 import { resetCredentials } from '@/store/auth'
+import ThemeSwitch from '../ThemeSwitch'
+import LogoIcon from '@/assets/icons/logo.svg'
 
 export const UserSidebar = () => {
   const [showModal, setShowModal] = useState(false)
@@ -36,28 +32,43 @@ export const UserSidebar = () => {
   return (
     <>
       {showModal && <UpdatePresenceStatusModal setShowModal={setShowModal} />}
-      <div className="flex h-full flex-0-0-80 flex-col items-center overflow-y-scroll bg-[#15161E] scrollbar-none">
-        <header className="flex h-[90px] w-full flex-shrink-0 items-center justify-center border-b border-solid border-[#494949a9]">
-          <UserAvatar
-            user={user!}
-            onClick={() => setShowModal(true)}
-          />
-        </header>
-        <div className="flx h-full w-full flex-col items-center">
+
+      <div className="flex h-full flex-0-0-80 flex-col items-center overflow-y-scroll px-5 pb-3 pt-2 scrollbar-none">
+        <div className="mb-6 mt-3 flex items-center justify-center p-3">
+          <Link to={ROUTER_NAMES.HOME}>
+            <LogoIcon className="h-6 fill-icon-dark dark:fill-icon-light" />
+          </Link>
+        </div>
+
+        <div className="flex flex-1 flex-col items-center">
           {userSidebarItems.map((item) => (
             <UserSidebarItem
               key={item.id}
               item={item}
             />
           ))}
+
+          <div className="my-1 p-3">
+            <UserAvatar
+              user={user}
+              onClick={() => setShowModal(true)}
+              className="!h-6 !w-6"
+            />
+          </div>
         </div>
 
-        <footer className="py-[18px]">
-          <ExitIcon
-            className="h-8"
-            onClick={() => logoutUser()}
-          />
-        </footer>
+        <div className="flex flex-col items-center gap-3 py-[18px]">
+          <div className="p-3">
+            <ThemeSwitch />
+          </div>
+
+          <div className="p-3">
+            <ExitIcon
+              className="h-6 cursor-pointer fill-icon-dark dark:fill-icon-light"
+              onClick={() => logoutUser()}
+            />
+          </div>
+        </div>
       </div>
     </>
   )

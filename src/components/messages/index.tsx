@@ -88,31 +88,31 @@ export const MessagePanel: FC<Props> = ({ sendTypingStatus, isRecipientTyping })
   }
 
   return (
-    <>
-      <div className="flex h-full w-full flex-col">
-        <MessagePanelHeader />
-        <div
-          className="min-h-0 flex-1 overflow-auto"
-          style={{ height: 'calc(100% - 600px)' }}
-        >
-          <MessageContainer />
-        </div>
-        <footer className="mt-0 pb-2.5 pl-8 pr-8">
-          {attachments.length > 0 && <MessageAttachmentContainer />}
-          <MessageInputField
-            content={content}
-            setContent={setContent}
-            sendMessage={sendMessage}
-            sendTypingStatus={sendTypingStatus}
-            placeholderName={
-              selectedType === 'group' ? group?.title || 'Group' : recipient?.name || 'user'
-            }
-          />
-          <div className="my-1 w-full rounded-[5px] border-none bg-inherit px-[22px] py-[18px] text-[15px] outline-none dark:text-[#bababa]">
-            {isRecipientTyping ? `${recipient?.name} is typing...` : ''}
-          </div>
-        </footer>
+    <div className="flex h-full w-full flex-col">
+      <MessagePanelHeader />
+
+      <div
+        className="min-h-0 flex-1 overflow-auto"
+        style={{ height: 'calc(100% - 600px)' }}
+      >
+        <MessageContainer />
       </div>
-    </>
+
+      <footer className="mt-0 pb-2.5 pl-8 pr-8">
+        {attachments.length > 0 && <MessageAttachmentContainer />}
+        <MessageInputField
+          content={content}
+          setContent={setContent}
+          sendMessage={sendMessage}
+          sendTypingStatus={sendTypingStatus}
+          placeholderName={
+            selectedType === 'group' ? group?.title || 'Group' : recipient?.name || 'user'
+          }
+        />
+        <div className="my-1 w-full rounded-[5px] border-none bg-inherit px-[22px] py-[18px] text-[15px] outline-none dark:text-[#bababa]">
+          {isRecipientTyping ? `${recipient?.name} is typing...` : ''}
+        </div>
+      </footer>
+    </div>
   )
 }

@@ -107,7 +107,7 @@ const protectedRoutes: RouteApp[] = [
     path: ROUTER_NAMES.CONVERSATIONS,
     async lazy() {
       // Multiple routes in lazy file
-      const { ConversationPage } = await import('../pages/Conversations/ConversationPage')
+      const { ConversationPage } = await import('../pages/Conversations')
       return { Component: ConversationPage }
     },
     loader: () => {

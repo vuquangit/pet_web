@@ -66,16 +66,16 @@ export const userSidebarItems: UserSidebarItemType[] = [
     id: 'friends',
     pathname: '/friends',
   },
-  {
-    id: 'connections',
-    pathname: '/connections',
-  },
-  {
-    id: 'settings',
-    pathname: '/settings',
-  },
-  {
-    id: 'calls',
-    pathname: '/calls',
-  },
+  // {
+  //   id: 'connections',
+  //   pathname: '/connections',
+  // },
+  // {
+  //   id: 'settings',
+  //   pathname: '/settings',
+  // },
+  // {
+  //   id: 'calls',
+  //   pathname: '/calls',
+  // },
 ]

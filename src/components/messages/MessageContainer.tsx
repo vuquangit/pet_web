@@ -101,7 +101,7 @@ export const MessageContainer = () => {
           <MessageItemContainerBody
             message={message}
             onEditMessageChange={onEditMessageChange}
-            padding="0 0 0 50px"
+            padding="0 0 0 70px"
             isMyMessage={isMyMessage}
           />
         )}
@@ -120,12 +120,12 @@ export const MessageContainer = () => {
         }
       }}
     >
-      <>
-        <SystemMessageList />
-        {selectedType === 'private'
-          ? conversationMessages?.messages.map(mapMessages)
-          : groupMessages?.messages.map(mapMessages)}
-      </>
+      <SystemMessageList />
+
+      {selectedType === 'private'
+        ? conversationMessages?.messages.map(mapMessages)
+        : groupMessages?.messages.map(mapMessages)}
+
       {showContextMenu && <SelectedMessageContextMenu />}
     </div>
   )
