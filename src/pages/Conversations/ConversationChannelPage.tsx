@@ -21,7 +21,7 @@ export const ConversationChannelPage = () => {
   }, [id])
 
   useEffect(() => {
-    const conversationId = id!
+    const conversationId = id
     socket.emit('onConversationJoin', { conversationId })
     socket.on('userJoin', () => {
       console.log('userJoin')

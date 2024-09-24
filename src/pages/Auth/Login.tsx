@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { useNavigate, Link, useSearchParams } from 'react-router-dom'
 import { GoogleOAuthProvider, useGoogleLogin } from '@react-oauth/google'
 import { toast } from 'react-toastify'
@@ -14,6 +14,7 @@ import { storageKeys } from '@/constants/storage-keys'
 import { EXCEPTION_CODE } from '@/constants/errorCode'
 import ERROR_MESSAGES from '@/constants/errorMessage'
 import useProfile from '@/hooks/useProfile'
+import { SocketContext } from '@/context/SocketContext'
 
 interface Props {
   isLoginGoogle: boolean
@@ -123,6 +124,7 @@ const LoginPage: React.FC<Props> = (props) => {
   const { fetchProfile } = useProfile()
   const navigate = useNavigate()
   const [login, { isLoading }] = useLoginMutation()
+  const socket = useContext(SocketContext)
 
   const [email, setEmail] = useState(process.env.EMAIL_INIT || '')
   const [password, setPassword] = useState(process.env.PASSWORD_INIT || '')
@@ -145,8 +147,14 @@ const LoginPage: React.FC<Props> = (props) => {
   }
 
   const saveToken = async (tokens: any) => {
+    console.log(socket)
+    console.log(socket.connected)
+
     StorageService.set(storageKeys.AUTH_PROFILE, tokens)
     await fetchProfile()
+
+    socket.connect()
+    console.log(socket.connected)
 
     const path = searchParams.get('from') || '/'
     navigate(path)

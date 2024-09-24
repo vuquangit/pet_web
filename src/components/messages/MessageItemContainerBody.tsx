@@ -1,6 +1,8 @@
 import React, { FC } from 'react'
 import { useSelector } from 'react-redux'
 import classNames from 'classnames'
+import { Tooltip } from 'react-tooltip'
+import { formatRelative } from 'date-fns'
 
 import { RootState } from '@/store'
 import { GroupMessageType, MessageType } from '@/interfaces/chat'
@@ -45,7 +47,28 @@ export const MessageItemContainerBody: FC<Props> = ({
           className={messageItemContentStyle}
           style={{ padding }}
         >
-          {message.content || null}
+          <span
+            className={classNames('rounded-[18px] px-4 py-2', {
+              'bg-[#303030]': !isMyMessage,
+              'bg-blue-500': isMyMessage,
+            })}
+            data-tooltip-id="my-message-tooltip"
+            data-tooltip-content={formatRelative(new Date(message.createdAt), new Date())}
+            data-tooltip-place={isMyMessage ? 'left' : 'right'}
+          >
+            {message.content || null}
+          </span>
+
+          <Tooltip
+            id="my-message-tooltip"
+            style={{
+              fontSize: '12px',
+              backgroundColor: 'rgba(255, 255, 255, 0.75)',
+              color: '#222',
+              borderRadius: '8px',
+            }}
+          />
+
           <MessageItemAttachmentContainer message={message} />
         </div>
       )}

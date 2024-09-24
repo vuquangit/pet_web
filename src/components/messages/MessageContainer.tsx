@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import classNames from 'classnames'
 
 import { RootState } from '@/store'
 import { GroupMessageType, MessageType } from '@/interfaces/chat'
@@ -13,7 +12,7 @@ import { MessageItemHeader } from './MessageItemHeader'
 import { MessageItemContainerBody } from './MessageItemContainerBody'
 import { useHandleClick } from '@/hooks/useHandleClick'
 import { useKeydown } from '@/hooks/useKeydown'
-import { UserAvatar } from '../users/UserAvatar'
+import { UserAvatar } from '@/components/users/UserAvatar'
 import {
   editMessageContent,
   resetMessageContainer,
@@ -30,7 +29,6 @@ export const MessageContainer = () => {
   const { id = '' } = useParams()
   const dispatch = useAppDispatch()
   const conversationMessages = useSelector((state: RootState) =>
-    // selectConversationMessage(state, parseInt(id!)),
     selectConversationMessage(state, id),
   )
   const groupMessages = useSelector((state: RootState) => selectGroupMessage(state, parseInt(id!)))
@@ -78,10 +76,10 @@ export const MessageContainer = () => {
         className="flex items-center gap-5 break-words py-[5px]"
         onContextMenu={(e) => onContextMenu(e, message)}
       >
-        {showMessageHeader && (
+        {showMessageHeader && !isMyMessage && (
           <UserAvatar
-            className={classNames({ 'order-2': isMyMessage })}
             user={message.author}
+            className="h-7 w-7"
           />
         )}
 
@@ -103,7 +101,7 @@ export const MessageContainer = () => {
           <MessageItemContainerBody
             message={message}
             onEditMessageChange={onEditMessageChange}
-            padding="0 0 0 70px"
+            padding="0 0 0 50px"
             isMyMessage={isMyMessage}
           />
         )}
@@ -113,7 +111,7 @@ export const MessageContainer = () => {
 
   return (
     <div
-      className="flex h-full flex-col-reverse overflow-y-scroll px-5 py-2.5"
+      className="flex h-full flex-col-reverse gap-1.5 overflow-y-scroll px-5 py-2.5"
       onScroll={(e) => {
         const node = e.target as HTMLDivElement
         const scrollTopMax = node.scrollHeight - node.clientHeight

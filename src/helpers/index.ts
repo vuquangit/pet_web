@@ -24,7 +24,10 @@ import BellIcon from '@/assets/icons/bell.svg'
 import InfiniteIcon from '@/assets/icons/infinity.svg'
 import PaletteIcon from '@/assets/icons/palette.svg'
 
-export const getRecipientFromConversation = (conversation?: Conversation, user?: User) => {
+export const getRecipientFromConversation = (
+  conversation?: Conversation,
+  user?: User,
+): User | undefined => {
   return user?.id === conversation?.creator.id ? conversation?.recipient : conversation?.creator
 }
 

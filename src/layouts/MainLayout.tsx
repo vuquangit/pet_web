@@ -1,13 +1,16 @@
-import Header from '@/components/Header'
 import React from 'react'
+import Header from '@/components/Header'
 import { Outlet } from 'react-router-dom'
+import { AppPage } from '@/AppPage'
 
 function MainLayout() {
   return (
-    <div className="h-full">
-      <Header />
-      <Outlet />
-    </div>
+    <AppPage>
+      <div className="h-full">
+        <Header />
+        <Outlet />
+      </div>
+    </AppPage>
   )
 }
 

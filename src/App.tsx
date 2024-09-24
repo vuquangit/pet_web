@@ -5,6 +5,7 @@ import { ToastContainer } from 'react-toastify'
 import '@/styles/index.scss'
 import '@/styles/tailwind.scss'
 import 'react-toastify/dist/ReactToastify.css'
+import 'react-tooltip/dist/react-tooltip.css'
 
 import router from '@/router'
 import useProfile from '@/hooks/useProfile'

@@ -32,15 +32,15 @@ export const CreateGroupForm: FC<Props> = ({ setShowModal }) => {
 
   useEffect(() => {
     if (query) {
-      // setSearching(true);
-      // searchUsers(query)
-      //   .then(({ result }) => {
-      //     const data = result?.data || []
-      //     console.log(data);
-      //     setResults(data);
-      //   })
-      //   .catch((err) => console.log(err))
-      //   .finally(() => setSearching(false));
+      setSearching(true)
+      searchUsers(query)
+        .then((res) => {
+          const data = res.data?.result?.data || []
+          console.log(data)
+          setResults(data)
+        })
+        .catch((err) => console.log(err))
+        .finally(() => setSearching(false))
       ;(async () => {
         setSearching(true)
         const { result } = await searchUsers(query).unwrap()
@@ -139,7 +139,8 @@ export const CreateGroupForm: FC<Props> = ({ setShowModal }) => {
           onChange={setMessage}
         />
       </section>
-      <Button>Create Conversation</Button>
+
+      <Button type="submit">Create Conversation</Button>
     </form>
   )
 }

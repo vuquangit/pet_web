@@ -21,7 +21,7 @@ export const GroupSidebarItem: React.FC<Props> = ({ group, onContextMenu }) => {
 
   const getTransformedTitle = () => {
     if (!group.title) {
-      const usersToString = group.users.map((user) => user.firstName).join(', ')
+      const usersToString = group.users.map((user) => user.name).join(', ')
       return usersToString.length > MAX_TITLE_LENGTH
         ? usersToString.slice(0, MAX_TITLE_LENGTH).concat('...')
         : usersToString

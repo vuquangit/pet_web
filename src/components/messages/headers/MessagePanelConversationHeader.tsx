@@ -1,31 +1,29 @@
 import React, { useContext } from 'react'
-// import { FaPhoneAlt, FaVideo } from 'react-icons/fa';
+import { useParams } from 'react-router-dom'
+import classNames from 'classnames'
+
 import PhoneIcon from '@/assets/icons/phone.svg'
 import VideoIcon from '@/assets/icons/video.svg'
-import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
 import { RootState } from '@/store'
 import { initiateCallState } from '@/store/call'
 import { selectConversationById } from '@/store/conversations'
 import { SenderEvents } from '@/enums/chat'
-import { AuthContext } from '@/context/AuthContext'
 import { SocketContext } from '@/context/SocketContext'
 import { getRecipientFromConversation } from '@/helpers'
-// import {
-//   MessagePanelHeaderIcons,
-//   MessagePanelHeaderStyle,
-// } from '../../../utils/styles';
 import { CallInitiatePayload, CallType } from '@/interfaces/chat'
+import { useAppSelector, useAppDispatch } from '@/store/hook'
+import { UserAvatar } from '@/components/users/UserAvatar'
 
 export const MessagePanelConversationHeader = () => {
-  const user = useContext(AuthContext).user!
+  const user = useAppSelector((state) => state.auth) as any
   const { id = '' } = useParams()
   const socket = useContext(SocketContext)
 
-  const dispatch = useDispatch()
-  const conversation = useSelector((state: RootState) => selectConversationById(state, id))
+  const dispatch = useAppDispatch()
+  const conversation = useAppSelector((state: RootState) => selectConversationById(state, id))
 
   const recipient = getRecipientFromConversation(conversation, user)
+
   const buildCallPayloadParams = (
     stream: MediaStream,
     type: CallType,
@@ -66,19 +64,26 @@ export const MessagePanelConversationHeader = () => {
   }
 
   return (
-    <header className="flex h-[90px] w-full flex-shrink-0 items-center justify-between border-b border-solid bg-[#49494925] px-8 py-2.5">
-      <div>
-        <span>{recipient?.name || 'User'}</span>
+    <header className="flex w-full flex-shrink-0 items-center justify-between border-b border-solid bg-[#49494925] px-8 py-2.5">
+      <div className="flex items-center gap-3">
+        <UserAvatar
+          user={recipient}
+          className="h-10 w-10"
+        />
+        <span>{recipient?.name || ''}</span>
       </div>
+
       <div className="flex items-center gap-5">
         <PhoneIcon
-          className="h-[30px]"
-          cursor="pointer"
+          className={classNames('h-[24px] cursor-pointer fill-[#0080ff]', {
+            // '[rgba(255, 255, 255, 0.3)]': disabled
+          })}
           onClick={voiceCallUser}
         />
         <VideoIcon
-          className="h-[30px]"
-          cursor="pointer"
+          className={classNames('h-[24px] cursor-pointer fill-[#0080ff]', {
+            // 'dark:[rgba(255, 255, 255, 0.3)]': disabled
+          })}
           onClick={videoCallUser}
         />
       </div>

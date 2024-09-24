@@ -25,7 +25,7 @@ export const OfflineGroupRecipients: FC<Props> = ({ onlineUsers, group, onUserCo
         >
           <div className="flex items-center gap-[14px]">
             <UserAvatar user={user} />
-            <span>{user.firstName}</span>
+            <span>{user.name}</span>
           </div>
           {user.id === group?.owner.id && <CrowIcon color="#ffbf00" />}
         </div>

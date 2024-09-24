@@ -2,8 +2,8 @@ import { IAuthMe } from './auth'
 
 export type CreateUserParams = {
   username: string
-  firstName: string
-  lastName: string
+  // firstName: string
+  // lastName: string
   password: string
 }
 
@@ -33,7 +33,7 @@ export type User = {
   id: string
   username: string
   email: string
-  firstName: string
+  // firstName: string
   lastName: string
   profile?: Profile
   presence?: UserPresence

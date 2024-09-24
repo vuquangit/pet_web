@@ -17,3 +17,7 @@ export enum SenderEvents {
   VOICE_CALL_INITIATE = 'onVoiceCallInitiate',
   VOICE_CALL_ACCEPT = 'onVoiceCallAccepted',
 }
+
+export enum ReceiverEvents {
+  VOICE_CALL = 'onVoiceCall',
+}

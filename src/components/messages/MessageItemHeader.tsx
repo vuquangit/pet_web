@@ -1,5 +1,4 @@
 import React, { FC } from 'react'
-import { formatRelative } from 'date-fns'
 import classNames from 'classnames'
 
 import { GroupMessageType, MessageType } from '@/interfaces/chat'
@@ -18,20 +17,15 @@ export const MessageItemHeader: FC<Props> = ({ message, isMyMessage, user }) => 
         'justify-end': isMyMessage,
       })}
     >
-      <span
-        className={classNames('text-[16px] font-medium', {
-          'order-2': isMyMessage,
-        })}
-        style={{
-          color: user?.id === message.author.id ? '#989898' : '#5E8BFF',
-        }}
-      >
-        {/* {message.author.firstName} {message.author.lastName} */}
-        {message.author.name}
-      </span>
-      <span className="text-[14px] font-bold text-[#6d6d6d]">
-        {formatRelative(new Date(message.createdAt), new Date())}
-      </span>
+      {!isMyMessage && (
+        <span
+          className={classNames('text-[16px] font-medium text-[#5E8BFF]', {
+            'text-[#989898]': user?.id !== message.author.id,
+          })}
+        >
+          {message.author.name}
+        </span>
+      )}
     </div>
   )
 }

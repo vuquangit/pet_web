@@ -31,7 +31,7 @@ export const OnlineGroupRecipients: FC<Props> = ({ users, group, onUserContextMe
           <div className="flex items-center gap-[14px]">
             <UserAvatar user={user} />
             <div className="flex flex-col text-[#636363]">
-              <span>{user.firstName}</span>
+              <span>{user.name}</span>
               <span className="text-[12px] font-medium text-[#929292]">
                 {formatStatusMessage(user)}
               </span>

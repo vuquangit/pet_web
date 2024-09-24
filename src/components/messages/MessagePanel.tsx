@@ -91,7 +91,10 @@ export const MessagePanel: FC<Props> = ({ sendTypingStatus, isRecipientTyping })
     <>
       <div className="flex h-full w-full flex-col">
         <MessagePanelHeader />
-        <div className="h-[calc - 600px] min-h-0 flex-1 overflow-auto">
+        <div
+          className="min-h-0 flex-1 overflow-auto"
+          style={{ height: 'calc(100% - 600px)' }}
+        >
           <MessageContainer />
         </div>
         <footer className="mt-0 pb-2.5 pl-8 pr-8">
@@ -102,11 +105,11 @@ export const MessagePanel: FC<Props> = ({ sendTypingStatus, isRecipientTyping })
             sendMessage={sendMessage}
             sendTypingStatus={sendTypingStatus}
             placeholderName={
-              selectedType === 'group' ? group?.title || 'Group' : recipient?.firstName || 'user'
+              selectedType === 'group' ? group?.title || 'Group' : recipient?.name || 'user'
             }
           />
-          <div className="my-1 w-full rounded-[5px] border-none bg-[#222] px-[22px] py-[18px] text-[15px] text-[#bababa] outline-none">
-            {isRecipientTyping ? `${recipient?.firstName} is typing...` : ''}
+          <div className="my-1 w-full rounded-[5px] border-none bg-inherit px-[22px] py-[18px] text-[15px] outline-none dark:text-[#bababa]">
+            {isRecipientTyping ? `${recipient?.name} is typing...` : ''}
           </div>
         </footer>
       </div>
