@@ -91,7 +91,21 @@ module.exports = function (webpackEnv) {
           test: /\.(tsx|ts)$/,
           exclude: /node_modules/,
           use: isEnvDevelopment
-            ? ['@jsdevtools/coverage-istanbul-loader', 'ts-loader'] // cypress coverage
+            ? [
+                '@jsdevtools/coverage-istanbul-loader', // cypress coverage
+                {
+                  loader: 'ts-loader',
+                  options: {
+                    transpileOnly: true,
+                  },
+                },
+                {
+                  loader: 'thread-loader', // Offloads heavy computations to worker threads
+                  options: {
+                    workers: 2, // Number of workers to use (adjust based on CPU)
+                  },
+                },
+              ]
             : 'ts-loader',
         },
 
@@ -142,49 +156,49 @@ module.exports = function (webpackEnv) {
           ],
         },
 
-        // SCSS MODULES
-        {
-          test: /\.module\.(scss|css)$/i,
-          use: [
-            isEnvDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
-            {
-              loader: 'css-loader',
-              options: {
-                importLoaders: 1,
-                modules: {
-                  localIdentName: '[name]__[local]___[hash:base64:5]',
-                },
-                sourceMap: isEnvProduction && shouldUseSourceMap,
-              },
-            },
-            {
-              loader: 'sass-loader',
-              options: {
-                sourceMap: isEnvProduction && shouldUseSourceMap,
-              },
-            },
-          ],
-        },
+        // // SCSS MODULES
+        // {
+        //   test: /\.module\.(scss|css)$/i,
+        //   use: [
+        //     isEnvDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
+        //     {
+        //       loader: 'css-loader',
+        //       options: {
+        //         importLoaders: 1,
+        //         modules: {
+        //           localIdentName: '[name]__[local]___[hash:base64:5]',
+        //         },
+        //         sourceMap: isEnvProduction && shouldUseSourceMap,
+        //       },
+        //     },
+        //     {
+        //       loader: 'sass-loader',
+        //       options: {
+        //         sourceMap: isEnvProduction && shouldUseSourceMap,
+        //       },
+        //     },
+        //   ],
+        // },
 
-        // LESS
-        {
-          test: /\.less$/,
-          use: [
-            isEnvDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
-            'css-loader',
-            {
-              loader: 'less-loader',
-              options: {
-                lessOptions: {
-                  modifyVars: {
-                    hack: `true; @import "${paths.customThemeAntd}";`,
-                  },
-                  javascriptEnabled: true,
-                },
-              },
-            },
-          ],
-        },
+        // // LESS
+        // {
+        //   test: /\.less$/,
+        //   use: [
+        //     isEnvDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
+        //     'css-loader',
+        //     {
+        //       loader: 'less-loader',
+        //       options: {
+        //         lessOptions: {
+        //           modifyVars: {
+        //             hack: `true; @import "${paths.customThemeAntd}";`,
+        //           },
+        //           javascriptEnabled: true,
+        //         },
+        //       },
+        //     },
+        //   ],
+        // },
 
         // Images: Copy image files to build folder
         {
