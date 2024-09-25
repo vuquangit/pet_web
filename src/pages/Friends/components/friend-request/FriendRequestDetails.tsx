@@ -11,7 +11,7 @@ export const FriendRequestDetails: FC<Props> = ({ details }) => (
     <UserAvatar user={details.user} />
     <div className="flex flex-col text-[20px]">
       <span>{details.displayName}</span>
-      <span className="text-[#626626} text-[14px] font-medium italic">{details.status}</span>
+      <span className="text-[#626626} text-sm font-medium italic">{details.status}</span>
     </div>
   </div>
 )

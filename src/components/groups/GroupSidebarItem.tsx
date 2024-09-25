@@ -53,9 +53,7 @@ export const GroupSidebarItem: React.FC<Props> = ({ group, onContextMenu }) => {
       )}
       <div>
         <span className="title">{getTransformedTitle()}</span>
-        <span className="text-[rgb(163, 163, 163)] text-[14px]">
-          {group.lastMessageSent?.content}
-        </span>
+        <span className="text-[rgb(163, 163, 163)] text-sm">{group.lastMessageSent?.content}</span>
       </div>
     </div>
   )

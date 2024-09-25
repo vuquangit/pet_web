@@ -23,10 +23,11 @@ import LockIcon from '@/assets/icons/lock.svg'
 import BellIcon from '@/assets/icons/bell.svg'
 import InfiniteIcon from '@/assets/icons/infinity.svg'
 import PaletteIcon from '@/assets/icons/palette.svg'
+import { IAuthMe } from '@/interfaces/auth'
 
 export const getRecipientFromConversation = (
   conversation?: Conversation,
-  user?: User,
+  user?: User | IAuthMe,
 ): User | undefined => {
   return user?.id === conversation?.creator.id ? conversation?.recipient : conversation?.creator
 }
@@ -56,6 +57,8 @@ export const getUserSidebarIcon = (id: UserSidebarRouteType) => {
       return Gear
     case 'calls':
       return VideoIcon
+    case 'profile':
+      return Person
     default:
       return CommentDotsIcon
   }

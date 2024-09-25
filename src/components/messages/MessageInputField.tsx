@@ -1,10 +1,10 @@
 import React, { Dispatch, FC, SetStateAction, useState } from 'react'
-// import { CharacterLimit, MessageInputContainer } from '../../utils/styles';
+import classNames from 'classnames'
+
 import { MessageTextField } from './MessageTextField'
-// import { FaceVeryHappy } from 'akar-icons';
 import FaceSmileIcon from '@/assets/icons/face-smile.svg'
 import { MessageAttachmentActionIcon } from './MessageAttachmentActionIcon'
-import classNames from 'classnames'
+import { EmojiPickerModal } from '@/components/modals/EmojiPickerModal'
 
 type Props = {
   content: string
@@ -25,17 +25,33 @@ export const MessageInputField: FC<Props> = ({
   const [isMultiLine, setIsMultiLine] = useState(false)
   const atMaxLength = content.length === MAX_LENGTH
 
+  const [isOpenEmojiPicker, setIsOpenEmojiPicker] = useState<boolean>(false)
+
   return (
     <div
       className={classNames(
-        'relative flex w-full gap-5 rounded-[5px] bg-white px-6 py-5 dark:bg-[#2f2f2f] dark:text-white',
+        'relative flex min-h-11 w-full items-center gap-5 rounded-[5px] pl-3 pr-4 dark:text-white',
         {
           'items-start': isMultiLine,
           'items-center': !isMultiLine,
         },
       )}
     >
-      <MessageAttachmentActionIcon />
+      <div className="relative">
+        <div
+          className="cursor-pointer p-1"
+          onClick={() => setIsOpenEmojiPicker(true)}
+        >
+          <FaceSmileIcon className="h-6 fill-[#9f1aff]" />
+        </div>
+        <EmojiPickerModal
+          isShowModal={isOpenEmojiPicker}
+          setShowModal={setIsOpenEmojiPicker}
+          message={content}
+          setMessage={setContent}
+        />
+      </div>
+
       <form
         onSubmit={sendMessage}
         className="w-full"
@@ -49,10 +65,22 @@ export const MessageInputField: FC<Props> = ({
           sendMessage={sendMessage}
         />
       </form>
-      <FaceSmileIcon className="color-[rgb(210, 210, 210)] h-[36px] dark:fill-white" />
+
+      {content ? (
+        <button
+          type="submit"
+          className="cursor-pointer border-none text-sm font-bold text-[#0094f6] outline-none"
+          onClick={sendMessage}
+        >
+          Send
+        </button>
+      ) : (
+        <MessageAttachmentActionIcon />
+      )}
+
       {atMaxLength && (
         <span
-          className={classNames('b-2 r-[36px] absolute text-[14px] font-medium', {
+          className={classNames('b-2 r-[36px] absolute text-sm font-medium', {
             'text-[#ff0000]': atMaxLength,
             'text-[rgb(129, 129, 129)]': !atMaxLength,
           })}

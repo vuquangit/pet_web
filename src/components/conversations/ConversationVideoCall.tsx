@@ -1,27 +1,14 @@
 import React, { useEffect, useRef, useState, useContext } from 'react'
 import { useSelector } from 'react-redux'
+import classNames from 'classnames'
 
 import { RootState } from '@/store'
-// import {
-//   ConversationCallContainer,
-//   MediaContainer,
-//   VideoContainerActionButtons,
-//   VideoContainerItem,
-// } from '../../utils/styles';
-// import {
-//   BiMicrophone,
-//   BiMicrophoneOff,
-//   BiVideo,
-//   BiVideoOff,
-// } from 'react-icons/bi';
 import MicrophoneIcon from '@/assets/icons/microphone.svg'
 import MicrophoneOffIcon from '@/assets/icons/microphone-off.svg'
 import VideoIcon from '@/assets/icons/video.svg'
 import VideoOffIcon from '@/assets/icons/video-off.svg'
 import PhoneOffIcon from '@/assets/icons/phone-off.svg'
-// import { ImPhoneHangUp } from 'react-icons/im';
 import { SocketContext } from '@/context/SocketContext'
-import classNames from 'classnames'
 
 export const ConversationVideoCall = () => {
   const localVideoRef = useRef<HTMLVideoElement>(null)

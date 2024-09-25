@@ -64,13 +64,13 @@ export const MessagePanelConversationHeader = () => {
   }
 
   return (
-    <header className="flex w-full flex-shrink-0 items-center justify-between border-b border-solid border-[#63636325] bg-[#49494925] px-8 py-2.5">
+    <div className="flex w-full flex-shrink-0 items-center justify-between border-b border-solid border-[#63636325] bg-[#49494925] px-8 py-2.5">
       <div className="flex items-center gap-3">
         <UserAvatar
           user={recipient}
           className="h-10 w-10"
         />
-        <span>{recipient?.name || ''}</span>
+        <span className="text-xl font-bold">{recipient?.name || ''}</span>
       </div>
 
       <div className="flex items-center gap-5">
@@ -87,6 +87,6 @@ export const MessagePanelConversationHeader = () => {
           onClick={videoCallUser}
         />
       </div>
-    </header>
+    </div>
   )
 }

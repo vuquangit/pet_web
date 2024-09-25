@@ -30,32 +30,30 @@ export const ConversationSidebarItem: React.FC<Props> = ({ conversation }) => {
   const hasProfilePicture = () => recipient?.profile?.avatar
 
   return (
-    <>
-      <div
-        className={classNames(
-          ':hover:bg-[#222] flex w-full cursor-pointer items-center gap-5 px-8 py-5',
-          { 'bg-[#1a1a1a]': id === conversation.id },
-        )}
-        onClick={() => navigate(`/conversations/${conversation.id}`)}
-      >
-        <img
-          src={
-            hasProfilePicture()
-              ? CDN_URL.BASE.concat(recipient?.profile?.avatar || '')
-              : defaultAvatar
-          }
-          alt="avatar"
-          className="bg-[rgb(49, 100, 255)] h-[56px] w-[56px] rounded-[50%]"
-        />
-        <div className="flex flex-1 flex-col gap-1 break-all">
-          <span className="block text-[16px] font-medium text-[#1a1a1a] dark:text-white">
-            {recipient?.name}
-          </span>
-          <span className="text-[16px] font-normal text-[#515151] dark:text-[#b3b3b3]">
-            {lastMessageContent()}
-          </span>
-        </div>
+    <div
+      className={classNames(
+        ':hover:bg-[#222] flex w-full cursor-pointer items-center gap-5 px-8 py-5',
+        { 'bg-[#efefef] dark:bg-[#262626]': id === conversation.id },
+      )}
+      onClick={() => navigate(`/conversations/${conversation.id}`)}
+    >
+      <img
+        src={
+          hasProfilePicture()
+            ? CDN_URL.BASE.concat(recipient?.profile?.avatar || '')
+            : defaultAvatar
+        }
+        alt="avatar"
+        className="bg-[rgb(49, 100, 255)] h-[56px] w-[56px] rounded-[50%]"
+      />
+      <div className="flex flex-1 flex-col gap-1 break-all">
+        <span className="block text-[16px] font-medium text-[#1a1a1a] dark:text-white">
+          {recipient?.name}
+        </span>
+        <span className="text-[16px] font-normal text-[#515151] dark:text-[#b3b3b3]">
+          {lastMessageContent()}
+        </span>
       </div>
-    </>
+    </div>
   )
 }

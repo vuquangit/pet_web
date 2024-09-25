@@ -61,10 +61,17 @@ export const userSidebarItems: UserSidebarItemType[] = [
   {
     id: 'conversations',
     pathname: '/conversations',
+    title: 'Messages',
   },
   {
     id: 'friends',
     pathname: '/friends',
+    title: 'Friends',
+  },
+  {
+    id: 'profile',
+    pathname: '/profile',
+    title: 'Profile',
   },
   // {
   //   id: 'connections',

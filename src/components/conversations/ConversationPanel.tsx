@@ -9,7 +9,7 @@ export const ConversationPanel = () => {
           <MessageIcon className="h-[90px] w-[90px] fill-icon-dark dark:fill-icon-light" />
         </div>
         <h3 className="mt-5 text-[20px] font-medium">Your messages</h3>
-        <p className="mt-1 text-[14px] text-[#a8a8a8]">Send a message to start a chat.</p>
+        <p className="mt-1 text-sm text-[#a8a8a8]">Send a message to start a chat.</p>
       </div>
     </div>
   )

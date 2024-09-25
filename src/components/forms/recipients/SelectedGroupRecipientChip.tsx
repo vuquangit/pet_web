@@ -10,7 +10,7 @@ type Props = {
 
 export const SelectedGroupRecipientChip: FC<Props> = ({ user, removeUser }) => {
   return (
-    <div className="rounded-[14px] border border-solid border-[#181818] px-[18px] py-1.5 text-[14px]">
+    <div className="rounded-[14px] border border-solid border-[#181818] px-[18px] py-1.5 text-sm">
       <div className="flex select-none items-center justify-center">
         <span>{user?.name || ''}</span>
         <CloseCircleIcon

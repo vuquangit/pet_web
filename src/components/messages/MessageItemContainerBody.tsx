@@ -49,17 +49,17 @@ export const MessageItemContainerBody: FC<Props> = ({
       className={messageItemContentStyle}
       style={{ padding }}
     >
-      <span
-        className={classNames('rounded-[18px] px-4 py-2', {
-          'bg-[#303030]': !isMyMessage,
-          'bg-blue-500': isMyMessage,
+      <div
+        className={classNames('inline-block rounded-[18px] px-4 py-[7px]', {
+          'bg-[#efefef] dark:bg-[#262626]': !isMyMessage,
+          'bg-[#3797f0]': isMyMessage,
         })}
         data-tooltip-id="my-message-tooltip"
         data-tooltip-content={formatRelative(new Date(message.createdAt), new Date())}
         data-tooltip-place={isMyMessage ? 'left' : 'right'}
       >
-        {message.content || null}
-      </span>
+        <span>{message.content || null}</span>
+      </div>
 
       <Tooltip
         id="my-message-tooltip"

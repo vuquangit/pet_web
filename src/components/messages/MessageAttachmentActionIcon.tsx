@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import PersonCirclePlus from '@/assets/icons/person-circle-plus.svg'
+import CirclePlus from '@/assets/icons/circle-plus.svg'
 import { AppDispatch, RootState } from '@/store'
 import { addAttachment, incrementAttachmentCounter } from '@/store/message-panel'
 import { useToast } from '@/hooks/useToast'
@@ -38,11 +38,9 @@ export const MessageAttachmentActionIcon = () => {
     <div
       ref={attachmentIconRef}
       onClick={onClick}
+      className="cursor-pointer p-1"
     >
-      <PersonCirclePlus
-        className="text-[rgb(210, 210, 210)] h-[36px] dark:fill-white"
-        cursor="pointer"
-      />
+      <CirclePlus className="h-6 fill-[#d2d2d2] dark:fill-[#9f1aff]" />
       <input
         multiple
         ref={fileInputRef}

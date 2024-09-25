@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import CommentAddIcon from '@/assets/icons/comment-add.svg'
+import PenToSquareIcon from '@/assets/icons/pen-to-square.svg'
 import UserGroupAddIcon from '@/assets/icons/user-group-add.svg'
 import { AppDispatch, RootState } from '@/store'
 import { setContextMenuLocation, setSelectedGroup, toggleContextMenu } from '@/store/group'
@@ -65,8 +65,8 @@ export const ConversationSidebar = () => {
   const renderAddIcon = () => {
     if (conversationType === 'private') {
       return (
-        <CommentAddIcon
-          className="h-[30px] cursor-pointer dark:fill-white"
+        <PenToSquareIcon
+          className="h-6 cursor-pointer dark:fill-[#e0e0e0]"
           onClick={() => setShowModal(true)}
         />
       )
@@ -74,7 +74,7 @@ export const ConversationSidebar = () => {
 
     return (
       <UserGroupAddIcon
-        className="h-[30px] cursor-pointer dark:fill-white"
+        className="h-6 cursor-pointer dark:fill-[#e0e0e0]"
         onClick={() => setShowModal(true)}
       />
     )
@@ -91,8 +91,8 @@ export const ConversationSidebar = () => {
       <div className="md:w-[calc(100% - 80px)] flex h-full w-[400px] flex-auto-0 flex-col bg-white dark:bg-[#111111]">
         <header className="flex h-[90px] flex-shrink-0 items-center gap-5 border-b border-solid border-[#49494925] px-2.5 py-8">
           <input
-            className="w-full rounded-[5px] border-none bg-[#ececec] px-4 py-2.5 text-[14px] outline-none"
-            placeholder="Search for Conversations"
+            className="w-full rounded-[5px] border-none bg-[#ececec] px-4 py-2.5 text-sm text-[#000] outline-none"
+            placeholder="Search on Messenger"
           />
           {renderAddIcon()}
         </header>

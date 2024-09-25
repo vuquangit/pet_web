@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react'
+import React, { FC, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import { Tooltip } from 'react-tooltip'
 
 import { RootState } from '@/store'
-import { GroupMessageType, MessageType } from '@/interfaces/chat'
+import { GroupMessageType, MessageType, User } from '@/interfaces/chat'
 import { SelectedMessageContextMenu } from '@/components/context-menus/SelectedMessageContextMenu'
 import { selectConversationMessage } from '@/store/messages'
 import { selectGroupMessage } from '@/store/groupMessage'
 import { selectType } from '@/store/selectedType'
-import { MessageItemHeader } from './MessageItemHeader'
 import { MessageItemContainerBody } from './MessageItemContainerBody'
 import { useHandleClick } from '@/hooks/useHandleClick'
 import { useKeydown } from '@/hooks/useKeydown'
@@ -25,7 +25,12 @@ import {
 import { SystemMessageList } from './system/SystemMessageList'
 import { useAppSelector, useAppDispatch } from '@/store/hook'
 
-export const MessageContainer = () => {
+type Props = {
+  isRecipientTyping: boolean
+  recipient: User | undefined
+}
+
+export const MessageContainer: FC<Props> = ({ isRecipientTyping, recipient = {} }) => {
   const { id = '' } = useParams()
   const dispatch = useAppDispatch()
   const conversationMessages = useSelector((state: RootState) =>
@@ -73,38 +78,36 @@ export const MessageContainer = () => {
     return (
       <div
         key={message.id}
-        className="flex items-center gap-5 break-words py-[5px]"
+        className="flex items-center gap-2 break-words"
         onContextMenu={(e) => onContextMenu(e, message)}
       >
         {showMessageHeader && !isMyMessage && (
-          <UserAvatar
-            user={message.author}
-            className="h-7 w-7"
-          />
+          <>
+            <UserAvatar
+              user={message.author}
+              className="!h-7 !w-7"
+              data-tooltip-id="avatar-tooltip"
+              data-tooltip-content={message.author.name}
+            />
+
+            <Tooltip
+              id="avatar-tooltip"
+              style={{
+                fontSize: '12px',
+                backgroundColor: 'rgba(255, 255, 255, 0.75)',
+                color: '#222',
+                borderRadius: '8px',
+              }}
+            />
+          </>
         )}
 
-        {showMessageHeader ? (
-          <div className="flex-1">
-            <MessageItemHeader
-              user={user}
-              message={message}
-              isMyMessage={isMyMessage}
-            />
-            <MessageItemContainerBody
-              message={message}
-              onEditMessageChange={onEditMessageChange}
-              padding="8px 0 0 0"
-              isMyMessage={isMyMessage}
-            />
-          </div>
-        ) : (
-          <MessageItemContainerBody
-            message={message}
-            onEditMessageChange={onEditMessageChange}
-            padding="0 0 0 70px"
-            isMyMessage={isMyMessage}
-          />
-        )}
+        <MessageItemContainerBody
+          message={message}
+          onEditMessageChange={onEditMessageChange}
+          padding={showMessageHeader ? '0' : '0 0 0 38px'}
+          isMyMessage={isMyMessage}
+        />
       </div>
     )
   }
@@ -120,6 +123,10 @@ export const MessageContainer = () => {
         }
       }}
     >
+      <div className="mt-1 w-full border-none bg-inherit pl-[38px] text-[14px] outline-none dark:text-[#bababa]">
+        {isRecipientTyping ? `${recipient !== undefined && recipient?.name} is typing...` : ''}
+      </div>
+
       <SystemMessageList />
 
       {selectedType === 'private'

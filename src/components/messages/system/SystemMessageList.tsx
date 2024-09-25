@@ -6,7 +6,7 @@ export const SystemMessageList = () => {
   const { messages } = useSelector((state: RootState) => state.systemMessages)
 
   return (
-    <div style={{ margin: '6px 60px' }}>
+    <div>
       {messages.map((message) => (
         <SystemMessage
           key={message.id}

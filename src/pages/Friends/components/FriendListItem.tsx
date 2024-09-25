@@ -32,7 +32,7 @@ export const FriendListItem: FC<Props> = ({ friend, online, onContextMenu }) => 
         <div className="flex flex-col gap-1">
           <span className="text-[18px] font-medium">{friendUserInstance.name}</span>
           {online && (
-            <span className="text-[14px] text-[#00ff00]">
+            <span className="text-sm text-[#00ff00]">
               {friendUserInstance.presence?.statusMessage}
             </span>
           )}

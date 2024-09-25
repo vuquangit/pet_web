@@ -246,10 +246,12 @@ export type UserSidebarRouteType =
   | 'connections'
   | 'settings'
   | 'calls'
+  | 'profile'
 
 export type UserSidebarItemType = {
   id: UserSidebarRouteType
   pathname: string
+  title: string
 }
 
 export type SettingsSidebarRouteType =

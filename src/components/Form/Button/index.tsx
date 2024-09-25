@@ -65,7 +65,7 @@ const Button = (props: ButtonProps) => {
       'btn-primary': primary,
       'btn-text': type === 'text',
       'px-3 py-[2px] text-[12px]': size === 'small',
-      'px-5 py-[4px] text-[14px]': size === 'medium',
+      'px-5 py-[4px] text-sm': size === 'medium',
       'px-7 py-[6px] text-[16px]': size === 'large',
     },
     className,

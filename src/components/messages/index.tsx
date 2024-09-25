@@ -1,5 +1,4 @@
-import React, { FC, useContext, useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { FC, useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { get } from 'lodash'
 
@@ -9,13 +8,13 @@ import { selectGroupById } from '@/store/group'
 import { removeAllAttachments } from '@/store/message-panel'
 import { addSystemMessage, clearAllMessages } from '@/store/system-messages'
 import { useCreateMessageMutation } from '@/services/conversations'
-import { AuthContext } from '@/context/AuthContext'
 import { getRecipientFromConversation } from '@/helpers'
 import { useToast } from '@/hooks/useToast'
 import { MessageAttachmentContainer } from './attachments/MessageAttachmentContainer'
 import { MessageContainer } from './MessageContainer'
 import { MessageInputField } from './MessageInputField'
 import { MessagePanelHeader } from './MessagePanelHeader'
+import { useAppSelector, useAppDispatch } from '@/store/hook'
 
 type Props = {
   sendTypingStatus: () => void
@@ -24,16 +23,16 @@ type Props = {
 
 export const MessagePanel: FC<Props> = ({ sendTypingStatus, isRecipientTyping }) => {
   const toastId = 'rateLimitToast'
-  const dispatch = useDispatch()
-  const { messageCounter } = useSelector((state: RootState) => state.systemMessages)
+  const dispatch = useAppDispatch()
+  const { messageCounter } = useAppSelector((state: RootState) => state.systemMessages)
   const [content, setContent] = useState('')
   const { id: routeId = '' } = useParams()
-  const { user } = useContext(AuthContext)
+  const user = useAppSelector((state: RootState) => state.auth)
   const { error } = useToast({ theme: 'dark' })
-  const { attachments } = useSelector((state: RootState) => state.messagePanel)
-  const conversation = useSelector((state: RootState) => selectConversationById(state, routeId))
-  const group = useSelector((state: RootState) => selectGroupById(state, routeId))
-  const selectedType = useSelector((state: RootState) => state.selectedConversationType.type)
+  const { attachments } = useAppSelector((state: RootState) => state.messagePanel)
+  const conversation = useAppSelector((state: RootState) => selectConversationById(state, routeId))
+  const group = useAppSelector((state: RootState) => selectGroupById(state, routeId))
+  const selectedType = useAppSelector((state: RootState) => state.selectedConversationType.type)
 
   const recipient = getRecipientFromConversation(conversation, user)
 
@@ -95,11 +94,13 @@ export const MessagePanel: FC<Props> = ({ sendTypingStatus, isRecipientTyping })
         className="min-h-0 flex-1 overflow-auto"
         style={{ height: 'calc(100% - 600px)' }}
       >
-        <MessageContainer />
+        <MessageContainer
+          isRecipientTyping={isRecipientTyping}
+          recipient={recipient}
+        />
       </div>
 
-      <footer className="mt-0 pb-2.5 pl-8 pr-8">
-        {attachments.length > 0 && <MessageAttachmentContainer />}
+      <div className="m-4 rounded-[22px] border border-solid border-[#363636]">
         <MessageInputField
           content={content}
           setContent={setContent}
@@ -109,10 +110,9 @@ export const MessagePanel: FC<Props> = ({ sendTypingStatus, isRecipientTyping })
             selectedType === 'group' ? group?.title || 'Group' : recipient?.name || 'user'
           }
         />
-        <div className="my-1 w-full rounded-[5px] border-none bg-inherit px-[22px] py-[18px] text-[15px] outline-none dark:text-[#bababa]">
-          {isRecipientTyping ? `${recipient?.name} is typing...` : ''}
-        </div>
-      </footer>
+
+        {attachments.length > 0 && <MessageAttachmentContainer />}
+      </div>
     </div>
   )
 }

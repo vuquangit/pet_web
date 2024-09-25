@@ -29,7 +29,7 @@ export const SystemMessage: FC<Props> = ({ message }) => {
         <span className="font-bold">System Message</span>
       </div>
       <div>
-        <span className="pl-[28px] text-[14px] italic text-[#656565]">{content}</span>
+        <span className="pl-[28px] text-sm italic text-[#656565]">{content}</span>
       </div>
     </div>
   )
