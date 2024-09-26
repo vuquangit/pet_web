@@ -3,7 +3,7 @@
 exports[`Button tests renders the component 1`] = `
 <DocumentFragment>
   <button
-    class="btn-default px-5 py-[4px] text-[14px]"
+    class="btn-default px-5 py-[4px] text-sm"
     data-cy="button-cy"
     type="button"
   >
@@ -15,7 +15,7 @@ exports[`Button tests renders the component 1`] = `
 exports[`Button tests with disabled 1`] = `
 <DocumentFragment>
   <button
-    class="btn-default px-5 py-[4px] text-[14px]"
+    class="btn-default px-5 py-[4px] text-sm"
     disabled=""
     type="button"
   />

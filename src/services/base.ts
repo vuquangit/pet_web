@@ -38,16 +38,19 @@ export const customBaseQuery: BaseQueryFn = async (args, api, extraOptions) => {
     result.error.data?.error?.code === ERROR_CODE.AUTH.ACCESS_TOKEN_EXPIRED
   ) {
     try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      let refreshResult: any = await baseQuery(
+      const refreshResult = await baseQuery(
         { url: '/auth/refresh-token', method: 'POST', body: { refresh_token: refreshToken } },
         api,
         extraOptions,
       )
 
       if (refreshResult.data) {
-        refreshResult = camelizeKeys(refreshResult)
+        // get new tokens
+        const _refreshResult = camelizeKeys(refreshResult)
+        const tokens = get(_refreshResult, 'data.result.data', {})
+        StorageService.set(storageKeys.AUTH_PROFILE, tokens)
 
+        // retry original query
         result = await baseQuery(args, api, extraOptions)
       } else {
         handleNotification(api, result)
@@ -73,10 +76,11 @@ const handleNotification = (api: BaseQueryApi, result: any) => {
   const errorStatus = result.error.status
   const error = result?.error?.data?.error
   let message = ''
-  let navigateTo = ''
+  let navigateTo: string | null = null
 
   // clear profile and token
   if (errorStatus === 401) {
+    console.log('clear profile and token')
     api.dispatch(resetCredentials())
     // api.dispatch(logOut())
     StorageService.remove(storageKeys.AUTH_PROFILE)
@@ -95,10 +99,11 @@ const handleNotification = (api: BaseQueryApi, result: any) => {
       break
     case 500:
       message = 'Error 500'
+      // navigateTo = '/500'
       break
-    default:
-      message = ''
-      navigateTo = ''
+    // default:
+    //   message = ''
+    //   navigateTo = null
   }
 
   if (!window.navigator.onLine) {
@@ -119,7 +124,10 @@ const handleNotification = (api: BaseQueryApi, result: any) => {
   // redirect
   // TODO: handle redirect outside react component
   const pathname = window.location.pathname
-  if (pathname !== navigateTo) {
+  if (pathname !== navigateTo && navigateTo) {
+    console.log('redirect:::', `${window.location.origin}${navigateTo}`)
+    // eslint-disable-next-line no-debugger
+    debugger
     window.location.href = `${window.location.origin}${navigateTo}`
   }
 }

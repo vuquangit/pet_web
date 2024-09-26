@@ -96,22 +96,108 @@ const protectedRoutes: RouteApp[] = [
       return null
     },
   },
+
   {
     path: ROUTER_NAMES.HOME,
     element: <Navigate to={ROUTER_NAMES.ROOT} />,
   },
+
+  // Conversations page
   {
-    path: ROUTER_NAMES.REACT,
+    path: ROUTER_NAMES.CONVERSATIONS,
     async lazy() {
       // Multiple routes in lazy file
-      const { ReactPage } = await import('../pages/React')
-      return { Component: ReactPage }
+      const { ConversationPage } = await import('../pages/Conversations')
+      return { Component: ConversationPage }
     },
     loader: () => {
-      setTitlePage('React')
+      setTitlePage('Conversation')
       return null
     },
+    children: [
+      {
+        path: ':id',
+        async lazy() {
+          // Multiple routes in lazy file
+          const { ConversationChannelPage } = await import('../pages/Conversations/Detail')
+          return { Component: ConversationChannelPage }
+        },
+        loader: () => {
+          setTitlePage('Conversation Detail')
+          return null
+        },
+      },
+    ],
   },
+
+  // Friend pages
+  {
+    path: ROUTER_NAMES.FRIENDS,
+    async lazy() {
+      // Multiple routes in lazy file
+      const { FriendsLayoutPage } = await import('../pages/Friends/FriendsLayoutPage')
+      return { Component: FriendsLayoutPage }
+    },
+    loader: () => {
+      setTitlePage('Friends')
+      return null
+    },
+    children: [
+      {
+        path: ROUTER_NAMES.FRIEND_REQUEST,
+        async lazy() {
+          // Multiple routes in lazy file
+          const { FriendRequestPage } = await import('../pages/Friends/FriendRequestPage')
+          return { Component: FriendRequestPage }
+        },
+        loader: () => {
+          setTitlePage('Friend Request')
+          return null
+        },
+      },
+      {
+        path: ROUTER_NAMES.FRIEND_BLOCKED,
+        async lazy() {
+          // Multiple routes in lazy file
+          const { FriendRequestBlocked } = await import('../pages/Friends/FriendRequestBlocked')
+          return { Component: FriendRequestBlocked }
+        },
+        loader: () => {
+          setTitlePage('Friend Blocked')
+          return null
+        },
+      },
+    ],
+  },
+
+  // Group pages
+  {
+    path: ROUTER_NAMES.GROUPS,
+    async lazy() {
+      // Multiple routes in lazy file
+      const { GroupPage } = await import('../pages/Groups')
+      return { Component: GroupPage }
+    },
+    loader: () => {
+      setTitlePage('Groups')
+      return null
+    },
+    children: [
+      {
+        path: ROUTER_NAMES.GROUP_DETAIL,
+        async lazy() {
+          // Multiple routes in lazy file
+          const { GroupChannelPage } = await import('../pages/Groups/GroupDetail')
+          return { Component: GroupChannelPage }
+        },
+        loader: () => {
+          setTitlePage('Group Detail')
+          return null
+        },
+      },
+    ],
+  },
+
   // ...other protected routes
 ]
 

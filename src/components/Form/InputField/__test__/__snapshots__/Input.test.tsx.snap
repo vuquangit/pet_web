@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Input Field component renders the component 1`] = `
+<DocumentFragment>
+  <div>
+    <label
+      class="block text-sm font-medium leading-6"
+    >
+      Input label
+    </label>
+    <div
+      class="relative mt-2"
+    >
+      <input
+        class="input-default"
+        data-cy="input-cy"
+        placeholder="Input placeholder"
+        type="text"
+        value=""
+      />
+    </div>
+  </div>
+</DocumentFragment>
+`;
