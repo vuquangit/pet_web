@@ -175,7 +175,7 @@ const protectedRoutes: RouteApp[] = [
     path: ROUTER_NAMES.GROUPS,
     async lazy() {
       // Multiple routes in lazy file
-      const { GroupPage } = await import('../pages/Groups/GroupPage')
+      const { GroupPage } = await import('../pages/Groups')
       return { Component: GroupPage }
     },
     loader: () => {
@@ -187,7 +187,7 @@ const protectedRoutes: RouteApp[] = [
         path: ROUTER_NAMES.GROUP_DETAIL,
         async lazy() {
           // Multiple routes in lazy file
-          const { GroupChannelPage } = await import('../pages/Groups/GroupChannelPage')
+          const { GroupChannelPage } = await import('../pages/Groups/GroupDetail')
           return { Component: GroupChannelPage }
         },
         loader: () => {

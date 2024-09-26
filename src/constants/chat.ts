@@ -21,7 +21,7 @@ export const friendsNavbarItems = [
 export const chatTypes: ConversationTypeData[] = [
   {
     type: 'private',
-    label: 'Private',
+    label: 'Direct Message',
   },
   {
     type: 'group',

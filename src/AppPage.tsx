@@ -1,14 +1,13 @@
 import React, { useContext, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import Peer from 'peerjs'
 
 import { AppDispatch, RootState } from '@/store'
 import { removeFriendRequest } from '@/store/friends'
 import { SocketContext } from '@/context/SocketContext'
 import { useToast } from '@/hooks/useToast'
 import { AcceptFriendRequestResponse, FriendRequest } from '@/interfaces/chat'
-import Peer from 'peerjs'
-import { AuthContext } from '@/context/AuthContext'
 import { setCall, setLocalStream, setPeer, setRemoteStream } from '@/store/call'
 // import { CallReceiveDialog } from '@/components/calls/CallReceiveDialog';
 // import { useVideoCallRejected } from '@/hooks/sockets/useVideoCallRejected';
@@ -22,13 +21,14 @@ import { setCall, setLocalStream, setPeer, setRemoteStream } from '@/store/call'
 import UserCheckIcon from '@/assets/icons/user-check.svg'
 import { useFriendRequestReceived } from '@/hooks/sockets/friend-requests/useFriendRequestReceived'
 import useFriends from '@/hooks/useFriends'
+import { useAppSelector } from '@/store/hook'
 
 type AppPageProps = {
   children: React.ReactNode
 }
 
 export const AppPage: React.FC<AppPageProps> = ({ children }) => {
-  const { user } = useContext(AuthContext)
+  const user = useAppSelector((state) => state.auth)
   const socket = useContext(SocketContext)
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
@@ -44,8 +44,9 @@ export const AppPage: React.FC<AppPageProps> = ({ children }) => {
   }, [dispatch])
 
   useEffect(() => {
-    if (!user) return
-    const newPeer = new Peer(user.peer.id, {
+    if (!user || !user.peer_id) return
+
+    const newPeer = new Peer(user.peer_id, {
       config: {
         iceServers: [
           {

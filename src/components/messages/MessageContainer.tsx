@@ -30,13 +30,13 @@ type Props = {
   recipient: User | undefined
 }
 
-export const MessageContainer: FC<Props> = ({ isRecipientTyping, recipient = {} }) => {
+export const MessageContainer: FC<Props> = ({ isRecipientTyping, recipient }) => {
   const { id = '' } = useParams()
   const dispatch = useAppDispatch()
   const conversationMessages = useSelector((state: RootState) =>
     selectConversationMessage(state, id),
   )
-  const groupMessages = useSelector((state: RootState) => selectGroupMessage(state, parseInt(id!)))
+  const groupMessages = useSelector((state: RootState) => selectGroupMessage(state, id))
   const selectedType = useSelector((state: RootState) => selectType(state))
   const { showContextMenu } = useSelector((state: RootState) => state.messageContainer)
   const handleKeydown = (e: KeyboardEvent) => e.key === 'Escape' && dispatch(setIsEditing(false))

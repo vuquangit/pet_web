@@ -43,7 +43,7 @@ export const getUserContextMenuIcon = (type: UserContextMenuActionType) => {
   }
 }
 
-export const isGroupOwner = (user?: User, group?: Group) => user?.id === group?.owner.id
+export const isGroupOwner = (user?: User | IAuthMe, group?: Group) => user?.id === group?.owner.id
 
 export const getUserSidebarIcon = (id: UserSidebarRouteType) => {
   switch (id) {
@@ -100,7 +100,7 @@ export const getFriendRequestDetails = (
   }
 }
 
-export const getUserFriendInstance = (authenticatedUser: User, selectedFriend: Friend) =>
+export const getUserFriendInstance = (authenticatedUser: User | IAuthMe, selectedFriend: Friend) =>
   authenticatedUser?.id === selectedFriend?.sender.id
     ? selectedFriend?.receiver
     : selectedFriend?.sender

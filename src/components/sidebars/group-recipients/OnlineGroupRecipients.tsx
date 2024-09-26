@@ -28,14 +28,19 @@ export const OnlineGroupRecipients: FC<Props> = ({ users, group, onUserContextMe
         >
           <div className="flex items-center gap-[14px]">
             <UserAvatar user={user} />
-            <div className="flex flex-col text-[#636363]">
+            <div className="flex flex-col text-[#636363] dark:text-white">
               <span>{user.name}</span>
-              <span className="text-[12px] font-medium text-[#929292]">
+              <span className="text-[12px] font-medium text-[#929292] dark:text-white">
                 {formatStatusMessage(user)}
               </span>
             </div>
           </div>
-          {user.id === group?.owner.id && <CrowIcon color="#ffbf00" />}
+          {user.id === group?.owner.id && (
+            <CrowIcon
+              className="h-6 dark:text-white"
+              color="#ffbf00"
+            />
+          )}
         </div>
       ))}
     </>

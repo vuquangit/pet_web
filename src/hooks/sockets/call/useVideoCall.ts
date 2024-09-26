@@ -3,14 +3,14 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { AppDispatch, RootState } from '@/store'
 import { setCaller, setReceiver, setIsReceivingCall, setCallType } from '@/store/call'
-import { AuthContext } from '@/context/AuthContext'
 import { SocketContext } from '@/context/SocketContext'
 import { CallPayload } from '@/interfaces/chat'
+import { useAppSelector } from '@/store/hook'
 
 export function useVideoCall() {
   const socket = useContext(SocketContext)
   const dispatch = useDispatch<AppDispatch>()
-  const { user } = useContext(AuthContext)
+  const user = useAppSelector((state) => state.auth)
   const { isReceivingCall } = useSelector((state: RootState) => state.call)
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export function useVideoCall() {
       console.log(data)
       if (isReceivingCall) return
       dispatch(setCaller(data.caller))
-      dispatch(setReceiver(user!))
+      dispatch(setReceiver(user))
       dispatch(setIsReceivingCall(true))
       dispatch(setCallType('video'))
     })

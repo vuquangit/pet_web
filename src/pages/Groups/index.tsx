@@ -6,9 +6,8 @@ import { ConversationPanel } from '@/components/conversations/ConversationPanel'
 import { ConversationSidebar } from '@/components/sidebars/ConversationSidebar'
 import { AppDispatch } from '@/store'
 import { addGroupMessage } from '@/store/groupMessage'
-import { addGroup, fetchGroupsThunk, removeGroup, updateGroup } from '@/store/group'
+import { addGroup, removeGroup, updateGroup } from '@/store/group'
 import { updateType } from '@/store/selectedType'
-import { AuthContext } from '@/context/AuthContext'
 import { SocketContext } from '@/context/SocketContext'
 import {
   Group,
@@ -18,18 +17,22 @@ import {
   UpdateGroupAction,
   GroupParticipantLeftPayload,
 } from '@/interfaces/chat'
+import useGroups from '@/hooks/useGroup'
+import { useAppSelector } from '@/store/hook'
 
 export const GroupPage = () => {
   const { id } = useParams()
-  const { user } = useContext(AuthContext)
+  const user = useAppSelector((state) => state.auth)
   const [showSidebar, setShowSidebar] = useState(window.innerWidth > 800)
   const dispatch = useDispatch<AppDispatch>()
   const socket = useContext(SocketContext)
   const navigate = useNavigate()
 
+  const { fetchGroups } = useGroups()
+
   useEffect(() => {
     dispatch(updateType('group'))
-    dispatch(fetchGroupsThunk())
+    fetchGroups()
   }, [])
 
   useEffect(() => {
@@ -42,7 +45,7 @@ export const GroupPage = () => {
 
   useEffect(() => {
     socket.on('onGroupMessage', (payload: GroupMessageEventPayload) => {
-      console.log('Group Message Received')
+      console.log('Group Message Received', payload)
       const { group } = payload
       dispatch(addGroupMessage(payload))
       dispatch(updateGroup({ type: UpdateGroupAction.NEW_MESSAGE, group }))

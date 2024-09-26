@@ -1,26 +1,28 @@
-import React, { FC, useContext } from 'react'
+import React, { FC } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 // import { useParams } from 'react-router-dom';
 import classNames from 'classnames'
 
 import { AppDispatch, RootState } from '@/store'
 import {
-  leaveGroupThunk,
   // selectGroupById,
   setShowEditGroupModal,
   toggleContextMenu,
 } from '@/store/group'
-import { AuthContext } from '@/context/AuthContext'
+import useGroups from '@/hooks/useGroup'
+import { useAppSelector } from '@/store/hook'
 // import { isGroupOwner } from '@/helpers';
+
 import ExitIcon from '@/assets/icons/exit.svg'
 import BoxArchiveIcon from '@/assets/icons/box-archive.svg'
 import EditIcon from '@/assets/icons/pen-to-square.svg'
 
 export const GroupSidebarContextMenu: FC = () => {
   // const { id = '' } = useParams();
-  const { user } = useContext(AuthContext)
+  const user = useAppSelector((state) => state.auth)
   const dispatch = useDispatch<AppDispatch>()
   const points = useSelector((state: RootState) => state.groups.points)
+  const { leaveGroup } = useGroups()
 
   // const group = useSelector((state: RootState) =>
   //   selectGroupById(state, id)
@@ -28,9 +30,10 @@ export const GroupSidebarContextMenu: FC = () => {
 
   const contextMenuGroup = useSelector((state: RootState) => state.groups.selectedGroupContextMenu)
 
-  const leaveGroup = () => {
+  const handleLeaveGroup = async () => {
     if (!contextMenuGroup) return
-    dispatch(leaveGroupThunk(contextMenuGroup.id)).finally(() => dispatch(toggleContextMenu(false)))
+    await leaveGroup(contextMenuGroup.id)
+    dispatch(toggleContextMenu(false))
   }
 
   const contextMenuItemStyle = classNames(
@@ -44,7 +47,7 @@ export const GroupSidebarContextMenu: FC = () => {
     >
       <li
         className={contextMenuItemStyle}
-        onClick={leaveGroup}
+        onClick={handleLeaveGroup}
       >
         <ExitIcon
           className="h-5"
@@ -52,6 +55,7 @@ export const GroupSidebarContextMenu: FC = () => {
         />
         <span style={{ color: '#ff0000' }}>Leave Group</span>
       </li>
+
       {user?.id === contextMenuGroup?.owner.id && (
         <li
           className={contextMenuItemStyle}
@@ -64,6 +68,7 @@ export const GroupSidebarContextMenu: FC = () => {
           <span style={{ color: '#fff' }}>Edit Group</span>
         </li>
       )}
+
       <li className={contextMenuItemStyle}>
         <BoxArchiveIcon
           className="h-5"

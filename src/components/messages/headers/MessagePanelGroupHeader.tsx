@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
@@ -7,12 +7,13 @@ import PeopleGroup from '@/assets/icons/people-group.svg'
 import { RootState, AppDispatch } from '@/store'
 import { toggleSidebar } from '@/store/groupRecipientsSidebar'
 import { selectGroupById } from '@/store/group'
-import { AuthContext } from '@/context/AuthContext'
+import { useAppSelector } from '@/store/hook'
 import { AddGroupRecipientModal } from '../../modals/AddGroupRecipientModal'
 
 export const MessagePanelGroupHeader = () => {
   const [showModal, setShowModal] = useState(false)
-  const user = useContext(AuthContext).user!
+  // const user = useContext(AuthContext).user
+  const user = useAppSelector((state) => state.auth)
   const { id = '' } = useParams()
   const group = useSelector((state: RootState) => selectGroupById(state, id))
   const dispatch = useDispatch<AppDispatch>()

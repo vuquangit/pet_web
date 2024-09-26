@@ -1,7 +1,7 @@
-import React, { useState, useContext, Dispatch, SetStateAction, FC } from 'react'
+import React, { useState, Dispatch, SetStateAction, FC } from 'react'
 
 import { useUpdateStatusMessageMutation } from '@/services/user'
-import { AuthContext } from '@/context/AuthContext'
+import { useAppSelector } from '@/store/hook'
 import { useToast } from '@/hooks/useToast'
 import { InputField, Button } from '@/components/Form'
 
@@ -10,7 +10,7 @@ type Props = {
 }
 
 export const UpdateUserStatusForm: FC<Props> = ({ setShowModal }) => {
-  const { user } = useContext(AuthContext)
+  const user = useAppSelector((state) => state.auth)
   const { success, error } = useToast({ theme: 'dark' })
   const [statusMessage, setStatusMessage] = useState(user?.presence?.statusMessage || '')
   const [updateStatusMessage] = useUpdateStatusMessageMutation()

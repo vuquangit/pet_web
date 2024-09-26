@@ -34,8 +34,8 @@ export const EmojiPickerModal: FC<Props> = ({ isShowModal, setShowModal, setMess
     return () => window.removeEventListener('keydown', handleKeydown)
   }, [])
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onEmojiClick = (emojiData: EmojiClickData, event: MouseEvent) => {
-    console.log('onEmojiClick', emojiData, event)
     setMessage((prev) => prev + emojiData.emoji)
   }
 

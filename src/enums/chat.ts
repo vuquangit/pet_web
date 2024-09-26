@@ -21,3 +21,8 @@ export enum SenderEvents {
 export enum ReceiverEvents {
   VOICE_CALL = 'onVoiceCall',
 }
+
+export enum EConversationType {
+  PRIVATE = 'private',
+  GROUP = 'group',
+}

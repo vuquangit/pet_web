@@ -5,10 +5,11 @@ import { useParams } from 'react-router-dom'
 import { MessagePanel } from '@/components/messages'
 import { SocketContext } from '@/context/SocketContext'
 import { AppDispatch, RootState } from '@/store'
-import { editGroupMessage, fetchGroupMessagesThunk } from '@/store/groupMessage'
+import { editGroupMessage } from '@/store/groupMessage'
 import { GroupMessageType } from '@/interfaces/chat'
 import { GroupRecipientsSidebar } from '@/components/sidebars/group-recipients/GroupRecipientsSidebar'
 import { EditGroupModal } from '@/components/modals/EditGroupModal'
+import useGroupMessage from '@/hooks/useGroupMessage'
 
 export const GroupChannelPage = () => {
   const { id = '' } = useParams()
@@ -20,13 +21,15 @@ export const GroupChannelPage = () => {
   const { showEditGroupModal } = useSelector((state: RootState) => state.groups)
   const showSidebar = useSelector((state: RootState) => state.groupSidebar.showSidebar)
 
+  const { fetchGroupMessages } = useGroupMessage()
+
   useEffect(() => {
     const groupId = id
-    dispatch(fetchGroupMessagesThunk(groupId))
+    fetchGroupMessages(groupId)
   }, [id])
 
   useEffect(() => {
-    const groupId = id!
+    const groupId = id
     console.log(groupId)
     socket.emit('onGroupJoin', { groupId })
     socket.on('onGroupMessageUpdate', (message: GroupMessageType) => {
@@ -40,6 +43,7 @@ export const GroupChannelPage = () => {
     }
   }, [id])
 
+  // TODO: send typing status
   const sendTypingStatus = () => {}
 
   return (

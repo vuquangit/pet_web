@@ -1,12 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { CallInitiatePayload, CallType, User } from '@/interfaces/chat'
 import { DataConnection, MediaConnection, Peer } from 'peerjs'
+import { IAuthMe } from '@/interfaces/auth'
 
 export interface CallState {
   isCalling: boolean
   isCallInProgress: boolean
-  caller?: User
-  receiver?: User
+  caller?: User | IAuthMe
+  receiver?: User | IAuthMe
   peer?: Peer
   call?: MediaConnection
   connection?: DataConnection
@@ -42,10 +43,10 @@ export const callSlice = createSlice({
     setIsReceivingCall: (state, action: PayloadAction<boolean>) => {
       state.isReceivingCall = action.payload
     },
-    setCaller: (state, action: PayloadAction<User>) => {
+    setCaller: (state, action: PayloadAction<User | IAuthMe>) => {
       state.caller = action.payload
     },
-    setReceiver: (state, action: PayloadAction<User>) => {
+    setReceiver: (state, action: PayloadAction<User | IAuthMe>) => {
       state.receiver = action.payload
     },
     setRemoteStream: (state, action: PayloadAction<MediaStream>) => {

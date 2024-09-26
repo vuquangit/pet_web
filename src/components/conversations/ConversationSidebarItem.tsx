@@ -1,12 +1,12 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import classNames from 'classnames'
 
 import { CDN_URL } from '@/enums/chat'
-import { AuthContext } from '@/context/AuthContext'
 import { getRecipientFromConversation } from '@/helpers'
 import { Conversation } from '@/interfaces/chat'
 import defaultAvatar from '@/assets/images/default_avatar.jpg'
+import { useAppSelector } from '@/store/hook'
 
 type Props = {
   conversation: Conversation
@@ -15,7 +15,7 @@ type Props = {
 export const ConversationSidebarItem: React.FC<Props> = ({ conversation }) => {
   const MESSAGE_LENGTH_MAX = 50
   const { id } = useParams()
-  const { user } = useContext(AuthContext)
+  const user = useAppSelector((state) => state.auth)
   const navigate = useNavigate()
   const recipient = getRecipientFromConversation(conversation, user)
   const lastMessageContent = () => {

@@ -9,12 +9,12 @@ import {
   setIsReceivingCall,
 } from '@/store/call'
 import { WebsocketEvents } from '@/enums/chat'
-import { AuthContext } from '@/context/AuthContext'
+import { useAppSelector } from '@/store/hook'
 import { SocketContext } from '@/context/SocketContext'
 import { AcceptedCallPayload } from '@/interfaces/chat'
 
 export function useVoiceCallAccepted() {
-  const { user } = useContext(AuthContext)
+  const user = useAppSelector((state) => state.auth)
   const socket = useContext(SocketContext)
   const dispatch = useDispatch<AppDispatch>()
   const { peer, localStream } = useSelector((state: RootState) => state.call)

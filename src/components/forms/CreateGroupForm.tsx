@@ -3,13 +3,11 @@ import { useNavigate } from 'react-router-dom'
 
 import { GroupRecipientsField } from './recipients/GroupRecipientsField'
 import { User } from '@/interfaces/chat'
-import { useAppDispatch } from '@/store/hook'
 import { useLazySearchQuery } from '@/services/user'
 import { RecipientResultContainer } from './recipients/RecipientResultContainer'
 import { SelectedGroupRecipientChip } from './recipients/SelectedGroupRecipientChip'
-import { createGroupThunk } from '@/store/group/groupThunk'
-
 import { InputField, Button } from '@/components/Form'
+import useGroups from '@/hooks/useGroup'
 
 type Props = {
   setShowModal: Dispatch<React.SetStateAction<boolean>>
@@ -25,10 +23,10 @@ export const CreateGroupForm: FC<Props> = ({ setShowModal }) => {
   const [searching, setSearching] = useState(false)
   // const debouncedQuery = useDebounce(query, 1000);
   // const debouncedQuery = debounce(query, 1000);
-  const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   const [searchUsers] = useLazySearchQuery()
+  const { createGroup } = useGroups()
 
   useEffect(() => {
     if (query) {
@@ -65,7 +63,7 @@ export const CreateGroupForm: FC<Props> = ({ setShowModal }) => {
     //   })
     //   .catch((err) => console.log(err));
 
-    const result = await dispatch(createGroupThunk({ title, users })).unwrap()
+    const result = await createGroup({ title, users })
     const data = result?.data || {}
     console.log(data)
     console.log('done')

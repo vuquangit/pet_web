@@ -6,14 +6,14 @@ import classNames from 'classnames'
 import { AppDispatch, RootState } from '@/store'
 import { toggleContextMenu } from '@/store/friends'
 import { useLazyCheckConversationOrCreateQuery } from '@/services/conversations'
-import { AuthContext } from '@/context/AuthContext'
 import { SocketContext } from '@/context/SocketContext'
 import UserMinusIcon from '@/assets/icons/user-minus-solid.svg'
 import CommentDotsIcon from '@/assets/icons/comment-dots-regular.svg'
 import useFriends from '@/hooks/useFriends'
+import { useAppSelector } from '@/store/hook'
 
 export const FriendContextMenu = () => {
-  const { user } = useContext(AuthContext)
+  const user = useAppSelector((state) => state.auth)
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
   const { points, selectedFriendContextMenu } = useSelector((state: RootState) => state.friends)

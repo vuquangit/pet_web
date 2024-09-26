@@ -8,7 +8,7 @@ import {
   setCall,
   setActiveConversationId,
 } from '@/store/call'
-import { AuthContext } from '@/context/AuthContext'
+import { useAppSelector } from '@/store/hook'
 import { SocketContext } from '@/context/SocketContext'
 import { AcceptedCallPayload } from '@/interfaces/chat'
 
@@ -18,7 +18,7 @@ import { AcceptedCallPayload } from '@/interfaces/chat'
  * accepted the call.
  */
 export function useVideoCallAccept() {
-  const { user } = useContext(AuthContext)
+  const user = useAppSelector((state) => state.auth)
   const socket = useContext(SocketContext)
   const dispatch = useDispatch<AppDispatch>()
   const { peer, localStream } = useSelector((state: RootState) => state.call)

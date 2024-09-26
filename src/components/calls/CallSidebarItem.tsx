@@ -1,9 +1,10 @@
-import React, { FC, useContext } from 'react'
-import { AuthContext } from '@/context/AuthContext'
+import React, { FC } from 'react'
+
 import { getUserFriendInstance } from '@/helpers'
 import { Friend } from '@/interfaces/chat'
 import { UserAvatar } from '../users/UserAvatar'
-// import { IoMdVideocam, IoMdCall } from 'react-icons/io';
+import { useAppSelector } from '@/store/hook'
+
 import VideoIcon from '@/assets/icons/video.svg'
 import PhoneIcon from '@/assets/icons/phone.svg'
 
@@ -11,11 +12,12 @@ type Props = {
   friend: Friend
 }
 export const CallSidebarItem: FC<Props> = ({ friend }) => {
-  const { user } = useContext(AuthContext)
+  const user = useAppSelector((state) => state.auth)
+
   return (
     <div>
       <div>
-        <UserAvatar user={getUserFriendInstance(user!, friend)} />
+        <UserAvatar user={getUserFriendInstance(user, friend)} />
       </div>
       <div>
         <div>

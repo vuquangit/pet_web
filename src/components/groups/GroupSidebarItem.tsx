@@ -35,7 +35,7 @@ export const GroupSidebarItem: React.FC<Props> = ({ group, onContextMenu }) => {
     <div
       className={classNames(
         ':hover:bg-[#222] flex w-full cursor-pointer items-center gap-5 px-8 py-5',
-        { 'bg-[#1a1a1a]': id === group.id },
+        { 'bg-[#efefef] dark:bg-[#262626]': id === group.id },
       )}
       onClick={() => navigate(`/groups/${group.id}`)}
       onContextMenu={(e) => onContextMenu(e, group)}
@@ -48,10 +48,10 @@ export const GroupSidebarItem: React.FC<Props> = ({ group, onContextMenu }) => {
         />
       ) : (
         <div className="bg-[rgb(36, 36, 36)] flex h-[56px] w-[56px] items-center justify-center rounded-[50%]">
-          <UsersIcon className="h-[28px]" />
+          <UsersIcon className="h-6 dark:fill-white" />
         </div>
       )}
-      <div>
+      <div className="flex flex-col">
         <span className="title">{getTransformedTitle()}</span>
         <span className="text-[rgb(163, 163, 163)] text-sm">{group.lastMessageSent?.content}</span>
       </div>

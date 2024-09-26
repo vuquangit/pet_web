@@ -16,6 +16,9 @@ export interface IAuthMe {
   name: string
   email: string
   role: ERoles
+  peer_id: string
+  peer: any // TODO: add peer interface
+  presence: any // TODO: add presence interface
 }
 
 export interface IAuthResetPasswordRequest {

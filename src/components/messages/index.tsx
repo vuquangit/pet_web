@@ -15,6 +15,7 @@ import { MessageContainer } from './MessageContainer'
 import { MessageInputField } from './MessageInputField'
 import { MessagePanelHeader } from './MessagePanelHeader'
 import { useAppSelector, useAppDispatch } from '@/store/hook'
+import { EConversationType } from '@/enums/chat'
 
 type Props = {
   sendTypingStatus: () => void
@@ -24,11 +25,12 @@ type Props = {
 export const MessagePanel: FC<Props> = ({ sendTypingStatus, isRecipientTyping }) => {
   const toastId = 'rateLimitToast'
   const dispatch = useAppDispatch()
-  const { messageCounter } = useAppSelector((state: RootState) => state.systemMessages)
   const [content, setContent] = useState('')
   const { id: routeId = '' } = useParams()
-  const user = useAppSelector((state: RootState) => state.auth)
   const { error } = useToast({ theme: 'dark' })
+
+  const user = useAppSelector((state: RootState) => state.auth)
+  const { messageCounter } = useAppSelector((state: RootState) => state.systemMessages)
   const { attachments } = useAppSelector((state: RootState) => state.messagePanel)
   const conversation = useAppSelector((state: RootState) => selectConversationById(state, routeId))
   const group = useAppSelector((state: RootState) => selectGroupById(state, routeId))
@@ -107,7 +109,9 @@ export const MessagePanel: FC<Props> = ({ sendTypingStatus, isRecipientTyping })
           sendMessage={sendMessage}
           sendTypingStatus={sendTypingStatus}
           placeholderName={
-            selectedType === 'group' ? group?.title || 'Group' : recipient?.name || 'user'
+            selectedType === EConversationType.GROUP
+              ? group?.title || 'Group'
+              : recipient?.name || 'user'
           }
         />
 

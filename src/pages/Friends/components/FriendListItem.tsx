@@ -1,11 +1,11 @@
-import React, { FC, useContext } from 'react'
+import React, { FC } from 'react'
 import classNames from 'classnames'
 
-import { AuthContext } from '@/context/AuthContext'
 import { ContextMenuEvent, Friend } from '@/interfaces/chat'
 import { UserAvatar } from '@/components/users/UserAvatar'
 import EllipseVerticalIcon from '@/assets/icons/ellipsis-vertical.svg'
 import { Button } from '@/components/Form'
+import { useAppSelector } from '@/store/hook'
 
 type Props = {
   friend: Friend
@@ -14,7 +14,7 @@ type Props = {
 }
 
 export const FriendListItem: FC<Props> = ({ friend, online, onContextMenu }) => {
-  const { user } = useContext(AuthContext)
+  const user = useAppSelector((state) => state.auth)
 
   const friendUserInstance = user?.id === friend.sender.id ? friend.receiver : friend.sender
 

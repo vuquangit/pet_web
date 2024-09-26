@@ -16,14 +16,14 @@ export const OfflineGroupRecipients: FC<Props> = ({ onlineUsers, group, onUserCo
     .map((user) => (
       <div
         key={user.id}
-        className="my-2.5 flex items-center gap-2.5 text-[18px] font-medium opacity-20"
+        className="my-2.5 flex items-center gap-2.5 text-[18px] font-medium"
         onContextMenu={(e) => onUserContextMenu(e, user)}
       >
         <div className="flex items-center gap-[14px] dark:text-white">
           <UserAvatar user={user} />
-          <span>{user.name}</span>
+          <span className="text-[#000] dark:text-white">{user.name}</span>
         </div>
 
-        {user.id === group?.owner.id && <CrowIcon className="fill-[#ffbf00]" />}
+        {user.id === group?.owner.id && <CrowIcon className="h-6 fill-[#ffbf00]" />}
       </div>
     ))

@@ -55,7 +55,7 @@ export const UserSidebarItem: FC<Props> = ({ item }) => {
         )}
       </div>
 
-      <span className="hidden flex-1 text-[#f5f5f5] xl:block">{item.title}</span>
+      <span className="hidden flex-1 dark:text-[#f5f5f5] xl:block">{item.title}</span>
 
       {item.id === 'friends' && friendRequests.length > 0 && (
         <div className="absolute right-1 top-0.5 flex items-center justify-center bg-[#ff3535] text-[10px]">

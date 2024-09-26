@@ -63,18 +63,19 @@ export const GroupRecipientsSidebar = () => {
   }
 
   return (
-    <aside className="flex h-full w-[350px] flex-auto flex-col bg-[#111]">
+    <aside className="flex h-full w-[350px] flex-auto flex-col">
       <div className="flex h-[90px] w-full flex-shrink-0 items-center gap-[20px] border-b border-solid border-[#49494925] px-8 py-2.5">
         <span className="text-[20px] font-medium">Participants</span>
       </div>
-      <div className="min-h-0 flex-auto overflow-y-auto pl-8 pt-8 text-[#000] scrollbar-none">
-        <span>Online Users</span>
+      <div className="min-h-0 flex-auto overflow-y-auto p-2 text-[#000] scrollbar-none dark:text-white">
+        <p className="text-[#000] dark:text-white">Online Users</p>
         <OnlineGroupRecipients
           users={onlineUsers}
           group={group}
           onUserContextMenu={onUserContextMenu}
         />
-        <span>Offline Users</span>
+
+        <p className="text-[#000] dark:text-white">Offline Users</p>
         <OfflineGroupRecipients
           onlineUsers={onlineUsers}
           group={group}

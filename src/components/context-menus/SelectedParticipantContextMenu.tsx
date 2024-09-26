@@ -1,19 +1,18 @@
-import React, { FC, useContext } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { FC } from 'react'
+import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-// import { Icon } from 'akar-icons';
+import classNames from 'classnames'
 
-import { AppDispatch, RootState } from '@/store'
-import { removeGroupRecipientThunk, selectGroupById, updateGroupOwnerThunk } from '@/store/group'
-import { AuthContext } from '@/context/AuthContext'
+import { RootState } from '@/store'
+import { selectGroupById } from '@/store/group'
 import { getUserContextMenuIcon, isGroupOwner } from '@/helpers'
-// import { ContextMenu, ContextMenuItem } from '../../utils/styles';
 import { UserContextMenuActionType } from '@/interfaces/chat'
-// import { Person, PersonCross, Crown } from 'akar-icons';
+import useGroups from '@/hooks/useGroup'
+import { useAppSelector } from '@/store/hook'
+
 import PersonKickIcon from '@/assets/icons/person-kick.svg'
 import CrowIcon from '@/assets/icons/crown.svg'
 import PersonIcon from '@/assets/icons/person.svg'
-import classNames from 'classnames'
 
 type Props = {
   points: { x: number; y: number }
@@ -35,27 +34,26 @@ export const CustomIcon: FC<CustomIconProps> = ({ type }) => {
 
 export const SelectedParticipantContextMenu: FC<Props> = ({ points }) => {
   const { id = '' } = useParams()
-  const { user } = useContext(AuthContext)
-  const dispatch = useDispatch<AppDispatch>()
+  const user = useAppSelector((state) => state.auth)
   const selectedUser = useSelector((state: RootState) => state.groupSidebar.selectedUser)
   const group = useSelector((state: RootState) => selectGroupById(state, id))
+  const { removeGroupRecipient, updateGroupOwner } = useGroups()
 
   const kickUser = () => {
     console.log(`Kicking User: ${selectedUser?.id}`)
     console.log(selectedUser)
     if (!selectedUser) return
-    dispatch(
-      removeGroupRecipientThunk({
-        id: id,
-        userId: selectedUser.id,
-      }),
-    )
+
+    removeGroupRecipient({
+      id: id,
+      userId: selectedUser.id,
+    })
   }
 
   const transferGroupOwner = () => {
     console.log(`Transfering Group Owner to ${selectedUser?.id}`)
     if (!selectedUser) return
-    dispatch(updateGroupOwnerThunk({ id: id, newOwnerId: selectedUser.id }))
+    updateGroupOwner({ id: id, newOwnerId: selectedUser.id })
   }
 
   const isOwner = isGroupOwner(user, group)

@@ -1,17 +1,14 @@
 import React, { useState, useRef, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { AppDispatch, RootState } from '../../store'
-import {
-  setIsSavingChanges,
-  setShowEditGroupModal,
-  // updateGroupDetailsThunk,
-} from '@/store/group'
+
+import { AppDispatch, RootState } from '@/store'
+import { setIsSavingChanges, setShowEditGroupModal } from '@/store/group'
 import { useBeforeUnload } from '@/hooks/beforeUnload'
 import { useToast } from '@/hooks/useToast'
 import { Button, InputField } from '@/components/Form'
 import { FormEvent } from '@/interfaces/chat'
 import { GroupAvatarUpload } from '@/components/avatars/GroupAvatarUpload'
-import { updateGroupDetailsThunk } from '@/store/group/groupThunk'
+import useGroups from '@/hooks/useGroup'
 
 export const EditGroupForm = () => {
   const { selectedGroupContextMenu: group, isSavingChanges } = useSelector(
@@ -26,29 +23,33 @@ export const EditGroupForm = () => {
     () => file || group?.title !== newGroupTitle,
     [file, newGroupTitle, group?.title],
   )
+  const { updateGroupDetails } = useGroups()
 
   useBeforeUnload(
     (e) => isStateChanged() && (e.returnValue = 'You have unsaved changes'),
     [isStateChanged],
   )
 
-  const onSubmit = (e: FormEvent) => {
+  const onSubmit = async (e: FormEvent) => {
     e.preventDefault()
     if (!group) throw new Error('Group Undefined')
     const formData = new FormData()
     file && formData.append('avatar', file)
     newGroupTitle && group.title !== newGroupTitle && formData.append('title', newGroupTitle)
+
     dispatch(setIsSavingChanges(true))
-    dispatch(updateGroupDetailsThunk({ id: group.id, data: formData }))
-      .then(() => {
-        dispatch(setShowEditGroupModal(false))
-        success('Group Details Updated!')
-      })
-      .catch((err) => {
-        console.log(err)
-        error('Error Saving Changes. Try again.')
-      })
-      .finally(() => dispatch(setIsSavingChanges(false)))
+
+    try {
+      await updateGroupDetails({ id: group.id, data: formData })
+
+      dispatch(setShowEditGroupModal(false))
+      success('Group Details Updated!')
+    } catch (err) {
+      console.log(err)
+      error('Error Saving Changes. Try again.')
+    } finally {
+      dispatch(setIsSavingChanges(false))
+    }
   }
 
   return (
