@@ -21,7 +21,7 @@ export const FriendListItem: FC<Props> = ({ friend, online, onContextMenu }) => 
   return (
     <div
       className={classNames(
-        ':last:border-b-unset flex cursor-pointer items-center justify-between gap-5 border border-b border-solid border-[#181818] px-3 py-2',
+        ':last:border-b-unset flex cursor-pointer items-center justify-between gap-5 px-3 py-2',
         { ':hover:opacity-80 opacity-20': !online },
       )}
       onContextMenu={(e) => onContextMenu(e, friend)}

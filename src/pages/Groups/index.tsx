@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Outlet, useNavigate, useParams } from 'react-router-dom'
+import { camelizeKeys } from 'humps'
 
 import { ConversationPanel } from '@/components/conversations/ConversationPanel'
 import { ConversationSidebar } from '@/components/sidebars/ConversationSidebar'
@@ -44,15 +45,17 @@ export const GroupPage = () => {
   }, [])
 
   useEffect(() => {
-    socket.on('onGroupMessage', (payload: GroupMessageEventPayload) => {
+    socket.on('onGroupMessage', (payloadRaw: GroupMessageEventPayload) => {
+      const payload = camelizeKeys(payloadRaw) as GroupMessageEventPayload
       console.log('Group Message Received', payload)
       const { group } = payload
       dispatch(addGroupMessage(payload))
       dispatch(updateGroup({ type: UpdateGroupAction.NEW_MESSAGE, group }))
     })
 
-    socket.on('onGroupCreate', (payload: Group) => {
+    socket.on('onGroupCreate', (payloadRaw: Group) => {
       console.log('Group Created...')
+      const payload = camelizeKeys(payloadRaw) as Group
       dispatch(addGroup(payload))
     })
 
@@ -60,8 +63,9 @@ export const GroupPage = () => {
      * Adds the group for the user being added
      * to the group.
      */
-    socket.on('onGroupUserAdd', (payload: AddGroupUserMessagePayload) => {
+    socket.on('onGroupUserAdd', (payloadRaw: AddGroupUserMessagePayload) => {
       console.log('onGroupUserAdd')
+      const payload = camelizeKeys(payloadRaw) as AddGroupUserMessagePayload
       console.log(payload)
       dispatch(addGroup(payload.group))
     })
@@ -70,17 +74,20 @@ export const GroupPage = () => {
      * Update all other clients in the room
      * so that they can also see the participant
      */
-    socket.on('onGroupReceivedNewUser', ({ group }: AddGroupUserMessagePayload) => {
+    socket.on('onGroupReceivedNewUser', ({ group: groupRaw }: AddGroupUserMessagePayload) => {
       console.log('Received onGroupReceivedNewUser')
+      const group = camelizeKeys(groupRaw) as Group
       dispatch(updateGroup({ group }))
     })
 
-    socket.on('onGroupRecipientRemoved', ({ group }: RemoveGroupUserMessagePayload) => {
+    socket.on('onGroupRecipientRemoved', ({ group: groupRaw }: RemoveGroupUserMessagePayload) => {
       console.log('onGroupRecipientRemoved')
+      const group = camelizeKeys(groupRaw) as Group
       dispatch(updateGroup({ group }))
     })
 
-    socket.on('onGroupRemoved', (payload: RemoveGroupUserMessagePayload) => {
+    socket.on('onGroupRemoved', (payloadRaw: RemoveGroupUserMessagePayload) => {
+      const payload = camelizeKeys(payloadRaw) as RemoveGroupUserMessagePayload
       dispatch(removeGroup(payload.group))
       if (id && id === payload.group.id) {
         console.log('Navigating User to /groups')
@@ -88,8 +95,10 @@ export const GroupPage = () => {
       }
     })
 
-    socket.on('onGroupParticipantLeft', ({ group, userId }: GroupParticipantLeftPayload) => {
+    socket.on('onGroupParticipantLeft', (payloadRaw: GroupParticipantLeftPayload) => {
       console.log('onGroupParticipantLeft received')
+      const payload = camelizeKeys(payloadRaw) as GroupParticipantLeftPayload
+      const { group, userId } = payload
       dispatch(updateGroup({ group }))
       if (userId === user?.id) {
         console.log('payload.userId matches user.id...')
@@ -98,8 +107,9 @@ export const GroupPage = () => {
       }
     })
 
-    socket.on('onGroupOwnerUpdate', (group: Group) => {
+    socket.on('onGroupOwnerUpdate', (groupRaw: Group) => {
       console.log('received onGroupOwnerUpdate')
+      const group = camelizeKeys(groupRaw) as Group
       dispatch(updateGroup({ group }))
     })
 

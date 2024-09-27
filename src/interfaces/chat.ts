@@ -169,7 +169,7 @@ export type CreateGroupParams = {
 export type AddGroupRecipientParams = {
   id: string
   // username: string;
-  userId: string
+  add_user_id: string
 }
 
 export type RemoveGroupRecipientParams = {

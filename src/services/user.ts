@@ -11,14 +11,14 @@ export const userApi = createApi({
   endpoints: (builder) => ({
     search: builder.query<IBaseResponse<User[]>, string>({
       query: (query) => ({
-        url: `/users/search?query=${query}`,
+        url: `/user/search?query=${query}`,
         method: 'GET',
       }),
     }),
 
     updateStatusMessage: builder.mutation<IBaseResponse<any>, UpdateStatusParams>({
       query: (data) => ({
-        url: '/users/presence/status',
+        url: '/user/presence/status',
         method: 'PATCH',
         body: data,
       }),

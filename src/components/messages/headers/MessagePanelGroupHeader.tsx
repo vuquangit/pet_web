@@ -25,19 +25,19 @@ export const MessagePanelGroupHeader = () => {
           setShowModal={setShowModal}
         />
       )}
-      <header className="flex w-full flex-shrink-0 items-center justify-between border-b border-solid bg-[#49494925] px-8 py-2.5">
+      <header className="flex w-full flex-shrink-0 items-center justify-between border-b border-solid border-[#dbdbdb] bg-[#49494925] px-8 py-2.5 dark:border-[#262626]">
         <div>
           <span>{group?.title || 'Group'}</span>
         </div>
         <div className="flex items-center gap-5">
           {user?.id === group?.owner?.id && (
             <UserPlus
-              className="h-8 cursor-pointer"
+              className="h-6 cursor-pointer"
               onClick={() => setShowModal(true)}
             />
           )}
           <PeopleGroup
-            className="h-8 cursor-pointer"
+            className="h-6 cursor-pointer"
             onClick={() => dispatch(toggleSidebar())}
           />
         </div>

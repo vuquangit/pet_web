@@ -114,7 +114,7 @@ export const MessageContainer: FC<Props> = ({ isRecipientTyping, recipient }) =>
 
   return (
     <div
-      className="flex h-full flex-col-reverse gap-1.5 overflow-y-scroll px-5 py-2.5"
+      className="scrollbar-custom flex h-full flex-col-reverse gap-1.5 overflow-y-scroll px-5 py-2.5"
       onScroll={(e) => {
         const node = e.target as HTMLDivElement
         const scrollTopMax = node.scrollHeight - node.clientHeight

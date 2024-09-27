@@ -7,7 +7,7 @@ import { FriendsPage } from './FriendsPage'
 export const FriendsLayoutPage = () => {
   const { pathname } = useLocation()
   return (
-    <div className="h-full w-full bg-[#101010]">
+    <div className="h-full w-full">
       <FriendPageNavbar />
       {pathname === '/friends' && <FriendsPage />}
       <Outlet />

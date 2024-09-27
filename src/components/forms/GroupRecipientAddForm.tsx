@@ -11,39 +11,33 @@ export const GroupRecipientAddForm = () => {
 
   const [addGroupRecipient] = useAddGroupRecipientMutation()
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    addGroupRecipient({ id: groupId, userId: username })
-      .then(({ data }) => {
-        console.log(data)
-        success('Recipient Added to Group')
-        setUsername('')
-      })
-      .catch((err) => {
-        console.log(err)
-        error('Failed to add user')
-      })
+
+    try {
+      await addGroupRecipient({ id: groupId, add_user_id: username })
+
+      success('Recipient Added to Group')
+      setUsername('')
+    } catch (err) {
+      console.log(err)
+      error('Failed to add user')
+    }
   }
 
   return (
     <form
-      className="flex gap-5 pb-2.5"
+      className="flex items-end gap-5 pb-2.5"
       onSubmit={onSubmit}
     >
-      {/* <InputContainer backgroundColor="#161616">
-        <InputLabel>Recipient</InputLabel>
-        <InputField
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-      </InputContainer> */}
       <InputField
         label="Recipient (UserId)"
         value={username}
         onChange={setUsername}
       />
       <Button
-        className="my-2.5"
+        type="submit"
+        className=""
         disabled={!username}
       >
         Add Recipient

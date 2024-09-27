@@ -24,5 +24,7 @@ export const ModalContainer: FC<PropsWithChildren & ModalContainerProps> = ({
   showModal,
 }) => {
   console.log(`showModal: ${showModal}`)
-  return <div className="relative w-[650px] rounded-[10px] bg-[#121212]">{children}</div>
+  return (
+    <div className="relative w-[650px] rounded-[10px] bg-white dark:bg-[#1f1f1f]">{children}</div>
+  )
 }

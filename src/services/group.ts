@@ -55,7 +55,7 @@ export const groupApi = createApi({
 
     searchUsers: builder.query<IBaseResponse<User[]>, string>({
       query: (query) => ({
-        url: `/users/search?query=${query}`,
+        url: `/user/search?query=${query}`,
         method: 'GET',
       }),
     }),
@@ -87,10 +87,10 @@ export const groupApi = createApi({
     }),
 
     addGroupRecipient: builder.mutation<IBaseResponse<any>, AddGroupRecipientParams>({
-      query: ({ id, userId }) => ({
+      query: ({ id, add_user_id }) => ({
         url: `/groups/${id}/recipients`,
         method: 'POST',
-        body: { userId },
+        body: { add_user_id },
       }),
     }),
 

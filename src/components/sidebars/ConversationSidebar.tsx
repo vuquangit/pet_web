@@ -88,7 +88,7 @@ export const ConversationSidebar = () => {
       {showModal && conversationType === 'group' && (
         <CreateGroupModal setShowModal={setShowModal} />
       )}
-      <div className="md:w-[calc(100% - 80px)] flex h-full w-[400px] flex-auto-0 flex-col bg-white dark:bg-[#111111]">
+      <div className="md:w-[calc(100% - 80px)] flex h-full w-[400px] flex-auto-0 flex-col border-r border-solid border-[#dbdbdb] bg-white dark:border-[#262626] dark:bg-[#111111]">
         <header className="flex h-[90px] flex-shrink-0 items-center gap-5 border-b border-solid border-[#49494925] px-2.5 py-8">
           <input
             className="w-full rounded-[5px] border-none bg-[#ececec] px-4 py-2.5 text-sm text-[#000] outline-none"

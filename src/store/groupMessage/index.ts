@@ -39,8 +39,7 @@ export const groupMessagesSlice = createSlice({
     setGroupMessage: (state, action: PayloadAction<FetchGroupMessagePayload>) => {
       const data = action.payload
       const { id } = data
-      console.log('fetchGroupMessagesThunk.fulfilled')
-      console.log(data)
+      console.log('setGroupMessage', data)
 
       const index = state.messages.findIndex((gm) => gm.id === id)
       const exists = state.messages.find((gm) => gm.id === id)
