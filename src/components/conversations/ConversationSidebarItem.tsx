@@ -27,7 +27,7 @@ export const ConversationSidebarItem: React.FC<Props> = ({ conversation }) => {
     return null
   }
 
-  const hasProfilePicture = () => recipient?.profile?.avatar
+  const hasProfilePicture = () => recipient?.avatarUrl
 
   return (
     <div
@@ -38,11 +38,7 @@ export const ConversationSidebarItem: React.FC<Props> = ({ conversation }) => {
       onClick={() => navigate(`/conversations/${conversation.id}`)}
     >
       <img
-        src={
-          hasProfilePicture()
-            ? CDN_URL.BASE.concat(recipient?.profile?.avatar || '')
-            : defaultAvatar
-        }
+        src={hasProfilePicture() ? CDN_URL.BASE.concat(recipient?.avatarUrl || '') : defaultAvatar}
         alt="avatar"
         className="bg-[rgb(49, 100, 255)] h-[56px] w-[56px] rounded-[50%]"
       />

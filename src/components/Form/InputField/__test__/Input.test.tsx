@@ -1,3 +1,4 @@
+/* eslint-disable jest/no-commented-out-tests */
 import React from 'react'
 import { render } from '@/tests/unit/utils'
 import { describe, expect, it } from '@jest/globals'

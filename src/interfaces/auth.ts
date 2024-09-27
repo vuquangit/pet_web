@@ -17,10 +17,11 @@ export interface IAuthMe {
   email: string
   role: ERoles
   username: string
-  peer_id: string
+  peerId: string
   peer: any // TODO: add peer interface
-  presence_id: string
+  presenceId: string
   presence: any // TODO: add presence interface
+  avatarUrl: string
 }
 
 export interface IAuthResetPasswordRequest {
