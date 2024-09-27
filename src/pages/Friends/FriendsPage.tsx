@@ -41,8 +41,7 @@ export const FriendsPage = () => {
 
   useEffect(() => {
     socket.on('getOnlineFriends', (friends: Friend[]) => {
-      console.log('received online friends')
-      console.log(friends)
+      console.log('received online friends', friends)
       dispatch(setOnlineFriends(friends))
       dispatch(setOfflineFriends())
     })

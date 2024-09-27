@@ -14,7 +14,7 @@ export function HomePage() {
 
   return (
     <div
-      className="App"
+      className="App flex-1"
       data-cy="home-page"
     >
       <div className="App-header">

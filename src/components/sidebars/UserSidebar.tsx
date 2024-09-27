@@ -31,8 +31,8 @@ export const UserSidebar = () => {
     <>
       {showModal && <UpdatePresenceStatusModal setShowModal={setShowModal} />}
 
-      <div className="flex h-full w-full max-w-[72px] flex-col items-center overflow-y-scroll border-r border-solid border-[#dbdbdb] px-3 pb-5 pt-2 scrollbar-none dark:border-[#262626] xl:max-w-[244px]">
-        <div className="mb-6 mt-3 flex w-full items-center justify-center p-3 xl:justify-start">
+      <div className="flex h-[50px] w-full flex-row items-center overflow-y-scroll border-t border-solid border-[#dbdbdb] scrollbar-none dark:border-[#262626] md:h-full md:max-w-[72px] md:flex-col md:border-r md:px-3 md:pb-5 md:pt-2 xl:max-w-[244px]">
+        <div className="mb-6 mt-3 hidden w-full items-center justify-center p-3 md:flex xl:justify-start">
           <Link
             to={ROUTER_NAMES.HOME}
             className="flex items-center gap-4"
@@ -44,7 +44,7 @@ export const UserSidebar = () => {
           </Link>
         </div>
 
-        <div className="flex w-full flex-1 flex-col items-start">
+        <div className="flex w-full flex-1 justify-evenly md:flex-col md:justify-start">
           {userSidebarItems.map((item) => (
             <UserSidebarItem
               key={item.id}
@@ -64,7 +64,7 @@ export const UserSidebar = () => {
           />
         </div>
 
-        <div className="flex w-full flex-col items-center gap-3 py-[18px]">
+        <div className="hidden w-full items-center gap-3 py-[18px] md:flex md:flex-col">
           <div className="p-3">
             <ThemeSwitch />
           </div>

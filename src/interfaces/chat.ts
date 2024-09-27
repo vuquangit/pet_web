@@ -247,6 +247,7 @@ export type UserSidebarRouteType =
   | 'settings'
   | 'calls'
   | 'profile'
+  | 'home'
 
 export type UserSidebarItemType = {
   id: UserSidebarRouteType

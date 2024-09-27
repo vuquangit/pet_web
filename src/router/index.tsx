@@ -198,6 +198,32 @@ const protectedRoutes: RouteApp[] = [
     ],
   },
 
+  // Profile page
+  {
+    path: ROUTER_NAMES.PROFILE,
+    async lazy() {
+      const { ProfilePage } = await import('../pages/Profile')
+      return { Component: ProfilePage }
+    },
+    loader: () => {
+      setTitlePage('Profile')
+      return null
+    },
+    children: [
+      {
+        path: ':id',
+        async lazy() {
+          const { ProfilePage } = await import('../pages/Profile')
+          return { Component: ProfilePage }
+        },
+        loader: () => {
+          setTitlePage('Profile')
+          return null
+        },
+      },
+    ],
+  },
+
   // ...other protected routes
 ]
 

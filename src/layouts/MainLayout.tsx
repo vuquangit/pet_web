@@ -9,7 +9,7 @@ function MainLayout() {
   return (
     <AppPage>
       {/* <Header /> */}
-      <div className="flex h-full w-full">
+      <div className="flex h-full w-full flex-col-reverse md:flex-row">
         <UserSidebar />
         <Outlet />
       </div>

@@ -29,7 +29,7 @@ export const CallReceiveDialog = () => {
   }
   return (
     <div className="absolute left-1/2 top-1/2 z-[999999] flex w-[250px] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-between gap-8 rounded-[10px] bg-[#1f1f1f] py-6 py-8 text-white">
-      <UserAvatar user={caller!} />
+      <UserAvatar user={caller} />
       <div className="align-center">
         <span>
           {caller!.name} wants to {callType === 'audio' ? 'voice' : 'video'} call you

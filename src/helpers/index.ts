@@ -23,6 +23,7 @@ import LockIcon from '@/assets/icons/lock.svg'
 import BellIcon from '@/assets/icons/bell.svg'
 import InfiniteIcon from '@/assets/icons/infinity.svg'
 import PaletteIcon from '@/assets/icons/palette.svg'
+import HouseIcon from '@/assets/icons/house.svg'
 import { IAuthMe } from '@/interfaces/auth'
 
 export const getRecipientFromConversation = (
@@ -47,6 +48,8 @@ export const isGroupOwner = (user?: User | IAuthMe, group?: Group) => user?.id =
 
 export const getUserSidebarIcon = (id: UserSidebarRouteType) => {
   switch (id) {
+    case 'home':
+      return HouseIcon
     case 'conversations':
       return CommentDotsIcon
     case 'friends':

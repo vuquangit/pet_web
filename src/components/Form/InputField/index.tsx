@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import className from 'classnames'
 
 import EyeIcon from '@/assets/icons/eye.svg'
+import classNames from 'classnames'
 
 interface PropType {
   /**
@@ -41,15 +42,32 @@ interface PropType {
    */
   disabled?: boolean
   /**
+   * Read only
+   */
+  readOnly?: boolean
+  /**
    * Event input change
    * @param value
    * @returns
    */
   onChange?: (value: string) => void
+  classNameWrapper?: string
+  classNameLabel?: string
+  classNameInput?: string
 }
 
 const InputField: React.FC<PropType> = (props) => {
-  const { name, label, type, dataCy, onChange, ...restProps } = props
+  const {
+    name,
+    label,
+    type,
+    dataCy,
+    onChange,
+    classNameWrapper,
+    classNameLabel,
+    classNameInput,
+    ...restProps
+  } = props
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false)
 
   const inputWrapperClass = className('relative', { 'mt-2': label })
@@ -57,6 +75,15 @@ const InputField: React.FC<PropType> = (props) => {
     'fill-gray-400 ': !isShowPassword,
     'fill-gray-900': isShowPassword,
   })
+  const inputClass = className(
+    'input-default',
+    {
+      'input-error': restProps?.required,
+      'bg-light-100 dark:bg-dark-100 text-light-200 dark:text-dark-200 border-light-100 dark:border-dark-100 cursor-not-allowed !shadow-[none]':
+        props.readOnly,
+    },
+    classNameInput,
+  )
 
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!onChange) return
@@ -64,10 +91,10 @@ const InputField: React.FC<PropType> = (props) => {
   }
 
   return (
-    <div>
+    <div className={classNameWrapper}>
       <label
         htmlFor={name}
-        className="block text-sm font-medium leading-6"
+        className={classNames('block text-sm font-medium leading-6', classNameLabel)}
       >
         {label}
       </label>
@@ -77,7 +104,7 @@ const InputField: React.FC<PropType> = (props) => {
           id={name}
           name={name}
           type={isShowPassword ? 'text' : type || 'text'}
-          className="input-default"
+          className={inputClass}
           onChange={onInputChange}
           data-cy={dataCy}
           {...restProps}

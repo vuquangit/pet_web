@@ -59,6 +59,11 @@ export const settingsItems: SettingsItemType[] = [
 
 export const userSidebarItems: UserSidebarItemType[] = [
   {
+    id: 'home',
+    pathname: '/',
+    title: 'Home',
+  },
+  {
     id: 'conversations',
     pathname: '/conversations',
     title: 'Messages',

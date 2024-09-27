@@ -21,14 +21,14 @@ export const UserSidebarItem: FC<Props> = ({ item }) => {
 
   const isActive = () => {
     if (pathname.includes('/groups') && item.id === 'conversations') return true
-    return pathname.includes(item.pathname)
+    return pathname === item.pathname
   }
 
   return (
     <Link
       to={item.pathname}
       className={classNames(
-        'relative my-1 flex w-full gap-4 rounded-[8px] p-3 hover:bg-[rgba(255,255,255,0.1)]',
+        'relative my-1 flex gap-4 rounded-[8px] p-3 hover:bg-[rgba(255,255,255,0.1)] md:w-full',
         {
           'border border-solid border-[#5d5d5d] dark:border-[#2e2e2e]': isActive(),
         },
