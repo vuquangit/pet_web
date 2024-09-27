@@ -29,16 +29,7 @@ export type UserPeer = {
   id: string
 }
 
-export type User = {
-  id: string
-  username: string
-  email: string
-  // firstName: string
-  lastName: string
-  profile?: Profile
-  presence?: UserPresence
-  peer: UserPeer
-} & IAuthMe
+export type User = IAuthMe
 
 export type Conversation = {
   id: string
