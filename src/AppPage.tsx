@@ -44,9 +44,9 @@ export const AppPage: React.FC<AppPageProps> = ({ children }) => {
   }, [dispatch])
 
   useEffect(() => {
-    if (!user || !user.peer_id) return
+    if (!user || !user.peerId) return
 
-    const newPeer = new Peer(user.peer_id, {
+    const newPeer = new Peer(user.peerId, {
       config: {
         iceServers: [
           {
