@@ -112,7 +112,7 @@ const InputField: React.FC<PropType> = (props) => {
         {type === 'password' && (
           <button
             type="button"
-            className="absolute right-0 top-1/2 h-full -translate-y-1/2 px-3"
+            className="absolute right-0 h-full px-3 -translate-y-1/2 top-1/2"
             onClick={() => setIsShowPassword(!isShowPassword)}
           >
             <EyeIcon className={eyeClass} />
