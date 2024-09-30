@@ -10,6 +10,7 @@ const accessToken = StorageService.get(storageKeys.AUTH_PROFILE)?.accessToken ||
 console.log('APP_WEBSOCKET_URL:', APP_WEBSOCKET_URL)
 
 export const socket = io(APP_WEBSOCKET_URL, {
+  transports: ['websocket', 'polling'],
   withCredentials: true,
   extraHeaders: {
     Authorization: `Bearer ${accessToken}`,
