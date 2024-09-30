@@ -9,7 +9,7 @@ type Props = {
 
 export const RecipientResultContainer: FC<Props> = ({ userResults, handleUserSelect }) => {
   return (
-    <div className="r-0 l-0 absolute mx-[24px] my-1 bg-[#161616]">
+    <div className="r-0 l-0 absolute z-10 mx-[24px] my-1 bg-[#161616]">
       <div className="max-h-[200px] overflow-auto scrollbar-none">
         {userResults.map((user) => (
           <div
@@ -18,6 +18,8 @@ export const RecipientResultContainer: FC<Props> = ({ userResults, handleUserSel
             onClick={() => handleUserSelect(user)}
           >
             <span>{user?.name || ''}</span>
+
+            {user?.username && <span>@{user?.username || ''}</span>}
           </div>
         ))}
       </div>

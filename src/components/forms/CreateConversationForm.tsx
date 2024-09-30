@@ -11,6 +11,7 @@ import { Button, InputField } from '@/components/Form'
 import { User } from '@/interfaces/chat'
 import useConversations from '@/hooks/useConversations'
 import { useToast } from '@/hooks/useToast'
+import { useDebounce } from '@/hooks/useDebounce'
 
 type Props = {
   setShowModal: Dispatch<React.SetStateAction<boolean>>
@@ -23,7 +24,7 @@ export const CreateConversationForm: FC<Props> = ({ setShowModal }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [searching, setSearching] = useState(false)
   const [message, setMessage] = useState('')
-  // const debouncedQuery = useDebounce(query, 1000);
+  const debouncedQuery = useDebounce(query, 1000)
   // const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
   const [searchUsers] = useLazySearchQuery()
@@ -32,31 +33,40 @@ export const CreateConversationForm: FC<Props> = ({ setShowModal }) => {
   const { error } = useToast({ theme: 'dark' })
 
   useEffect(() => {
-    if (query) {
+    if (debouncedQuery) {
       ;(async () => {
-        setSearching(true)
-        const { result } = await searchUsers(query).unwrap()
-        const resultData = result?.data || []
-        setUserResults(resultData)
-        setSearching(false)
+        try {
+          setSearching(true)
+          const { result } = await searchUsers(query).unwrap()
+          const resultData = result?.data || []
+          setUserResults(resultData)
+        } catch (error) {
+          console.log(error)
+        } finally {
+          setSearching(false)
+        }
       })()
     }
-  }, [query])
+  }, [debouncedQuery])
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    console.log('onSubmit', message, selectedUser)
     e.preventDefault()
     if (!message || !selectedUser) return
 
-    const data = await createConversation({ userId: selectedUser.id, message })
-    console.log(data)
-    console.log('done')
-    setShowModal(false)
-    const conversationId = data?.id
-    if (!conversationId) {
-      error('Conversation id not found')
-      return
+    try {
+      const data = await createConversation({ userId: selectedUser.id, message })
+
+      setShowModal(false)
+      const conversationId = data?.id
+      if (!conversationId) {
+        error('Conversation id not found')
+        return
+      }
+      navigate(`/conversations/${conversationId}`)
+    } catch (error) {
+      console.log('onSubmit conversation error', error)
     }
-    navigate(`/conversations/${conversationId}`)
   }
 
   const handleUserSelect = (user: User) => {
