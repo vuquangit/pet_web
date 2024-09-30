@@ -127,7 +127,6 @@ const handleNotification = (api: BaseQueryApi, result: any) => {
   if (pathname !== navigateTo && navigateTo) {
     console.log('redirect:::', `${window.location.origin}${navigateTo}`)
     // eslint-disable-next-line no-debugger
-    debugger
     window.location.href = `${window.location.origin}${navigateTo}`
   }
 }

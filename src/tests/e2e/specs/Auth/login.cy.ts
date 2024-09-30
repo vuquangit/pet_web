@@ -19,6 +19,9 @@ describe('Login Page', () => {
 
   it('input empty', () => {
     cy.visit('/auth/login')
+    cy.get('[data-cy=email]').clear()
+    cy.get('[data-cy=password]').clear()
+
     // cy.getByCy('login-submit').click()
     cy.get('[data-cy=login-submit]').should('be.disabled')
   })
