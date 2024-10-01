@@ -100,6 +100,7 @@ jobs:
           cp .env.development.sample .env.development
           echo APP_API_ENDPOINT=${{ secrets.APP_API_ENDPOINT_DEV }} >> .env.development
           echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> .env.development
+          echo APP_WEBSOCKET_URL=${{ secrets.APP_WEBSOCKET_URL_DEV }} >> .env.development
 
       - name: Install Vercel CLI
         run: yarn global add vercel@latest

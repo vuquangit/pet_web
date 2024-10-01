@@ -10,7 +10,7 @@ exports[`HomePage tests renders the component 1`] = `
       class="App-header"
     >
       <svg
-        class="App-logo"
+        class="App-logo mb-10 fill-gray-800 dark:fill-white"
         data-file-name="SvgLogo"
       />
       <p>

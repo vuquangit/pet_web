@@ -2,8 +2,8 @@ name: CI/CD PRODUCTION
 
 on:
   push:
-      branches:
-          - main
+    branches:
+      - main
 
 env:
   NODE_VERSION: 20
@@ -56,13 +56,13 @@ jobs:
         if: steps.cypress.outcome == 'failure'
         uses: rtCamp/action-slack-notify@v2
         env:
-          SLACK_CHANNEL:  pet-bots
-          SLACK_COLOR:    '#ff0000'
-          SLACK_ICON:     https://www.petisland.icu/favicon.ico
-          SLACK_MESSAGE:  ${{ env.fe_failed_message }}
-          SLACK_TITLE:    CI Message
+          SLACK_CHANNEL: pet-bots
+          SLACK_COLOR: '#ff0000'
+          SLACK_ICON: https://www.petisland.icu/favicon.ico
+          SLACK_MESSAGE: ${{ env.fe_failed_message }}
+          SLACK_TITLE: CI Message
           SLACK_USERNAME: Pet NEWS - Github Action
-          SLACK_WEBHOOK:  ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
 
       # Break CI pipeline when error occur
       - name: Exit if fail
@@ -83,6 +83,7 @@ jobs:
           cp .env.production.sample .env.production
           echo APP_API_ENDPOINT=${{ secrets.APP_API_ENDPOINT }} >> .env.production
           echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> .env.production
+          echo APP_WEBSOCKET_URL=${{ secrets.APP_WEBSOCKET_URL }} >> .env.production
 
       - name: Install Vercel CLI
         run: yarn global add vercel@latest
@@ -116,10 +117,10 @@ jobs:
         if: always()
         uses: rtCamp/action-slack-notify@v2
         env:
-          SLACK_CHANNEL:  pet-bots
-          SLACK_COLOR:    ${{ env.message_color }}
-          SLACK_ICON:     https://www.petisland.icu/favicon.ico
-          SLACK_MESSAGE:  ${{ env.message }}
-          SLACK_TITLE:    CD Message
+          SLACK_CHANNEL: pet-bots
+          SLACK_COLOR: ${{ env.message_color }}
+          SLACK_ICON: https://www.petisland.icu/favicon.ico
+          SLACK_MESSAGE: ${{ env.message }}
+          SLACK_TITLE: CD Message
           SLACK_USERNAME: Pet NEWS - Github Action
-          SLACK_WEBHOOK:  ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}

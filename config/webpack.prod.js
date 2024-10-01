@@ -59,6 +59,7 @@ module.exports = merge(common('production'), {
       new JsonMinimizerPlugin(),
       // This is only used in production mode, minify your JavaScript.
       new TerserPlugin({
+        parallel: true, // Enables multi-threaded JS minification
         terserOptions: {
           parse: {
             ecma: 8,
@@ -68,6 +69,7 @@ module.exports = merge(common('production'), {
             warnings: false,
             comparisons: false,
             inline: 2,
+            drop_console: true, // Optional: Remove console logs to reduce bundle size
           },
           mangle: {
             safari10: true,
@@ -88,6 +90,8 @@ module.exports = merge(common('production'), {
     splitChunks: {
       chunks: 'all',
       name: false,
+      minSize: 20000, // Minimum size in bytes for a chunk to be generated
+      maxSize: 200000, // Maximum size in bytes before splitting a chunk
     },
 
     // Keep the runtime chunk separated to enable long term caching

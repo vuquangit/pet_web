@@ -1,18 +1,20 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { useNavigate, Link, useSearchParams } from 'react-router-dom'
 import { GoogleOAuthProvider, useGoogleLogin } from '@react-oauth/google'
-
-import { useLoginMutation } from '@/services/auth'
-import { storageKeys } from '@/constants/storage-keys'
-import StorageService from '@/services/local-storage'
-import InputField from '@/components/Form/InputField'
-import GoogleIcon from '@/assets/icons/google.svg'
-import { useLazyOauthGoogleQuery, useLazyOauthLoginQuery } from '@/services/oauth'
 import { toast } from 'react-toastify'
+import { get } from 'lodash'
+
+import InputField from '@/components/Form/InputField'
+import { Button } from '@/components/Form'
+import { useLazyOauthGoogleQuery, useLazyOauthLoginQuery } from '@/services/oauth'
+import { useLoginMutation } from '@/services/auth'
+import GoogleIcon from '@/assets/icons/google.svg'
+import StorageService from '@/services/local-storage'
+import { storageKeys } from '@/constants/storage-keys'
 import { EXCEPTION_CODE } from '@/constants/errorCode'
 import ERROR_MESSAGES from '@/constants/errorMessage'
-import { get } from 'lodash'
 import useProfile from '@/hooks/useProfile'
+import { SocketContext } from '@/context/SocketContext'
 
 interface Props {
   isLoginGoogle: boolean
@@ -97,18 +99,18 @@ const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({ saveToken }) => {
   return (
     <div className="mt-6">
       <button
-        className="btn-primary flex w-full items-center justify-center gap-2"
+        className="flex items-center justify-center w-full gap-2 btn-primary"
         onClick={() => googleLogin()}
       >
-        <GoogleIcon className="h-4 w-4" />
+        <GoogleIcon className="w-4 h-4" />
         Sign in with Google
       </button>
 
       <button
-        className="btn-primary mt-5 flex w-full items-center justify-center gap-2"
+        className="flex items-center justify-center w-full gap-2 mt-5 btn-primary"
         onClick={() => googleLoginGuard()}
       >
-        <GoogleIcon className="h-4 w-4" />
+        <GoogleIcon className="w-4 h-4" />
         Sign in with Google (Guard)
       </button>
     </div>
@@ -122,9 +124,10 @@ const LoginPage: React.FC<Props> = (props) => {
   const { fetchProfile } = useProfile()
   const navigate = useNavigate()
   const [login, { isLoading }] = useLoginMutation()
+  const socket = useContext(SocketContext)
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState(process.env.EMAIL_INIT || '')
+  const [password, setPassword] = useState(process.env.PASSWORD_INIT || '')
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -144,17 +147,23 @@ const LoginPage: React.FC<Props> = (props) => {
   }
 
   const saveToken = async (tokens: any) => {
+    console.log(socket)
+    console.log(socket.connected)
+
     StorageService.set(storageKeys.AUTH_PROFILE, tokens)
     await fetchProfile()
+
+    socket.connect()
+    console.log(socket.connected)
 
     const path = searchParams.get('from') || '/'
     navigate(path)
   }
 
   return (
-    <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+    <div className="flex flex-col justify-center min-h-full px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight">
+        <h2 className="mt-10 text-2xl font-bold leading-9 tracking-tight text-center">
           Sign in to your account
         </h2>
       </div>
@@ -169,7 +178,7 @@ const LoginPage: React.FC<Props> = (props) => {
             value={email}
             label="Email"
             placeholder="Enter your email"
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={setEmail}
             dataCy="email"
           />
 
@@ -178,7 +187,7 @@ const LoginPage: React.FC<Props> = (props) => {
             value={password}
             label="Password"
             placeholder="Enter your password"
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={setPassword}
             dataCy="password"
           />
 
@@ -188,11 +197,11 @@ const LoginPage: React.FC<Props> = (props) => {
                 id="remember_me"
                 name="remember_me"
                 type="checkbox"
-                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
               />
               <label
                 htmlFor="remember_me"
-                className="ml-2 block text-sm text-gray-900 dark:text-gray-300"
+                className="block ml-2 text-sm text-gray-900 dark:text-gray-300"
               >
                 Remember me
               </label>
@@ -210,14 +219,13 @@ const LoginPage: React.FC<Props> = (props) => {
           </div>
 
           <div className="flex flex-col justify-center gap-5">
-            <button
+            <Button
+              label="Sign in"
               type="submit"
               className="btn-primary"
               disabled={isLoading || !email || !password}
-              data-cy="login-submit"
-            >
-              Sign in
-            </button>
+              dataCy="login-submit"
+            />
           </div>
         </form>
 

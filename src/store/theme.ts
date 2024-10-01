@@ -12,7 +12,7 @@ const initialState: ITheme = {
 }
 
 export const themeSlice = createSlice({
-  name: 'auth',
+  name: 'theme',
   initialState,
   reducers: {
     setTheme: (state, action: PayloadAction<ETheme>) => ({

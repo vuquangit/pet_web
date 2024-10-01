@@ -6,5 +6,11 @@ export const ROUTER_NAMES = Object.freeze({
   LOGOUT: '/logout',
   NOT_FOUND: '/404',
   PROFILE: '/profile',
-  REACT: '/react'
+  CONVERSATIONS: '/conversations',
+  CONVERSATIONS_DETAIL: '/conversations/:id',
+  FRIENDS: '/friends',
+  FRIEND_REQUEST: '/friends/requests',
+  FRIEND_BLOCKED: '/friends/blocked',
+  GROUPS: '/groups',
+  GROUP_DETAIL: '/groups/:id',
 })

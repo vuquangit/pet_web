@@ -5,6 +5,7 @@ import { Provider } from 'react-redux'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { setupStore } from '@/store'
+import { socket, SocketContext } from '@/context/SocketContext'
 
 const store = setupStore()
 
@@ -13,7 +14,9 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <SocketContext.Provider value={socket}>
+        <App />
+      </SocketContext.Provider>
     </Provider>
   </React.StrictMode>,
 )

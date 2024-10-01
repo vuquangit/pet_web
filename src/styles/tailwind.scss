@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 @layer base {
-  .app {
-    @apply bg-white text-black dark:bg-[#161617] dark:text-white;
+  body {
+    @apply bg-white dark:bg-[#000] text-black dark:text-[#f5f5f5];
   }
 }
 
@@ -19,9 +19,23 @@
     @apply btn-default border-none bg-[#334460] text-white;
   }
 
+  .btn-text {
+    @apply btn-default border-none bg-transparent;
+  }
+
   .input-default {
     @apply block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1
       ring-inset ring-gray-300 placeholder:text-gray-400
       focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6;
+  }
+
+  .modal-overlay {
+    @apply h-full w-full bg-[rgba(0,0,0,0.5)] fixed top-0 left-0 z-[9999] flex items-center justify-center;
+  }
+
+  .scrollbar-custom {
+    @apply scrollbar scrollbar-thumb-[#c1c1c1] scrollbar-track-[#fafafa]
+      dark:scrollbar-thumb-[#6b6b6b] dark:scrollbar-track-[#2d2d2d]
+      hover:scrollbar-thumb-sky-500  active:scrollbar-thumb-sky-400;
   }
 }
