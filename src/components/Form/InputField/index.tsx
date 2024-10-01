@@ -2,54 +2,117 @@ import React, { useState } from 'react'
 import className from 'classnames'
 
 import EyeIcon from '@/assets/icons/eye.svg'
+import classNames from 'classnames'
 
 interface PropType {
+  /**
+   * Label input
+   */
   label?: string
-  value: string
+  /**
+   * Value input
+   */
+  value: string | number | readonly string[] | undefined
+  /**
+   * Placeholder
+   */
   placeholder?: string
-  type?: string
+  /**
+   * Type input
+   */
+  type?: React.HTMLInputTypeAttribute | undefined
+  /**
+   * Input name
+   */
   name?: string
+  /**
+   * Autocomplete
+   */
   autoComplete?: string
+  /**
+   * Input require
+   */
   required?: boolean
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
+  /**
+   * Cypress cy
+   */
   dataCy?: string
+  /**
+   * Disable input
+   */
+  disabled?: boolean
+  /**
+   * Read only
+   */
+  readOnly?: boolean
+  /**
+   * Event input change
+   * @param value
+   * @returns
+   */
+  onChange?: (value: string) => void
+  classNameWrapper?: string
+  classNameLabel?: string
+  classNameInput?: string
 }
 
 const InputField: React.FC<PropType> = (props) => {
+  const {
+    name,
+    label,
+    type,
+    dataCy,
+    onChange,
+    classNameWrapper,
+    classNameLabel,
+    classNameInput,
+    ...restProps
+  } = props
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false)
 
-  const inputWrapperClass = className('relative', { 'mt-2': props.label })
+  const inputWrapperClass = className('relative', { 'mt-2': label })
   const eyeClass = className('h-4 w-4', {
     'fill-gray-400 ': !isShowPassword,
     'fill-gray-900': isShowPassword,
   })
+  const inputClass = className(
+    'input-default',
+    {
+      'input-error': restProps?.required,
+      'bg-light-100 dark:bg-dark-100 text-light-200 dark:text-dark-200 border-light-100 dark:border-dark-100 cursor-not-allowed !shadow-[none]':
+        props.readOnly,
+    },
+    classNameInput,
+  )
+
+  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!onChange) return
+    onChange(e.target.value)
+  }
 
   return (
-    <div>
+    <div className={classNameWrapper}>
       <label
-        htmlFor={props.name}
-        className="block text-sm font-medium leading-6"
+        htmlFor={name}
+        className={classNames('block text-sm font-medium leading-6', classNameLabel)}
       >
-        {props.label}
+        {label}
       </label>
 
       <div className={inputWrapperClass}>
         <input
-          id={props.name}
-          name={props.name}
-          type={isShowPassword ? 'text' : props.type || 'text'}
-          autoComplete={props.autoComplete}
-          required={props.required}
-          className="input-default"
-          value={props.value}
-          placeholder={props.placeholder}
-          onChange={props.onChange}
-          data-cy={props.dataCy}
+          id={name}
+          name={name}
+          type={isShowPassword ? 'text' : type || 'text'}
+          className={inputClass}
+          onChange={onInputChange}
+          data-cy={dataCy}
+          {...restProps}
         />
-        {props.type === 'password' && (
+        {type === 'password' && (
           <button
             type="button"
-            className="absolute right-0 top-1/2 h-full -translate-y-1/2 px-3"
+            className="absolute right-0 h-full px-3 -translate-y-1/2 top-1/2"
             onClick={() => setIsShowPassword(!isShowPassword)}
           >
             <EyeIcon className={eyeClass} />

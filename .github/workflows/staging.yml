@@ -78,6 +78,7 @@ jobs:
           cp .env.staging.sample .env.staging
           echo APP_API_ENDPOINT=${{ secrets.APP_API_ENDPOINT_STG }} >> .env.staging
           echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> .env.staging
+          echo APP_WEBSOCKET_URL=${{ secrets.APP_WEBSOCKET_URL }} >> .env.staging
 
       - name: Install Vercel CLI
         run: yarn global add vercel@latest

@@ -1,6 +1,6 @@
 import { ERoles } from '@/enums/roles'
 
-describe('HomePage', function () {
+describe('Home Page Test', function () {
   beforeEach(function () {
     cy.skipLogin(ERoles.SUPER_ADMIN)
     cy.visit('/')

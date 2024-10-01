@@ -4,7 +4,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { useResetPasswordMutation } from '@/services/auth'
 import { toast } from 'react-toastify'
 import LoadingPage from '@/components/LoadingPage'
-import InputField from '@/components/Form/InputField'
+import { Button, InputField } from '@/components/Form'
 
 export function Component() {
   const [resetPassword, { isLoading }] = useResetPasswordMutation()
@@ -50,7 +50,7 @@ export function Component() {
               value={password}
               label="New password"
               placeholder="Enter new password"
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={setPassword}
             />
 
             <InputField
@@ -58,18 +58,18 @@ export function Component() {
               value={confirmPassword}
               label="Confirm password"
               placeholder="Confirm new password"
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              onChange={setConfirmPassword}
             />
 
             <div className="flex flex-col justify-center gap-5">
-              <button
+              <Button
                 type="submit"
                 className="btn-primary"
                 disabled={isLoading || !password || password !== confirmPassword}
                 data-cy="login-submit"
               >
                 Change Password
-              </button>
+              </Button>
             </div>
           </form>
         ) : (
@@ -82,12 +82,10 @@ export function Component() {
               to="/auth/login"
               className="text-center text-sm text-gray-500"
             >
-              <button
-                type="button"
+              <Button
+                label="Back to login"
                 className="btn-primary"
-              >
-                Back to login
-              </button>
+              />
             </Link>
           </div>
         )}

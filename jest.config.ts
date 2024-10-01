@@ -15,7 +15,7 @@ const config: JestConfigWithTsJest = {
     '!**/node_modules/**',
   ],
   coverageDirectory: 'coverage',
-  testEnvironment: 'jest-environment-jsdom',
+  testEnvironment: 'jsdom',
   setupFilesAfterEnv: ['@testing-library/jest-dom', './src/tests/unit/jest.setup.ts'],
   moduleDirectories: ['node_modules', '<rootDir>/src/'],
   moduleNameMapper: {

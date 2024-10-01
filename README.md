@@ -26,3 +26,14 @@ Builds the app for production to the `build` folder.
 ```
   node: v20
 ```
+
+<br><br><br>
+
+## Deploy using GitAction
+- Add ENV to /settings/secrets/actions -> Repository secrets
+- .github -> Copy env from secrets to .env... file (dev, staging, production)
+```
+  cp .env.development.sample .env.development
+  echo APP_API_ENDPOINT=${{ secrets.APP_API_ENDPOINT_DEV }} >> .env.development
+  echo ...
+```

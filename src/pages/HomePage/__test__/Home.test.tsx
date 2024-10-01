@@ -1,10 +1,11 @@
 import React from 'react'
 import { HomePage } from '../index'
-import { renderWithProviders } from '@/tests/unit/utils'
+import { render } from '@/tests/unit/utils'
+import { describe, expect, it } from '@jest/globals'
 
 describe('HomePage tests', () => {
   it('renders the component', () => {
-    const { asFragment, container } = renderWithProviders(<HomePage />)
+    const { asFragment, container } = render(<HomePage />)
 
     const loadingClass = container.getElementsByClassName('App')
     expect(loadingClass.length).toBe(1)

@@ -1,7 +1,7 @@
 import React from 'react'
 import LogoIcon from '@/assets/icons/logo.svg'
 
-const LoadingPage = () => {
+const LoadingPage: React.FC = () => {
   return (
     <div className="fixed left-0 top-0 flex h-[100vh] w-full items-center justify-center text-gray-900 opacity-90 dark:bg-gray-950 dark:text-gray-100">
       <div className="flex flex-row items-end gap-3">

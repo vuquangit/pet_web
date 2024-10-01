@@ -34,6 +34,7 @@
     "prettier",
     "plugin:react/recommended",
     "plugin:jest/recommended",
+    "plugin:jest-dom/recommended",
     "plugin:cypress/recommended"
   ],
   "plugins": [
@@ -41,7 +42,8 @@
     "@typescript-eslint",
     "prettier",
     "jest",
-    "cypress"
+    "cypress",
+    "jest-dom"
   ],
   "rules": {
     "react-hooks/rules-of-hooks": "error",
@@ -59,6 +61,10 @@
     "jest/expect-expect": "off",
     "jest/valid-expect": "off",
     "jest/no-export": "off",
+    "jest-dom/prefer-checked": "error",
+    "jest-dom/prefer-enabled-disabled": "error",
+    "jest-dom/prefer-required": "error",
+    "jest-dom/prefer-to-have-attribute": "error",
 
     "cypress/no-assigning-return-values": "error",
     "cypress/no-unnecessary-waiting": "error",

@@ -1,5 +1,5 @@
 import { ERoles } from '@/enums/roles'
-import {} from 'cypress/react'
+import { mount } from 'cypress/react'
 
 // import { MountOptions, MountReturn } from 'cypress/react'
 // import { EnhancedStore } from '@reduxjs/toolkit'
@@ -18,8 +18,8 @@ declare global {
       mount(
         component: React.ReactElement,
         // options?: MountOptions & { reduxStore?: EnhancedStore<RootState> }
-        options: unknown
-      ): unknown
+        options: unknown,
+      ): typeof mount
 
       /** Yields elements with a data-cy attribute that matches a specified selector.
        * ```

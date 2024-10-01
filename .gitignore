@@ -37,3 +37,7 @@ coverage-cy
 # cypress.env.json
 
 .vercel
+
+*storybook.log
+
+/config/.webpack-cache/
