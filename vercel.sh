@@ -1,7 +1,5 @@
 #!/bin/bash
 
-VERCEL_ENV="staging"
-
 echo Deploying to: $VERCEL_ENV
 
 if [ $VERCEL_ENV = "production" ]; then

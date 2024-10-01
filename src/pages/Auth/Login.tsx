@@ -32,7 +32,7 @@ const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({ saveToken }) => {
   const googleLogin = useGoogleLogin({
     flow: 'auth-code',
     ux_mode: 'redirect',
-    redirect_uri: process.env.APP_API_ENDPOINT + '/auth/google',
+    redirect_uri: process.env.APP_API_ENDPOINT + '/oauth/google',
     onSuccess: async (res) => {
       const { code } = res
 
@@ -48,7 +48,7 @@ const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({ saveToken }) => {
   const googleLoginGuard = useGoogleLogin({
     flow: 'auth-code',
     ux_mode: 'redirect',
-    redirect_uri: process.env.APP_API_ENDPOINT + '/auth/google/callback',
+    redirect_uri: process.env.APP_API_ENDPOINT + '/oauth/google/callback',
     onSuccess: async () => {
       try {
         await oauthLogin().unwrap()
@@ -97,18 +97,18 @@ const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({ saveToken }) => {
   return (
     <div className="mt-6">
       <button
-        className="btn-primary flex w-full items-center justify-center gap-2"
+        className="flex items-center justify-center w-full gap-2 btn-primary"
         onClick={() => googleLogin()}
       >
-        <GoogleIcon className="h-4 w-4" />
+        <GoogleIcon className="w-4 h-4" />
         Sign in with Google
       </button>
 
       <button
-        className="btn-primary mt-5 flex w-full items-center justify-center gap-2"
+        className="flex items-center justify-center w-full gap-2 mt-5 btn-primary"
         onClick={() => googleLoginGuard()}
       >
-        <GoogleIcon className="h-4 w-4" />
+        <GoogleIcon className="w-4 h-4" />
         Sign in with Google (Guard)
       </button>
     </div>
@@ -152,9 +152,9 @@ const LoginPage: React.FC<Props> = (props) => {
   }
 
   return (
-    <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+    <div className="flex flex-col justify-center min-h-full px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight">
+        <h2 className="mt-10 text-2xl font-bold leading-9 tracking-tight text-center">
           Sign in to your account
         </h2>
       </div>
@@ -188,11 +188,11 @@ const LoginPage: React.FC<Props> = (props) => {
                 id="remember_me"
                 name="remember_me"
                 type="checkbox"
-                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
               />
               <label
                 htmlFor="remember_me"
-                className="ml-2 block text-sm text-gray-900 dark:text-gray-300"
+                className="block ml-2 text-sm text-gray-900 dark:text-gray-300"
               >
                 Remember me
               </label>
