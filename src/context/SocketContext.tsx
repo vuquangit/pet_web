@@ -11,7 +11,7 @@ console.log('APP_WEBSOCKET_URL:', APP_WEBSOCKET_URL)
 
 export const socket = io(APP_WEBSOCKET_URL, {
   // transports: ['websocket', 'polling'],
-  withCredentials: true,
+  // withCredentials: true,
   extraHeaders: {
     Authorization: `Bearer ${accessToken}`,
   },
