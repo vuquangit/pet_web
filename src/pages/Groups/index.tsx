@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { Outlet, useNavigate, useParams } from 'react-router-dom'
 import { camelizeKeys } from 'humps'
@@ -24,7 +24,6 @@ import { useAppSelector } from '@/store/hook'
 export const GroupPage = () => {
   const { id } = useParams()
   const user = useAppSelector((state) => state.auth)
-  const [showSidebar, setShowSidebar] = useState(window.innerWidth > 800)
   const dispatch = useDispatch<AppDispatch>()
   const socket = useContext(SocketContext)
   const navigate = useNavigate()
@@ -37,14 +36,6 @@ export const GroupPage = () => {
   }, [])
 
   useEffect(() => {
-    const handleResize = () => setShowSidebar(window.innerWidth > 800)
-    window.addEventListener('resize', handleResize)
-    return () => {
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [])
-
-  useEffect(() => {
     socket.on('onGroupMessage', (payloadRaw: GroupMessageEventPayload) => {
       const payload = camelizeKeys(payloadRaw) as GroupMessageEventPayload
       console.log('Group Message Received', payload)
@@ -54,8 +45,8 @@ export const GroupPage = () => {
     })
 
     socket.on('onGroupCreate', (payloadRaw: Group) => {
-      console.log('Group Created...')
       const payload = camelizeKeys(payloadRaw) as Group
+      console.log('Group Created', payload)
       dispatch(addGroup(payload))
     })
 
@@ -64,9 +55,8 @@ export const GroupPage = () => {
      * to the group.
      */
     socket.on('onGroupUserAdd', (payloadRaw: AddGroupUserMessagePayload) => {
-      console.log('onGroupUserAdd')
       const payload = camelizeKeys(payloadRaw) as AddGroupUserMessagePayload
-      console.log(payload)
+      console.log('onGroupUserAdd', payload)
       dispatch(addGroup(payload.group))
     })
 
@@ -75,8 +65,8 @@ export const GroupPage = () => {
      * so that they can also see the participant
      */
     socket.on('onGroupReceivedNewUser', ({ group: groupRaw }: AddGroupUserMessagePayload) => {
-      console.log('Received onGroupReceivedNewUser')
       const group = camelizeKeys(groupRaw) as Group
+      console.log('Received onGroupReceivedNewUser', group)
       dispatch(updateGroup({ group }))
     })
 
@@ -126,11 +116,10 @@ export const GroupPage = () => {
   }, [id])
 
   return (
-    <>
-      {showSidebar && <ConversationSidebar />}
-      {!id && !showSidebar && <ConversationSidebar />}
-      {!id && showSidebar && <ConversationPanel />}
+    <div className="flex flex-1 h-full">
+      <ConversationSidebar />
+      {!id && <ConversationPanel />}
       <Outlet />
-    </>
+    </div>
   )
 }

@@ -1,32 +1,21 @@
-import React, { FC, Dispatch, SetStateAction, useEffect, createRef } from 'react'
+import React, { FC, Dispatch, SetStateAction } from 'react'
 
 import CloseIcon from '@/assets/icons/close.svg'
 import { ModalContainer, ModalHeader, ModalContentBody } from '.'
 import { SendFriendRequestForm } from '@/components/forms/SendFriendRequestForm'
+import useModal from '@/hooks/useModal'
 
 type Props = {
   setShowModal: Dispatch<SetStateAction<boolean>>
 }
 
 export const CreateFriendRequestModal: FC<Props> = ({ setShowModal }) => {
-  const ref = createRef<HTMLDivElement>()
-  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const { current } = ref
-    if (current === e.target) {
-      console.log('Close Modal')
-      setShowModal(false)
-    }
-  }
-  useEffect(() => {
-    const handleKeydown = (e: KeyboardEvent) => e.key === 'Escape' && setShowModal(false)
-    window.addEventListener('keydown', handleKeydown)
-    return () => window.removeEventListener('keydown', handleKeydown)
-  }, [])
+  const { overlayRef, handleOverlayClick} = useModal({ setShowModal })
 
   return (
     <div
       className="modal-overlay"
-      ref={ref}
+      ref={overlayRef}
       onClick={handleOverlayClick}
     >
       <ModalContainer>

@@ -1,13 +1,12 @@
 import React, { FC, PropsWithChildren } from 'react'
-// import {
-//   ModalContainerStyle,
-//   ModalContentBodyStyle,
-//   ModalHeaderStyle,
-// } from '../../utils/styles';
 
 export const ModalHeader: FC<PropsWithChildren> = ({ children }) => {
   return (
-    <header className="mt-5 flex w-full items-center justify-between px-[24px]">{children}</header>
+    <header
+      className="mt-5 flex w-full items-center justify-between px-[24px] border-b border-solid border-[#dbdbdb] dark:border-[#262626]"
+    >
+      {children}
+    </header>
   )
 }
 

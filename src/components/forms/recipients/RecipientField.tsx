@@ -1,5 +1,4 @@
 import React, { FC, Dispatch, SetStateAction } from 'react'
-import { debounce } from 'lodash'
 
 import { InputField } from '@/components/Form'
 import { SelectedRecipientChip } from './SelectedRecipientChip'
@@ -44,7 +43,7 @@ export const RecipientField: FC<Props> = ({
         label="Recipient"
         value={valueQuery}
         placeholder="Enter username, name or email"
-        onChange={debounce(setQuery, 1000)}
+        onChange={setQuery}
       />
     )}
   </section>

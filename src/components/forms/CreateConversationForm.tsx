@@ -1,16 +1,12 @@
 import React, { Dispatch, FC, useEffect, useState } from 'react'
-
-// import { useDispatch } from 'react-redux'
-// import { createConversationThunk } from '@/store/conversations'
-// import { AppDispatch } from '@/store'
 import { useNavigate } from 'react-router-dom'
+
 import { useLazySearchFriendsQuery } from '@/services/friend'
 import { RecipientResultContainer } from './recipients/RecipientResultContainer'
 import { RecipientField } from './recipients/RecipientField'
 import { Button, InputField } from '@/components/Form'
 import { User } from '@/interfaces/chat'
 import useConversations from '@/hooks/useConversations'
-import { useToast } from '@/hooks/useToast'
 import { useDebounce } from '@/hooks/useDebounce'
 
 type Props = {
@@ -18,19 +14,18 @@ type Props = {
 }
 
 export const CreateConversationForm: FC<Props> = ({ setShowModal }) => {
-  const [query, setQuery] = useState('')
+  const [query, setQuery] = useState<string>('')
   const [userResults, setUserResults] = useState<User[]>([])
   const [selectedUser, setSelectedUser] = useState<User>()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [searching, setSearching] = useState(false)
-  const [message, setMessage] = useState('')
+  const [searching, setSearching] = useState<boolean>(false)
+  const [message, setMessage] = useState<string>('')
+
   const debouncedQuery = useDebounce(query.trim(), 1000)
-  // const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
   const [searchFriends] = useLazySearchFriendsQuery()
 
   const { createConversation } = useConversations()
-  const { error } = useToast({ theme: 'dark' })
 
   useEffect(() => {
     if (debouncedQuery) {
@@ -59,10 +54,8 @@ export const CreateConversationForm: FC<Props> = ({ setShowModal }) => {
 
       setShowModal(false)
       const conversationId = data?.id
-      if (!conversationId) {
-        error('Conversation id not found')
-        return
-      }
+      if (!conversationId) return
+
       navigate(`/conversations/${conversationId}`)
     } catch (error) {
       console.log('onSubmit conversation error', error)

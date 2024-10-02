@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { Outlet, useParams } from 'react-router-dom'
 import { camelizeKeys } from 'humps'
@@ -15,18 +15,10 @@ import useConversations from '@/hooks/useConversations'
 
 export function ConversationPage() {
   const { id } = useParams()
-  const [showSidebar, setShowSidebar] = useState(window.innerWidth > 800)
+
   const dispatch = useDispatch<AppDispatch>()
   const socket = useContext(SocketContext)
   const { fetchConversations } = useConversations()
-
-  useEffect(() => {
-    const handleResize = () => setShowSidebar(window.innerWidth > 800)
-    window.addEventListener('resize', handleResize)
-    return () => {
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [])
 
   useEffect(() => {
     dispatch(updateType('private'))
@@ -43,15 +35,13 @@ export function ConversationPage() {
     socket.on('onConversation', (payloadRaw: Conversation) => {
       const payload = camelizeKeys(payloadRaw) as Conversation
 
-      console.log('Received onConversation Event')
-      console.log(payload)
+      console.log('Received onConversation Event', payload)
       dispatch(addConversation(payload))
     })
     socket.on('onMessageDelete', (payloadRaw) => {
       const payload = camelizeKeys(payloadRaw) as DeleteMessageResponse
 
-      console.log('Message Deleted')
-      console.log(payload)
+      console.log('Message Deleted', payload)
       dispatch(deleteMessage(payload))
     })
     return () => {
@@ -64,9 +54,8 @@ export function ConversationPage() {
 
   return (
     <div className="flex flex-1 h-full">
-      {showSidebar && <ConversationSidebar />}
-      {!id && !showSidebar && <ConversationSidebar />}
-      {!id && showSidebar && <ConversationPanel />}
+      <ConversationSidebar />
+      {!id && <ConversationPanel />}
       <Outlet />
     </div>
   )
