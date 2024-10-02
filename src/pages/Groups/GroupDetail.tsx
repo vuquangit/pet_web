@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import { camelizeKeys } from 'humps'
 
 import { MessagePanel } from '@/components/messages'
 import { SocketContext } from '@/context/SocketContext'
@@ -32,9 +33,10 @@ export const GroupChannelPage = () => {
     const groupId = id
     console.log(groupId)
     socket.emit('onGroupJoin', { groupId })
-    socket.on('onGroupMessageUpdate', (message: GroupMessageType) => {
-      console.log('onGroupMessageUpdate received')
-      console.log(message)
+    socket.on('onGroupMessageUpdate', (messageRaw: GroupMessageType) => {
+      const message = camelizeKeys(messageRaw) as GroupMessageType
+
+      console.log('onGroupMessageUpdate received', message)
       dispatch(editGroupMessage(message))
     })
     return () => {
@@ -49,7 +51,7 @@ export const GroupChannelPage = () => {
   return (
     <>
       {showEditGroupModal && <EditGroupModal />}
-      <div className="h-full w-full overflow-hidden">
+      <div className="w-full h-full overflow-hidden">
         <MessagePanel
           sendTypingStatus={sendTypingStatus}
           isRecipientTyping={isRecipientTyping}

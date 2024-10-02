@@ -4,7 +4,7 @@ import { Outlet, useParams } from 'react-router-dom'
 import { camelizeKeys } from 'humps'
 
 import { ConversationPanel } from '@/components/conversations/ConversationPanel'
-import { ConversationSidebar } from '../../components/sidebars/ConversationSidebar'
+import { ConversationSidebar } from '@/components/sidebars/ConversationSidebar'
 import { AppDispatch } from '@/store'
 import { addMessage, deleteMessage } from '@/store/messages'
 import { updateType } from '@/store/selectedType'
@@ -45,7 +45,7 @@ export function ConversationPage() {
 
       console.log('Received onConversation Event')
       console.log(payload)
-      dispatch(addConversation(payloadRaw))
+      dispatch(addConversation(payload))
     })
     socket.on('onMessageDelete', (payloadRaw) => {
       const payload = camelizeKeys(payloadRaw) as DeleteMessageResponse
@@ -63,7 +63,7 @@ export function ConversationPage() {
   }, [id])
 
   return (
-    <div className="flex h-full flex-1">
+    <div className="flex flex-1 h-full">
       {showSidebar && <ConversationSidebar />}
       {!id && !showSidebar && <ConversationSidebar />}
       {!id && showSidebar && <ConversationPanel />}

@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import { camelizeKeys } from 'humps'
 
 import { AppDispatch, RootState } from '@/store'
 import { selectGroupById } from '@/store/group'
@@ -36,9 +37,10 @@ export const GroupRecipientsSidebar = () => {
     const interval = setInterval(() => {
       socket.emit('getOnlineGroupUsers', { groupId })
     }, 5000)
-    socket.on('onlineGroupUsersReceived', (payload) => {
-      console.log('received onlineGroupUsersReceived event')
-      console.log(payload)
+    socket.on('onlineGroupUsersReceived', (payloadRaw) => {
+      const payload = camelizeKeys(payloadRaw)
+
+      console.log('received onlineGroupUsersReceived event', payload)
       setOnlineUsers(payload.onlineUsers)
     })
     return () => {

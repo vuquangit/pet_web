@@ -6,6 +6,7 @@ import {
   Friend,
   CancelFriendRequestResponse,
   AcceptFriendRequestResponse,
+  User,
 } from '@/interfaces/chat'
 import { customBaseQuery } from '@/services/base'
 
@@ -64,6 +65,13 @@ export const friendApi = createApi({
         method: 'DELETE',
       }),
     }),
+
+    searchFriends: builder.query<IBaseResponse<User[]>, string>({
+      query: (query) => ({
+        url: `/friends/search?query=${query}`,
+        method: 'GET',
+      }),
+    }),
   }),
 })
 
@@ -75,4 +83,5 @@ export const {
   useAcceptFriendMutation,
   useRejectFriendMutation,
   useRemoveFriendMutation,
+  useLazySearchFriendsQuery,
 } = friendApi

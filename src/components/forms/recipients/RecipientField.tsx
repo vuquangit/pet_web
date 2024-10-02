@@ -33,7 +33,7 @@ export const RecipientField: FC<Props> = ({
 
     {selectedUser ? (
       <>
-        <span>Recipient</span>
+        <span>To:</span>
         <SelectedRecipientChip
           user={selectedUser}
           setSelectedUser={setSelectedUser}
@@ -43,7 +43,7 @@ export const RecipientField: FC<Props> = ({
       <InputField
         label="Recipient"
         value={valueQuery}
-        placeholder="ID user"
+        placeholder="Enter username, name or email"
         onChange={debounce(setQuery, 1000)}
       />
     )}

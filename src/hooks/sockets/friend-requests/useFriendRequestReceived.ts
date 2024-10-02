@@ -1,6 +1,7 @@
 import { useContext, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { camelizeKeys } from 'humps'
 
 import { AppDispatch } from '@/store'
 import { addFriendRequest } from '@/store/friends'
@@ -16,9 +17,10 @@ export function useFriendRequestReceived() {
   const { info } = useToast({ theme: 'dark' })
 
   useEffect(() => {
-    socket.on('onFriendRequestReceived', (payload: FriendRequest) => {
-      console.log('onFriendRequestReceived')
-      console.log(payload)
+    socket.on('onFriendRequestReceived', (payloadRaw: FriendRequest) => {
+      const payload = camelizeKeys(payloadRaw) as FriendRequest
+
+      console.log('onFriendRequestReceived', payload)
       dispatch(addFriendRequest(payload))
       info(`Incoming Friend Request from ${payload.sender.name}`, {
         position: 'bottom-left',

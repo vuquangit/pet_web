@@ -1,5 +1,7 @@
 import { useContext, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { camelizeKeys } from 'humps'
+
 import { AppDispatch, RootState } from '@/store'
 import {
   setActiveConversationId,
@@ -20,7 +22,9 @@ export function useVoiceCallAccepted() {
   const { peer, localStream } = useSelector((state: RootState) => state.call)
 
   useEffect(() => {
-    socket.on(WebsocketEvents.VOICE_CALL_ACCEPTED, (data: AcceptedCallPayload) => {
+    socket.on(WebsocketEvents.VOICE_CALL_ACCEPTED, (dataRaw: AcceptedCallPayload) => {
+      const data = camelizeKeys(dataRaw) as AcceptedCallPayload
+
       if (!peer) return console.log('AUDIO: No Peer')
       dispatch(setActiveConversationId(data.conversation.id))
       dispatch(setIsCallInProgress(true))

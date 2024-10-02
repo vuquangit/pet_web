@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import { camelizeKeys } from 'humps'
 
 import { MessagePanel } from '@/components/messages'
 import { SocketContext } from '@/context/SocketContext'
 import { AppDispatch } from '@/store'
 import { editMessage } from '@/store/messages'
 import useMessages from '@/hooks/useMessage'
+import { MessageType } from '@/interfaces/chat'
 
 export const ConversationChannelPage = () => {
   const { id = '' } = useParams()
@@ -38,9 +40,10 @@ export const ConversationChannelPage = () => {
       console.log('onTypingStop: User has stopped typing...')
       setIsRecipientTyping(false)
     })
-    socket.on('onMessageUpdate', (message) => {
-      console.log('onMessageUpdate received')
-      console.log(message)
+    socket.on('onMessageUpdate', (messageRaw: MessageType) => {
+      const message = camelizeKeys(messageRaw) as MessageType
+
+      console.log('onMessageUpdate received', message)
       dispatch(editMessage(message))
     })
 
@@ -71,7 +74,7 @@ export const ConversationChannelPage = () => {
   }
 
   return (
-    <div className="h-full w-full">
+    <div className="w-full h-full">
       <MessagePanel
         sendTypingStatus={sendTypingStatus}
         isRecipientTyping={isRecipientTyping}

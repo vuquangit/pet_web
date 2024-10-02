@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Peer from 'peerjs'
+import { camelizeKeys } from 'humps'
 
 import { AppDispatch, RootState } from '@/store'
 import { removeFriendRequest } from '@/store/friends'
@@ -67,13 +68,17 @@ export const AppPage: React.FC<AppPageProps> = ({ children }) => {
   useEffect(() => {
     console.log('Registering all events for AppPage')
 
-    socket.on('onFriendRequestCancelled', (payload: FriendRequest) => {
+    socket.on('onFriendRequestCancelled', (payloadRaw: FriendRequest) => {
+      const payload = camelizeKeys(payloadRaw) as FriendRequest
+
       console.log('onFriendRequestCancelled')
       console.log(payload)
       dispatch(removeFriendRequest(payload))
     })
 
-    socket.on('onFriendRequestAccepted', (payload: AcceptFriendRequestResponse) => {
+    socket.on('onFriendRequestAccepted', (payloadRaw: AcceptFriendRequestResponse) => {
+      const payload = camelizeKeys(payloadRaw) as AcceptFriendRequestResponse
+
       console.log('onFriendRequestAccepted')
       dispatch(removeFriendRequest(payload.friendRequest))
       socket.emit('getOnlineFriends')
@@ -84,7 +89,9 @@ export const AppPage: React.FC<AppPageProps> = ({ children }) => {
       })
     })
 
-    socket.on('onFriendRequestRejected', (payload: FriendRequest) => {
+    socket.on('onFriendRequestRejected', (payloadRaw: FriendRequest) => {
+      const payload = camelizeKeys(payloadRaw) as FriendRequest
+
       console.log('onFriendRequestRejected')
       dispatch(removeFriendRequest(payload))
     })

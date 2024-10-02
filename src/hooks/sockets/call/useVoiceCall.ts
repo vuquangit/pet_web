@@ -1,5 +1,6 @@
 import { useContext, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { camelizeKeys } from 'humps'
 
 import { AppDispatch, RootState } from '@/store'
 import { setCaller, setReceiver, setIsReceivingCall, setCallType } from '@/store/call'
@@ -15,7 +16,9 @@ export function useVoiceCall() {
   const { isReceivingCall } = useSelector((state: RootState) => state.call)
 
   useEffect(() => {
-    socket.on(ReceiverEvents.VOICE_CALL, (data: CallPayload) => {
+    socket.on(ReceiverEvents.VOICE_CALL, (dataRaw: CallPayload) => {
+      const data = camelizeKeys(dataRaw) as CallPayload
+
       console.log('receiving voice call....')
       console.log(data)
       if (isReceivingCall) return

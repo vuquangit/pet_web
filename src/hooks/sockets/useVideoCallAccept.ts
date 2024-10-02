@@ -1,5 +1,7 @@
 import { useContext, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { camelizeKeys } from 'humps'
+
 import { AppDispatch, RootState } from '@/store'
 import {
   setIsCallInProgress,
@@ -24,7 +26,9 @@ export function useVideoCallAccept() {
   const { peer, localStream } = useSelector((state: RootState) => state.call)
 
   useEffect(() => {
-    socket.on('onVideoCallAccept', (data: AcceptedCallPayload) => {
+    socket.on('onVideoCallAccept', (dataRaw: AcceptedCallPayload) => {
+      const data = camelizeKeys(dataRaw) as AcceptedCallPayload
+
       console.log('videoCallAccepted')
       dispatch(setIsCallInProgress(true))
       dispatch(setIsReceivingCall(false))

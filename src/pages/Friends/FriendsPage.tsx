@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
+import { camelizeKeys } from 'humps'
 
 import { FriendList } from './components/FriendList'
 import { AppDispatch } from '@/store'
@@ -25,8 +26,10 @@ export const FriendsPage = () => {
       socket.emit('getOnlineFriends')
     }, 10000)
 
-    socket.on('onFriendRemoved', (friend: Friend) => {
-      console.log('onFriendRemoved')
+    socket.on('onFriendRemoved', (friendRaw: Friend) => {
+      const friend = camelizeKeys(friendRaw) as Friend
+
+      console.log('onFriendRemoved', friend)
       dispatch(removeFriend(friend))
       socket.emit('getOnlineFriends')
     })
@@ -40,7 +43,8 @@ export const FriendsPage = () => {
   }, [])
 
   useEffect(() => {
-    socket.on('getOnlineFriends', (friends: Friend[]) => {
+    socket.on('getOnlineFriends', (friendsRaw: Friend[]) => {
+      const friends = camelizeKeys(friendsRaw) as Friend[]
       console.log('received online friends', friends)
       dispatch(setOnlineFriends(friends))
       dispatch(setOfflineFriends())

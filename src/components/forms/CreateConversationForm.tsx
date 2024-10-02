@@ -4,7 +4,7 @@ import React, { Dispatch, FC, useEffect, useState } from 'react'
 // import { createConversationThunk } from '@/store/conversations'
 // import { AppDispatch } from '@/store'
 import { useNavigate } from 'react-router-dom'
-import { useLazySearchQuery } from '@/services/user'
+import { useLazySearchFriendsQuery } from '@/services/friend'
 import { RecipientResultContainer } from './recipients/RecipientResultContainer'
 import { RecipientField } from './recipients/RecipientField'
 import { Button, InputField } from '@/components/Form'
@@ -24,10 +24,10 @@ export const CreateConversationForm: FC<Props> = ({ setShowModal }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [searching, setSearching] = useState(false)
   const [message, setMessage] = useState('')
-  const debouncedQuery = useDebounce(query, 1000)
+  const debouncedQuery = useDebounce(query.trim(), 1000)
   // const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
-  const [searchUsers] = useLazySearchQuery()
+  const [searchFriends] = useLazySearchFriendsQuery()
 
   const { createConversation } = useConversations()
   const { error } = useToast({ theme: 'dark' })
@@ -37,7 +37,7 @@ export const CreateConversationForm: FC<Props> = ({ setShowModal }) => {
       ;(async () => {
         try {
           setSearching(true)
-          const { result } = await searchUsers(query).unwrap()
+          const { result } = await searchFriends(debouncedQuery).unwrap()
           const resultData = result?.data || []
           setUserResults(resultData)
         } catch (error) {

@@ -34,7 +34,7 @@ export const CreateConversationModal: FC<Props> = ({ setShowModal }) => {
     >
       <ModalContainer>
         <ModalHeader>
-          <h2>Create a Conversation</h2>
+          <h2>New message</h2>
           <CloseIcon
             className="h-[32px] dark:fill-white"
             onClick={() => setShowModal(false)}
