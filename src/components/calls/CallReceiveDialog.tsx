@@ -1,19 +1,18 @@
-import React, { useSelector } from 'react-redux'
+import React, { useContext } from 'react'
+import { useSelector } from 'react-redux'
 
-import { RootState } from '../../store'
-// import { CallReceiveDialogContainer } from '../../utils/styles';
+import { RootState } from '@/store'
 import { UserAvatar } from '../users/UserAvatar'
-// import { MdCall, MdCallEnd } from 'react-icons/md';
 import PhoneIcon from '@/assets/icons/phone.svg'
 import PhoneOffIcon from '@/assets/icons/phone-off.svg'
 import { HandleCallType } from '@/interfaces/chat'
-import { useContext } from 'react'
 import { SocketContext } from '@/context/SocketContext'
 import { SenderEvents, WebsocketEvents } from '@/enums/chat'
 
 export const CallReceiveDialog = () => {
   const { caller, callType } = useSelector((state: RootState) => state.call)
   const socket = useContext(SocketContext)
+
   const handleCall = (type: HandleCallType) => {
     const payload = { caller }
     switch (type) {
@@ -28,7 +27,7 @@ export const CallReceiveDialog = () => {
     }
   }
   return (
-    <div className="absolute left-1/2 top-1/2 z-[999999] flex w-[250px] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-between gap-8 rounded-[10px] bg-[#1f1f1f] py-6 py-8 text-white">
+    <div className="absolute left-1/2 top-1/2 z-[999999] flex w-[250px] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-between gap-8 rounded-[10px] bg-[#1f1f1f] px-6 py-8 text-white">
       <UserAvatar user={caller} />
       <div className="align-center">
         <span>

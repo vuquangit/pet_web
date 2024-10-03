@@ -55,7 +55,6 @@ export const messagesSlice = createSlice({
       const index = state.messages.findIndex((cm) => cm.id === id)
       const exists = state.messages.find((cm) => cm.id === id)
       if (exists) {
-        console.log('exists')
         state.messages[index] = data
       } else {
         state.messages.push(data)
