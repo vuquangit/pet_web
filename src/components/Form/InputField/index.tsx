@@ -51,6 +51,7 @@ interface PropType {
    * @returns
    */
   onChange?: (value: string) => void
+  onFocus?: React.FocusEventHandler<HTMLInputElement>
   classNameWrapper?: string
   classNameLabel?: string
   classNameInput?: string
@@ -63,6 +64,7 @@ const InputField: React.FC<PropType> = (props) => {
     type,
     dataCy,
     onChange,
+    onFocus,
     classNameWrapper,
     classNameLabel,
     classNameInput,
@@ -106,6 +108,7 @@ const InputField: React.FC<PropType> = (props) => {
           type={isShowPassword ? 'text' : type || 'text'}
           className={inputClass}
           onChange={onInputChange}
+          onFocus={onFocus}
           data-cy={dataCy}
           {...restProps}
         />

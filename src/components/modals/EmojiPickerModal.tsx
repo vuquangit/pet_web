@@ -31,7 +31,8 @@ export const EmojiPickerModal: FC<Props> = ({ isShowModal, setShowModal, setMess
         ref={overlayRef}
         className={classNames('modal-overlay bg-inherit', { hidden: !isShowModal })}
         onClick={handleOverlayClick}
-      ></div>
+      />
+
       <div
         className={classNames('absolute bottom-[32px] left-0 z-[9999]', { hidden: !isShowModal })}
       >

@@ -64,20 +64,10 @@ export const ConversationSidebar = () => {
 
   const renderAddIcon = () => {
     if (conversationType === 'private') {
-      return (
-        <PenToSquareIcon
-          className="h-6 cursor-pointer dark:fill-[#e0e0e0]"
-          onClick={() => setShowModal(true)}
-        />
-      )
+      return <PenToSquareIcon className="h-6 w-auto cursor-pointer dark:fill-[#e0e0e0]" />
     }
 
-    return (
-      <UserGroupAddIcon
-        className="h-6 cursor-pointer dark:fill-[#e0e0e0]"
-        onClick={() => setShowModal(true)}
-      />
-    )
+    return <UserGroupAddIcon className="h-6 w-auto cursor-pointer dark:fill-[#e0e0e0]" />
   }
 
   return (
@@ -89,23 +79,24 @@ export const ConversationSidebar = () => {
         <CreateGroupModal setShowModal={setShowModal} />
       )}
       <div className="md:w-[calc(100% - 80px)] flex h-full w-[400px] flex-auto-0 flex-col border-r border-solid border-[#dbdbdb] bg-white dark:border-[#262626] dark:bg-[#111111]">
-        <header className="flex h-[90px] flex-shrink-0 items-center gap-5 border-b border-solid border-[#49494925] px-2.5 py-8">
+        <div className="flex h-[90px] flex-shrink-0 items-center gap-5 border-b border-solid border-[#49494925] px-2.5 py-8">
           <input
             className="w-full rounded-[5px] border-none bg-[#ececec] px-4 py-2.5 text-sm text-[#000] outline-none"
             placeholder="Search on Messenger"
           />
-          {renderAddIcon()}
-        </header>
+          <div className='p-1 mr-2' onClick={() => setShowModal(true)}>
+            {renderAddIcon()}
+          </div>
+        </div>
 
         <ConversationTab />
 
-        <div className="min-h-0 flex-auto overflow-y-auto scrollbar-none">
+        <div className="flex-auto min-h-0 overflow-y-auto scrollbar-none">
           <div>
             {renderSidebarItems()}
             {showGroupContextMenu && <GroupSidebarContextMenu />}
           </div>
         </div>
-        <footer></footer>
       </div>
     </>
   )

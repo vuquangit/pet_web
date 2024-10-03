@@ -1,67 +1,57 @@
 import React, { Dispatch, FC, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { GroupRecipientsField } from './recipients/GroupRecipientsField'
 import { User } from '@/interfaces/chat'
-import { useLazySearchQuery } from '@/services/user'
+import { useLazySearchFriendsQuery } from '@/services/friend'
 import { RecipientResultContainer } from './recipients/RecipientResultContainer'
 import { SelectedGroupRecipientChip } from './recipients/SelectedGroupRecipientChip'
 import { InputField, Button } from '@/components/Form'
 import useGroups from '@/hooks/useGroup'
+import { useDebounce } from '@/hooks/useDebounce'
 
 type Props = {
   setShowModal: Dispatch<React.SetStateAction<boolean>>
 }
 
 export const CreateGroupForm: FC<Props> = ({ setShowModal }) => {
-  const [title, setTitle] = useState('')
-  const [message, setMessage] = useState('')
-  const [query, setQuery] = useState('')
+  const [title, setTitle] = useState<string>('')
+  const [message, setMessage] = useState<string>('')
+  const [query, setQuery] = useState<string>('')
   const [results, setResults] = useState<User[]>([])
   const [selectedRecipients, setSelectedRecipients] = useState<User[]>([])
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [searching, setSearching] = useState(false)
-  // const debouncedQuery = useDebounce(query, 1000);
-  // const debouncedQuery = debounce(query, 1000);
-  const navigate = useNavigate()
+  const [searching, setSearching] = useState<boolean>(false)
+  const [isShowModalFriends, setIsShowModalFriends] = useState<boolean>(false)
 
-  const [searchUsers] = useLazySearchQuery()
+  const debouncedQuery = useDebounce(query, 1000);
+  const navigate = useNavigate()
+  const [searchFriends] = useLazySearchFriendsQuery()
   const { createGroup } = useGroups()
 
+  // search friends
   useEffect(() => {
-    if (query) {
-      setSearching(true)
-      searchUsers(query)
-        .then((res) => {
-          const data = res.data?.result?.data || []
-          console.log(data)
-          setResults(data)
-        })
-        .catch((err) => console.log(err))
-        .finally(() => setSearching(false))
-      ;(async () => {
+    if (!debouncedQuery) return
+
+    ;(async () => {
+      try {
         setSearching(true)
-        const { result } = await searchUsers(query).unwrap()
+        setIsShowModalFriends(true)
+
+        const { result } = await searchFriends(query).unwrap()
         const resultData = result?.data || []
         setResults(resultData)
+
+      } catch (err) {
+        console.log('Search user error', err);
+      } finally {
         setSearching(false)
-      })()
-    }
-  }, [query])
+      }
+    })()
+  }, [debouncedQuery])
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (selectedRecipients.length === 0 || !message || !title) return
     const users = selectedRecipients.map((user) => user.id)
-    // return dispatch(createGroupThunk({ title, users }))
-    //   .unwrap()
-    //   .then(({ data }) => {
-    //     console.log(data);
-    //     console.log('done');
-    //     setShowModal(false);
-    //     navigate(`/groups/${data.id}`);
-    //   })
-    //   .catch((err) => console.log(err));
 
     const result = await createGroup({ title, users })
     const data = result?.data || {}
@@ -95,41 +85,36 @@ export const CreateGroupForm: FC<Props> = ({ setShowModal }) => {
         ))}
       </div>
 
-      <GroupRecipientsField
+      <InputField
+        label="To"
         value={query}
-        setQuery={setQuery}
+        placeholder="Enter name, username or email to search"
+        onChange={setQuery}
+        onFocus={() => {
+          console.log('focus');
+          setIsShowModalFriends(true)
+        }}
       />
-      {results.length > 0 && query && (
+      {query && (
         <RecipientResultContainer
+          isLoading={searching}
+          isShowModal={isShowModalFriends}
           userResults={results}
           handleUserSelect={handleUserSelect}
+          setShowModal={setIsShowModalFriends}
         />
       )}
 
       <section className="my-2">
-        {/* <InputContainer backgroundColor="#161616">
-          <InputLabel>Title</InputLabel>
-          <InputField
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </InputContainer> */}
         <InputField
-          label="Title"
+          label="Group name"
           value={title}
-          placeholder="title"
+          placeholder="Enter group name"
           onChange={setTitle}
         />
       </section>
 
       <section className="my-2">
-        {/* <InputContainer backgroundColor="#161616">
-          <InputLabel>Message (optional)</InputLabel>
-          <TextField
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-          />
-        </InputContainer> */}
         <InputField
           label="Message (optional)"
           value={message}
@@ -138,7 +123,14 @@ export const CreateGroupForm: FC<Props> = ({ setShowModal }) => {
         />
       </section>
 
-      <Button type="submit">Create Conversation</Button>
+      <div className="flex justify-center">
+        <Button
+          type="submit"
+          className="btn-primary mt-2 text-[16px]"
+        >
+          Create Group
+        </Button>
+      </div>
     </form>
   )
 }

@@ -16,35 +16,19 @@ export const RecipientField: FC<Props> = ({
   valueQuery,
   setQuery,
   setSelectedUser,
-}) => (
-  <section>
-    {/* <InputContainer backgroundColor="#161616">
-      <InputLabel>Recipient</InputLabel>
-      {selectedUser ? (
-        <SelectedRecipientChip
-          user={selectedUser}
-          setSelectedUser={setSelectedUser}
-        />
-      ) : (
-        <InputField onChange={(e) => setQuery(e.target.value)} />
-      )}
-    </InputContainer> */}
-
-    {selectedUser ? (
-      <>
-        <span>To:</span>
-        <SelectedRecipientChip
-          user={selectedUser}
-          setSelectedUser={setSelectedUser}
-        />
-      </>
-    ) : (
-      <InputField
-        label="Recipient"
-        value={valueQuery}
-        placeholder="Enter username, name or email"
-        onChange={setQuery}
-      />
-    )}
-  </section>
+}) => selectedUser ? (
+  <>
+    <span>To:</span>
+    <SelectedRecipientChip
+      user={selectedUser}
+      setSelectedUser={setSelectedUser}
+    />
+  </>
+) : (
+  <InputField
+    label="Recipient"
+    value={valueQuery}
+    placeholder="Enter username, name or email"
+    onChange={setQuery}
+  />
 )

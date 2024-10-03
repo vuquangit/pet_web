@@ -17,31 +17,33 @@ export const CreateConversationForm: FC<Props> = ({ setShowModal }) => {
   const [query, setQuery] = useState<string>('')
   const [userResults, setUserResults] = useState<User[]>([])
   const [selectedUser, setSelectedUser] = useState<User>()
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [searching, setSearching] = useState<boolean>(false)
   const [message, setMessage] = useState<string>('')
+  const [isShowModalFriends, setIsShowModalFriends] = useState<boolean>(false)
 
   const debouncedQuery = useDebounce(query.trim(), 1000)
   const navigate = useNavigate()
   const [searchFriends] = useLazySearchFriendsQuery()
-
   const { createConversation } = useConversations()
 
+  // search friends
   useEffect(() => {
-    if (debouncedQuery) {
-      ;(async () => {
-        try {
-          setSearching(true)
-          const { result } = await searchFriends(debouncedQuery).unwrap()
-          const resultData = result?.data || []
-          setUserResults(resultData)
-        } catch (error) {
-          console.log(error)
-        } finally {
-          setSearching(false)
-        }
-      })()
-    }
+    if (!debouncedQuery) return
+
+    ;(async () => {
+      try {
+        setSearching(true)
+        setIsShowModalFriends(true)
+
+        const { result } = await searchFriends(debouncedQuery).unwrap()
+        const resultData = result?.data || []
+        setUserResults(resultData)
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setSearching(false)
+      }
+    })()
   }, [debouncedQuery])
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -79,21 +81,17 @@ export const CreateConversationForm: FC<Props> = ({ setShowModal }) => {
         setQuery={setQuery}
         setSelectedUser={setSelectedUser}
       />
-      {!selectedUser && userResults.length > 0 && query && (
+      {!selectedUser && query && (
         <RecipientResultContainer
+          isLoading={searching}
+          isShowModal={isShowModalFriends}
           userResults={userResults}
           handleUserSelect={handleUserSelect}
+          setShowModal={setIsShowModalFriends}
         />
       )}
 
       <section className="my-2">
-        {/* <InputContainer backgroundColor="#161616">
-          <InputLabel>Message (optional)</InputLabel>
-          <TextField
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-          />
-        </InputContainer> */}
         <InputField
           label="Message (optional)"
           value={message}
