@@ -9,7 +9,7 @@ interface ButtonProps {
   /**
    * Is this the principal call to action on the page?
    */
-  primary?: boolean
+  color?: 'default' | 'primary' | 'danger'
   /**
    * What background color to use
    */
@@ -41,6 +41,7 @@ interface ButtonProps {
    */
   dataCy?: string
   children?: ReactNode
+  loading?: boolean
 }
 
 /**
@@ -49,20 +50,22 @@ interface ButtonProps {
 const Button = (props: ButtonProps) => {
   const {
     type = 'button',
-    primary = false,
+    color = 'default',
     size = 'medium',
     backgroundColor,
     label,
     className,
     dataCy,
     children,
+    loading,
     ...restProps
   } = props
 
   const buttonStyles = classNames(
     {
-      'btn-default': !primary,
-      'btn-primary': primary,
+      'btn-default': color === 'default',
+      'btn-primary': color === 'primary',
+      'btn-danger': color === 'danger',
       'btn-text': type === 'text',
       'px-3 py-[2px] text-[12px]': size === 'small',
       'px-5 py-[4px] text-sm': size === 'medium',
@@ -79,8 +82,15 @@ const Button = (props: ButtonProps) => {
       data-cy={dataCy}
       {...restProps}
     >
-      {label}
-      {children}
+      <span className='flex items-center gap-2'>
+        {loading && (
+          <span className='flex'>
+            <span className="loader text-[80%]"></span>
+          </span>
+        )}
+        {label}
+        {children}
+      </span>
     </button>
   )
 }

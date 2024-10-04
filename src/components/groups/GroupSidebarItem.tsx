@@ -2,11 +2,8 @@ import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import classNames from 'classnames'
 
-import { CDN_URL } from '@/enums/chat'
-// import { ConversationSidebarItemStyle } from '../../utils/styles';
 import { ContextMenuEvent, Group } from '@/interfaces/chat'
-// import { PeopleGroup } from 'akar-icons';
-import UsersIcon from '@/assets/icons/users.svg'
+import { UserAvatar } from '@/components/users/UserAvatar'
 
 type Props = {
   group: Group
@@ -40,18 +37,11 @@ export const GroupSidebarItem: React.FC<Props> = ({ group, onContextMenu }) => {
       onClick={() => navigate(`/groups/${group.id}`)}
       onContextMenu={(e) => onContextMenu(e, group)}
     >
-      {group.avatar ? (
-        <img
-          src={CDN_URL.BASE.concat(group.avatar)}
-          alt="avatar"
-          className="h-[56px] w-[56px] rounded-[50%]"
-        />
-      ) : (
-        <div className="bg-[rgb(36, 36, 36)] flex h-[56px] w-[56px] items-center justify-center rounded-[50%]">
-          <UsersIcon className="h-6 dark:fill-white" />
-        </div>
-      )}
-      <div className="flex flex-col">
+      <UserAvatar
+        src={group.avatar}
+        className="!h-[56px] !w-[56px]"
+      />
+      <div className="flex-col hidden screen-900:flex">
         <span className="title">{getTransformedTitle()}</span>
         <span className="text-[rgb(163, 163, 163)] text-sm">{group.lastMessageSent?.content}</span>
       </div>

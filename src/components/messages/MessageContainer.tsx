@@ -39,8 +39,12 @@ export const MessageContainer: FC<Props> = ({ isRecipientTyping, recipient }) =>
   const groupMessages = useSelector((state: RootState) => selectGroupMessage(state, id))
   const selectedType = useSelector((state: RootState) => selectType(state))
   const { showContextMenu } = useSelector((state: RootState) => state.messageContainer)
+  const { loading: isMessageLoading } = useSelector((state: RootState) => state.messages)
+
   const handleKeydown = (e: KeyboardEvent) => e.key === 'Escape' && dispatch(setIsEditing(false))
+
   const handleClick = () => dispatch(toggleContextMenu(false))
+
   const user = useAppSelector((state: RootState) => state.auth)
 
   useKeydown(handleKeydown, [id])
@@ -108,6 +112,14 @@ export const MessageContainer: FC<Props> = ({ isRecipientTyping, recipient }) =>
           padding={showMessageHeader ? '0' : '0 0 0 38px'}
           isMyMessage={isMyMessage}
         />
+      </div>
+    )
+  }
+
+  if (isMessageLoading) {
+    return (
+      <div className='flex items-center justify-center w-full h-full'>
+        <span className='loader text-[70px]'></span>
       </div>
     )
   }

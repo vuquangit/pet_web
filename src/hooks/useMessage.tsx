@@ -5,7 +5,7 @@ import {
   useEditMessageMutation,
   useLazyGetConversationMessagesQuery,
 } from '@/services/conversations'
-import { setMessage, deleteMessage, editMessage } from '@/store/messages'
+import { setMessage, deleteMessage, editMessage, setLoading } from '@/store/messages'
 
 const useMessages = () => {
   const dispatch = useAppDispatch()
@@ -15,12 +15,15 @@ const useMessages = () => {
 
   const handleFetchMessages = async (id: string) => {
     try {
+      dispatch(setLoading(true))
       const res = await getConversationMessages(id).unwrap()
       const data = res.result?.data
       if (!data) return
       dispatch(setMessage(data))
     } catch (error) {
       console.log('Fetch messages error', error)
+    } finally {
+      dispatch(setLoading(false))
     }
   }
 

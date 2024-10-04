@@ -19,6 +19,15 @@ module.exports = {
         'dark-200': '#a8a8a8', // rgb(168, 168, 168)
         'dark-300': '#000000',
       },
+      screens: {
+        xs: '480px',
+        // sm: '640px',
+        // md: '768px',
+        'screen-900': '900px',
+        // lg: '1024px',
+        // xl: '1280px',
+        // '2xl': '1536px',
+      },
     },
   },
   plugins: [require('tailwind-scrollbar')],

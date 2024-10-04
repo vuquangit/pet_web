@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import classNames from 'classnames'
 
 import PhoneIcon from '@/assets/icons/phone.svg'
@@ -65,13 +65,13 @@ export const MessagePanelConversationHeader = () => {
 
   return (
     <div className="flex w-full flex-shrink-0 items-center justify-between border-b border-solid border-[#63636325] bg-[#49494925] px-8 py-2.5">
-      <div className="flex items-center gap-3">
+      <Link className="flex items-center gap-3" to={`/profile/${recipient?.id}`}>
         <UserAvatar
           user={recipient}
-          className="h-10 w-10"
+          className="w-10 h-10"
         />
         <span className="text-xl font-bold">{recipient?.name || ''}</span>
-      </div>
+      </Link>
 
       <div className="flex items-center gap-5">
         <PhoneIcon

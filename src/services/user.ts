@@ -24,7 +24,7 @@ export const userApi = createApi({
       }),
     }),
 
-    updateUser: builder.mutation<IBaseResponse<IAuthMe>, { id: string; data: any }>({
+    updateUser: builder.mutation<IBaseResponse<IAuthMe>, { id: string; data: FormData }>({
       query: ({ id, data }) => ({
         url: `/users/${id}`,
         method: 'PATCH',

@@ -1,4 +1,5 @@
 import React, { FC } from 'react'
+import { Link } from 'react-router-dom'
 
 import CrowIcon from '@/assets/icons/crown.svg'
 import { ContextMenuEvent, Group, User } from '@/interfaces/chat'
@@ -23,10 +24,9 @@ export const OnlineGroupRecipients: FC<Props> = ({ users, group, onUserContextMe
         <div
           key={user.id}
           className="my-2.5 flex items-center gap-2.5 text-[18px] font-medium"
-          // online={true}
           onContextMenu={(e) => onUserContextMenu(e, user)}
         >
-          <div className="flex items-center gap-[14px]">
+          <Link className="flex items-center gap-[14px]" to={`/profile/${user.id}`}>
             <UserAvatar user={user} />
             <div className="flex flex-col text-[#636363] dark:text-white">
               <span>{user.name}</span>
@@ -34,7 +34,7 @@ export const OnlineGroupRecipients: FC<Props> = ({ users, group, onUserContextMe
                 {formatStatusMessage(user)}
               </span>
             </div>
-          </div>
+          </Link>
           {user.id === group?.owner.id && (
             <CrowIcon
               className="h-6 dark:text-white"

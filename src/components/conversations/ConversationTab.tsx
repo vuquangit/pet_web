@@ -12,6 +12,7 @@ export const ConversationTab = () => {
   const selectedType = useSelector((state: RootState) => state.selectedConversationType.type)
   const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>()
+
   const onSelectType = (chat: ConversationTypeData) => {
     dispatch(updateType(chat.type))
     if (chat.type === 'group') navigate('/groups')
@@ -19,7 +20,7 @@ export const ConversationTab = () => {
   }
 
   return (
-    <section className="mx-[18px] my-[14px] flex gap-5">
+    <section className="mx-[18px] my-[14px] flex flex-col screen-900:flex-row gap-5">
       {chatTypes.map((chat) => (
         <section
           className={classNames(

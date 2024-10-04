@@ -48,6 +48,14 @@ export const authApi = createApi({
         body: { email },
       }),
     }),
+
+    changeAvatar: builder.mutation<IBaseResponse<{ success: boolean }>, FormData>({
+      query: (formData) => ({
+        url: '/auth/change-avatar',
+        method: 'PATCH',
+        body: formData,
+      }),
+    }),
   }),
 })
 
@@ -59,4 +67,5 @@ export const {
   useLogoutMutation,
   useResetPasswordMutation,
   useForgotPasswordMutation,
+  useChangeAvatarMutation,
 } = authApi

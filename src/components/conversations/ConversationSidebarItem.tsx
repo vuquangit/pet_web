@@ -2,11 +2,10 @@ import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import classNames from 'classnames'
 
-import { CDN_URL } from '@/enums/chat'
 import { getRecipientFromConversation } from '@/helpers'
 import { Conversation } from '@/interfaces/chat'
-import defaultAvatar from '@/assets/images/default_avatar.jpg'
 import { useAppSelector } from '@/store/hook'
+import { UserAvatar } from '@/components/users/UserAvatar'
 
 type Props = {
   conversation: Conversation
@@ -27,22 +26,20 @@ export const ConversationSidebarItem: React.FC<Props> = ({ conversation }) => {
     return null
   }
 
-  const hasProfilePicture = () => recipient?.avatarUrl
-
   return (
     <div
       className={classNames(
-        ':hover:bg-[#222] flex w-full cursor-pointer items-center gap-5 px-8 py-5',
+        ':hover:bg-[#222] flex w-full cursor-pointer items-center gap-5',
+        'px-6 py-2 screen-900:px-8 screen-900:py-5 justify-center screen-900:justify-start',
         { 'bg-[#efefef] dark:bg-[#262626]': id === conversation.id },
       )}
       onClick={() => navigate(`/conversations/${conversation.id}`)}
     >
-      <img
-        src={hasProfilePicture() ? CDN_URL.BASE.concat(recipient?.avatarUrl || '') : defaultAvatar}
-        alt="avatar"
-        className="bg-[rgb(49, 100, 255)] h-[56px] w-[56px] rounded-[50%]"
+      <UserAvatar
+        user={recipient}
+        className="!h-[56px] !w-[56px]"
       />
-      <div className="flex flex-1 flex-col gap-1 break-all">
+      <div className="flex-col flex-1 hidden gap-1 break-all screen-900:flex">
         <span className="block text-[16px] font-medium text-[#1a1a1a] dark:text-white">
           {recipient?.name}
         </span>

@@ -15,6 +15,7 @@ import {
   useUpdateGroupDetailsMutation,
 } from '@/services/group'
 import { setGroups, updateGroup } from '@/store/group'
+import { setLoading } from '@/store/messages'
 
 const useGroups = () => {
   const dispatch = useAppDispatch()
@@ -28,12 +29,15 @@ const useGroups = () => {
 
   const fetchGroups = async () => {
     try {
+      dispatch(setLoading(true))
       const res = await groupList({}).unwrap()
       const data = res.result?.data
       if (!data) return
       dispatch(setGroups(data))
     } catch (error) {
       console.log('Fetch group list error', error)
+    } finally {
+      dispatch(setLoading(false))
     }
   }
 
