@@ -12,7 +12,7 @@ type Props = {
   friend: Friend
 }
 export const CallSidebarItem: FC<Props> = ({ friend }) => {
-  const user = useAppSelector((state) => state.auth)
+  const user = useAppSelector((state) => state.auth.currentUser)
 
   return (
     <div>

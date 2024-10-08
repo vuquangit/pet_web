@@ -99,18 +99,18 @@ const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({ saveToken }) => {
   return (
     <div className="mt-6">
       <button
-        className="flex items-center justify-center w-full gap-2 btn-primary"
+        className="btn-primary flex w-full items-center justify-center gap-2"
         onClick={() => googleLogin()}
       >
-        <GoogleIcon className="w-4 h-4" />
+        <GoogleIcon className="h-4 w-4" />
         Sign in with Google
       </button>
 
       <button
-        className="flex items-center justify-center w-full gap-2 mt-5 btn-primary"
+        className="btn-primary mt-5 flex w-full items-center justify-center gap-2"
         onClick={() => googleLoginGuard()}
       >
-        <GoogleIcon className="w-4 h-4" />
+        <GoogleIcon className="h-4 w-4" />
         Sign in with Google (Guard)
       </button>
     </div>
@@ -161,9 +161,9 @@ const LoginPage: React.FC<Props> = (props) => {
   }
 
   return (
-    <div className="flex flex-col justify-center min-h-full px-6 py-12 lg:px-8">
+    <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <h2 className="mt-10 text-2xl font-bold leading-9 tracking-tight text-center">
+        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight">
           Sign in to your account
         </h2>
       </div>
@@ -197,11 +197,11 @@ const LoginPage: React.FC<Props> = (props) => {
                 id="remember_me"
                 name="remember_me"
                 type="checkbox"
-                className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
               />
               <label
                 htmlFor="remember_me"
-                className="block ml-2 text-sm text-gray-900 dark:text-gray-300"
+                className="ml-2 block text-sm text-gray-900 dark:text-gray-300"
               >
                 Remember me
               </label>
@@ -224,6 +224,7 @@ const LoginPage: React.FC<Props> = (props) => {
               type="submit"
               className="btn-primary"
               disabled={isLoading || !email || !password}
+              loading={isLoading}
               dataCy="login-submit"
             />
           </div>

@@ -40,7 +40,13 @@ interface ButtonProps {
    * Cypress cy
    */
   dataCy?: string
+  /**
+   * Children
+   */
   children?: ReactNode
+  /**
+   * Loading
+   */
   loading?: boolean
 }
 
@@ -82,13 +88,13 @@ const Button = (props: ButtonProps) => {
       data-cy={dataCy}
       {...restProps}
     >
-      <span className='flex items-center gap-2'>
+      <span className="flex items-center justify-center gap-3">
         {loading && (
-          <span className='flex'>
-            <span className="loader text-[80%]"></span>
+          <span className="flex">
+            <span className="loader text-[70%]"></span>
           </span>
         )}
-        {label}
+        <span>{label}</span>
         {children}
       </span>
     </button>

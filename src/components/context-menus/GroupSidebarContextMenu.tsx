@@ -19,7 +19,7 @@ import EditIcon from '@/assets/icons/pen-to-square.svg'
 
 export const GroupSidebarContextMenu: FC = () => {
   // const { id = '' } = useParams();
-  const user = useAppSelector((state) => state.auth)
+  const user = useAppSelector((state) => state.auth.currentUser)
   const dispatch = useDispatch<AppDispatch>()
   const points = useSelector((state: RootState) => state.groups.points)
   const { leaveGroup } = useGroups()

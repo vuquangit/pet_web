@@ -6,9 +6,9 @@ import {
   Friend,
   CancelFriendRequestResponse,
   AcceptFriendRequestResponse,
-  User,
 } from '@/interfaces/chat'
 import { customBaseQuery } from '@/services/base'
+import { IUser } from '@/interfaces/user'
 
 export const friendApi = createApi({
   baseQuery: customBaseQuery,
@@ -66,7 +66,7 @@ export const friendApi = createApi({
       }),
     }),
 
-    searchFriends: builder.query<IBaseResponse<User[]>, string>({
+    searchFriends: builder.query<IBaseResponse<IUser[]>, string>({
       query: (query) => ({
         url: `/friends/search?query=${query}`,
         method: 'GET',

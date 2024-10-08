@@ -16,7 +16,7 @@ import { useAppSelector } from '@/store/hook'
 const App: React.FC = () => {
   const { fetchProfile } = useProfile()
   const theme = useAppSelector(currentTheme)
-  const isProfileFetched = useAppSelector((state) => !!state.auth.role)
+  const isProfileFetched: boolean = useAppSelector((state) => !!state.auth.currentUser)
 
   useEffect(() => {
     if (isProfileFetched) return

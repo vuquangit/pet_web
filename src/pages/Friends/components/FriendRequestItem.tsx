@@ -11,7 +11,7 @@ type Props = {
   friendRequest: FriendRequest
 }
 export const FriendRequestItem: FC<Props> = ({ friendRequest }) => {
-  const user = useAppSelector((state) => state.auth) as any
+  const user = useAppSelector((state) => state.auth.currentUser)
   const friendRequestDetails = getFriendRequestDetails(friendRequest, user)
   const { acceptFriendRequest, rejectFriendRequest, removeFriend } = useFriends()
 

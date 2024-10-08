@@ -12,7 +12,8 @@
   .btn-default {
     @apply cursor-pointer rounded border border-[#707070] bg-white
       px-5 py-[4px] text-[16px] font-medium text-[#404144]
-      disabled:cursor-not-allowed disabled:border-[#bbbbbb] disabled:bg-[#bbbbbb];
+      disabled:cursor-not-allowed disabled:border-[#bbbbbb] disabled:bg-[#bbbbbb]
+      dark:disabled:border-[#707070] dark:disabled:bg-[#2b2b2b] dark:disabled:text-[#9a9a9a];
   }
 
   .btn-primary {

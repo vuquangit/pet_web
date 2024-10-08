@@ -5,7 +5,6 @@ import {
   FriendRequestDetailsType,
   Group,
   SettingsSidebarRouteType,
-  User,
   UserContextMenuActionType,
   UserSidebarRouteType,
 } from '@/interfaces/chat'
@@ -24,13 +23,15 @@ import BellIcon from '@/assets/icons/bell.svg'
 import InfiniteIcon from '@/assets/icons/infinity.svg'
 import PaletteIcon from '@/assets/icons/palette.svg'
 import HouseIcon from '@/assets/icons/house.svg'
-import { IAuthMe } from '@/interfaces/auth'
+import { IUser } from '@/interfaces/user'
 
 export const getRecipientFromConversation = (
-  conversation?: Conversation,
-  user?: User | IAuthMe,
-): User | undefined => {
-  return user?.id === conversation?.creator.id ? conversation?.recipient : conversation?.creator
+  conversation: Conversation | null | undefined,
+  user: IUser | null | undefined,
+): IUser | null => {
+  if (!user || !conversation) return null
+
+  return user.id === conversation.creator?.id ? conversation.recipient : conversation.creator
 }
 
 export const getUserContextMenuIcon = (type: UserContextMenuActionType) => {
@@ -44,7 +45,10 @@ export const getUserContextMenuIcon = (type: UserContextMenuActionType) => {
   }
 }
 
-export const isGroupOwner = (user?: User | IAuthMe, group?: Group) => user?.id === group?.owner.id
+export const isGroupOwner = (user: IUser | null, group: Group | undefined) => {
+  if (!user || !group) return false
+  return user?.id === group?.owner.id
+}
 
 export const getUserSidebarIcon = (id: UserSidebarRouteType) => {
   switch (id) {
@@ -84,7 +88,7 @@ export const getSettingSidebarIcon = (id: SettingsSidebarRouteType) => {
 
 export const getFriendRequestDetails = (
   { receiver, sender }: FriendRequest,
-  user?: User,
+  user: IUser | null,
 ): FriendRequestDetailsType => {
   if (user?.id === receiver?.id) {
     return {
@@ -103,7 +107,10 @@ export const getFriendRequestDetails = (
   }
 }
 
-export const getUserFriendInstance = (authenticatedUser: User | IAuthMe, selectedFriend: Friend) =>
-  authenticatedUser?.id === selectedFriend?.sender.id
+export const getUserFriendInstance = (authenticatedUser: IUser | null, selectedFriend: Friend) => {
+  if (!authenticatedUser || !selectedFriend) return null
+
+  return authenticatedUser?.id === selectedFriend?.sender.id
     ? selectedFriend?.receiver
     : selectedFriend?.sender
+}

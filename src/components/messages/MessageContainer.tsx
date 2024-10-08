@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 import { Tooltip } from 'react-tooltip'
 
 import { RootState } from '@/store'
-import { GroupMessageType, MessageType, User } from '@/interfaces/chat'
+import { GroupMessageType, MessageType } from '@/interfaces/chat'
 import { SelectedMessageContextMenu } from '@/components/context-menus/SelectedMessageContextMenu'
 import { selectConversationMessage } from '@/store/messages'
 import { selectGroupMessage } from '@/store/groupMessage'
@@ -24,10 +24,11 @@ import {
 // import { SystemMessage } from './system/SystemMessage'
 import { SystemMessageList } from './system/SystemMessageList'
 import { useAppSelector, useAppDispatch } from '@/store/hook'
+import { IUser } from '@/interfaces/user'
 
 type Props = {
   isRecipientTyping: boolean
-  recipient: User | undefined
+  recipient: IUser | null
 }
 
 export const MessageContainer: FC<Props> = ({ isRecipientTyping, recipient }) => {
@@ -45,7 +46,7 @@ export const MessageContainer: FC<Props> = ({ isRecipientTyping, recipient }) =>
 
   const handleClick = () => dispatch(toggleContextMenu(false))
 
-  const user = useAppSelector((state: RootState) => state.auth)
+  const user = useAppSelector((state: RootState) => state.auth.currentUser)
 
   useKeydown(handleKeydown, [id])
   useHandleClick(handleClick, [id])
@@ -77,7 +78,7 @@ export const MessageContainer: FC<Props> = ({ isRecipientTyping, recipient }) =>
     const nextMessage = messages[index + 1]
     const showMessageHeader =
       messages.length === index + 1 || currentMessage.author.id !== nextMessage.author.id
-    const isMyMessage = message.author.id === user.id
+    const isMyMessage: boolean = !!user && message.author.id === user.id
 
     return (
       <div
@@ -118,8 +119,8 @@ export const MessageContainer: FC<Props> = ({ isRecipientTyping, recipient }) =>
 
   if (isMessageLoading) {
     return (
-      <div className='flex items-center justify-center w-full h-full'>
-        <span className='loader text-[70px]'></span>
+      <div className="flex h-full w-full items-center justify-center">
+        <span className="loader text-[70px]"></span>
       </div>
     )
   }

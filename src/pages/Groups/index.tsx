@@ -23,7 +23,7 @@ import { useAppSelector } from '@/store/hook'
 
 export const GroupPage = () => {
   const { id } = useParams()
-  const user = useAppSelector((state) => state.auth)
+  const user = useAppSelector((state) => state.auth.currentUser)
   const dispatch = useDispatch<AppDispatch>()
   const socket = useContext(SocketContext)
   const navigate = useNavigate()
@@ -116,7 +116,7 @@ export const GroupPage = () => {
   }, [id])
 
   return (
-    <div className="flex flex-1 h-full">
+    <div className="flex h-full flex-1">
       <ConversationSidebar />
       {!id && <ConversationPanel />}
       <Outlet />

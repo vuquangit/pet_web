@@ -6,7 +6,7 @@ import { UserAvatar } from '@/components/users/UserAvatar'
 import { Button, InputField } from '@/components/Form'
 
 import { useAppSelector } from '@/store/hook'
-import { IAuthMe } from '@/interfaces/auth'
+import { IUser } from '@/interfaces/user'
 import { useLazyGetUserQuery, useUpdateUserMutation } from '@/services/user'
 import { useChangeAvatarMutation } from '@/services/auth'
 import { useToast } from '@/hooks/useToast'
@@ -22,12 +22,12 @@ export function ProfilePage() {
   const { info, error } = useToast()
 
   // states
-  const user = useAppSelector((state) => state.auth)
+  const user = useAppSelector((state) => state.auth.currentUser)
   const [isEditing, setIsEditing] = useState(false)
-  const [profile, setProfile] = useState<IAuthMe | null>(null)
+  const [profile, setProfile] = useState<IUser | null>(null)
   const [isOwner, setIsOwner] = useState<boolean>(false)
-  const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null);
-  const [previewAvatar, setPreviewAvatar] = useState<string | ArrayBuffer | null>(null);
+  const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null)
+  const [previewAvatar, setPreviewAvatar] = useState<string | ArrayBuffer | null>(null)
 
   // services
   const [getUser, { isLoading }] = useLazyGetUserQuery()
@@ -39,13 +39,13 @@ export function ProfilePage() {
     setIsEditing(true)
   }
 
-  const onInputsChange = (field: keyof IAuthMe, value: string) => {
+  const onInputsChange = (field: keyof IUser, value: string) => {
     setProfile(
       (prev) =>
         ({
           ...prev,
           [field]: value,
-        }) as IAuthMe,
+        }) as IUser,
     )
   }
 
@@ -77,14 +77,14 @@ export function ProfilePage() {
   }
 
   const handleImageChange = (e: any) => {
-    const file = e.target.files[0];
+    const file = e.target.files[0]
     if (!file) return
 
-    const reader = new FileReader();
+    const reader = new FileReader()
 
     reader.onloadend = (e: ProgressEvent<FileReader>) => {
-      const result = e?.target?.result;
-      result && setPreviewAvatar(result);
+      const result = e?.target?.result
+      result && setPreviewAvatar(result)
     }
     reader.readAsDataURL(file) // Read the image as a data URL
 
@@ -146,12 +146,12 @@ export function ProfilePage() {
   }
 
   useEffect(() => {
-    setIsOwner(location.pathname === '/profile' || userId === user.id)
+    setIsOwner(location.pathname === '/profile' || (!!user && userId === user.id))
   }, [location])
 
   useEffect(() => {
     ;(async () => {
-      if (location.pathname === '/profile' || userId === user.id) {
+      if (location.pathname === '/profile' || (user && userId === user.id)) {
         setProfile(user)
       } else {
         const res = await getUser(userId).unwrap()
@@ -166,28 +166,47 @@ export function ProfilePage() {
       <div className="mx-auto w-full max-w-[767px] px-6 md:px-12">
         <h2 className="text-[20px] font-bold">Profile</h2>
 
-        <div className="my-4 flex flex-col min-[444px]:flex-row gap-4 items-center justify-between rounded-[20px] bg-[#efefef] p-4 dark:bg-[#262626]">
-          <div className="flex flex-col min-[444px]:flex-row gap-4 items-center">
+        <div className="my-4 flex flex-col items-center justify-between gap-4 rounded-[20px] bg-[#efefef] p-4 dark:bg-[#262626] min-[444px]:flex-row">
+          <div className="flex flex-col items-center gap-4 min-[444px]:flex-row">
             <UserAvatar
-              className='!h-[150px] !w-[150px]'
+              className="!h-[150px] !w-[150px]"
               src={previewAvatar || profile?.avatarUrl}
               isLoading={isAvatarLoading}
             />
             <div className="flex flex-col items-center">
-              <span className='text-[20px] font-bold'>{profile?.name}</span>
+              <span className="text-[20px] font-bold">{profile?.name}</span>
               <span className="text-[16px]">{profile?.username}</span>
             </div>
           </div>
-          <div className={classNames('flex flex-col sm:flex-row gap-3',{ hidden: !isOwner })}>
-            <input type="file" className="hidden" ref={avatarInputRef} onChange={handleImageChange} />
-            <Button color='danger' onClick={handleDeleteAvatar}>Delete photo</Button>
-            {
-              previewAvatar ? (
-                <Button color='primary' loading={isAvatarLoading} onClick={handleSaveAvatar}>Save photo</Button>
-              ) : (
-                <Button color='primary' onClick={() => avatarInputRef.current?.click()}>Change photo</Button>
-              )
-            }
+          <div className={classNames('flex flex-col gap-3 sm:flex-row', { hidden: !isOwner })}>
+            <input
+              type="file"
+              className="hidden"
+              ref={avatarInputRef}
+              onChange={handleImageChange}
+            />
+            <Button
+              color="danger"
+              onClick={handleDeleteAvatar}
+            >
+              Delete photo
+            </Button>
+            {previewAvatar ? (
+              <Button
+                color="primary"
+                loading={isAvatarLoading}
+                onClick={handleSaveAvatar}
+              >
+                Save photo
+              </Button>
+            ) : (
+              <Button
+                color="primary"
+                onClick={() => avatarInputRef.current?.click()}
+              >
+                Change photo
+              </Button>
+            )}
           </div>
         </div>
 
@@ -232,7 +251,7 @@ export function ProfilePage() {
             {isEditing ? (
               <Button
                 type="submit"
-                color='primary'
+                color="primary"
                 className="h-11 px-[100px]"
                 disabled={isUpdateLoading}
                 onClick={onSubmit}
@@ -243,7 +262,7 @@ export function ProfilePage() {
             ) : (
               <Button
                 type="submit"
-                color='primary'
+                color="primary"
                 className="h-11 px-[100px]"
                 disabled={isLoading}
                 onClick={onEdit}

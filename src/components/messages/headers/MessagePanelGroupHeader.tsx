@@ -13,7 +13,7 @@ import { AddGroupRecipientModal } from '../../modals/AddGroupRecipientModal'
 export const MessagePanelGroupHeader = () => {
   const [showModal, setShowModal] = useState(false)
   // const user = useContext(AuthContext).user
-  const user = useAppSelector((state) => state.auth)
+  const user = useAppSelector((state) => state.auth.currentUser)
   const { id = '' } = useParams()
   const group = useSelector((state: RootState) => selectGroupById(state, id))
   const dispatch = useDispatch<AppDispatch>()

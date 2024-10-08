@@ -12,16 +12,16 @@ import { CallPayload } from '@/interfaces/chat'
 export function useVoiceCall() {
   const socket = useContext(SocketContext)
   const dispatch = useDispatch<AppDispatch>()
-  const user = useAppSelector((state) => state.auth)
+  const user = useAppSelector((state) => state.auth.currentUser)
   const { isReceivingCall } = useSelector((state: RootState) => state.call)
 
   useEffect(() => {
     socket.on(ReceiverEvents.VOICE_CALL, (dataRaw: CallPayload) => {
       const data = camelizeKeys(dataRaw) as CallPayload
 
-      console.log('receiving voice call....')
-      console.log(data)
-      if (isReceivingCall) return
+      console.log('receiving voice call....', data)
+      if (isReceivingCall || !user) return
+
       dispatch(setCaller(data.caller))
       dispatch(setReceiver(user))
       dispatch(setIsReceivingCall(true))

@@ -4,8 +4,6 @@ import { IBaseResponse } from '@/interfaces/base'
 import {
   Group,
   FetchGroupMessagePayload,
-  CreateMessageParams,
-  User,
   CreateGroupParams,
   DeleteGroupMessageParams,
   DeleteGroupMessageResponse,
@@ -15,8 +13,10 @@ import {
   RemoveGroupRecipientParams,
   UpdateGroupOwnerParams,
   UpdateGroupDetailsPayload,
+  CreateMessageParams,
 } from '@/interfaces/chat'
 import { customBaseQuery } from '@/services/base'
+import { IUser } from '@/interfaces/user'
 
 export const groupApi = createApi({
   baseQuery: customBaseQuery,
@@ -53,7 +53,7 @@ export const groupApi = createApi({
       }),
     }),
 
-    searchUsers: builder.query<IBaseResponse<User[]>, string>({
+    searchUsers: builder.query<IBaseResponse<IUser[]>, string>({
       query: (query) => ({
         url: `/user/search?query=${query}`,
         method: 'GET',

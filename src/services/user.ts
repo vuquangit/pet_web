@@ -2,7 +2,7 @@ import { IBaseResponse } from '@/interfaces/base'
 import { UpdateStatusParams } from '@/interfaces/chat'
 import { customBaseQuery } from '@/services/base'
 import { createApi } from '@reduxjs/toolkit/query/react'
-import { IAuthMe } from '@/interfaces/auth'
+import { IUser } from '@/interfaces/user'
 
 export const userApi = createApi({
   baseQuery: customBaseQuery,
@@ -10,21 +10,21 @@ export const userApi = createApi({
   tagTypes: ['User'],
 
   endpoints: (builder) => ({
-    getList: builder.query<IBaseResponse<IAuthMe[]>, void>({
+    getList: builder.query<IBaseResponse<IUser[]>, void>({
       query: () => ({
         url: '/users',
         method: 'GET',
       }),
     }),
 
-    getUser: builder.query<IBaseResponse<IAuthMe>, string>({
+    getUser: builder.query<IBaseResponse<IUser>, string>({
       query: (userId) => ({
         url: `/users/${userId}`,
         method: 'GET',
       }),
     }),
 
-    updateUser: builder.mutation<IBaseResponse<IAuthMe>, { id: string; data: FormData }>({
+    updateUser: builder.mutation<IBaseResponse<IUser>, { id: string; data: FormData }>({
       query: ({ id, data }) => ({
         url: `/users/${id}`,
         method: 'PATCH',
@@ -32,7 +32,7 @@ export const userApi = createApi({
       }),
     }),
 
-    search: builder.query<IBaseResponse<IAuthMe[]>, string>({
+    search: builder.query<IBaseResponse<IUser[]>, string>({
       query: (query) => ({
         url: `/users/search?query=${query}`,
         method: 'GET',

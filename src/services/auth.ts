@@ -1,14 +1,15 @@
 // Need to use the React-specific entry point to import createApi
-import { IAuthMe, IAuthRequest, IAuthResetPasswordRequest, IAuthResponse } from '@/interfaces/auth'
+import { IAuthRequest, IAuthResetPasswordRequest, IAuthResponse } from '@/interfaces/auth'
 import { IBaseResponse } from '@/interfaces/base'
 import { customBaseQuery } from '@/services/base'
 import { createApi } from '@reduxjs/toolkit/query/react'
+import { IUser } from '@/interfaces/user'
 
 // Define a service using a base URL and expected endpoints
 export const authApi = createApi({
   baseQuery: customBaseQuery,
   reducerPath: 'authApi',
-  tagTypes: ['Auth', 'AdminAccount'],
+  tagTypes: ['Auth'],
 
   endpoints: (builder) => ({
     login: builder.mutation<IBaseResponse<IAuthResponse>, IAuthRequest>({
@@ -16,13 +17,15 @@ export const authApi = createApi({
         url: '/auth/login',
         method: 'POST',
         body: credentials,
+        invalidatesTags: ['Auth'],
       }),
     }),
 
-    getProfile: builder.query<IBaseResponse<IAuthMe>, void>({
+    getProfile: builder.query<IBaseResponse<IUser>, void>({
       query: () => ({
         url: 'auth/profile',
         method: 'GET',
+        providesTags: ['Auth', { type: 'Auth', id: 'PROFILE' }],
       }),
     }),
 
@@ -30,6 +33,7 @@ export const authApi = createApi({
       query: () => ({
         url: 'auth/logout',
         method: 'DELETE',
+        invalidatesTags: ['Auth'],
       }),
     }),
 
@@ -38,6 +42,7 @@ export const authApi = createApi({
         url: '/auth/reset-password',
         method: 'POST',
         body,
+        invalidatesTags: ['Auth'],
       }),
     }),
 
@@ -46,6 +51,7 @@ export const authApi = createApi({
         url: '/auth/forgot-password',
         method: 'POST',
         body: { email },
+        invalidatesTags: ['Auth'],
       }),
     }),
 
@@ -54,6 +60,7 @@ export const authApi = createApi({
         url: '/auth/change-avatar',
         method: 'PATCH',
         body: formData,
+        invalidatesTags: [{ type: 'Auth', id: 'PROFILE' }],
       }),
     }),
   }),

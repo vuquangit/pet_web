@@ -6,7 +6,7 @@ import { camelizeKeys } from 'humps'
 import { AppDispatch, RootState } from '@/store'
 import { selectGroupById } from '@/store/group'
 import { SocketContext } from '@/context/SocketContext'
-import { User } from '@/interfaces/chat'
+import { IUser } from '@/interfaces/user'
 import {
   setContextMenuLocation,
   setSelectedUser,
@@ -19,7 +19,7 @@ import { OfflineGroupRecipients } from './OfflineGroupRecipients'
 export const GroupRecipientsSidebar = () => {
   const { id: groupId = '' } = useParams()
 
-  const [onlineUsers, setOnlineUsers] = useState<User[]>([])
+  const [onlineUsers, setOnlineUsers] = useState<IUser[]>([])
 
   const dispatch = useDispatch<AppDispatch>()
   const socket = useContext(SocketContext)
@@ -57,7 +57,7 @@ export const GroupRecipientsSidebar = () => {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  const onUserContextMenu = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, user: User) => {
+  const onUserContextMenu = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, user: IUser) => {
     e.preventDefault()
     dispatch(toggleContextMenu(true))
     dispatch(setContextMenuLocation({ x: e.pageX, y: e.pageY }))

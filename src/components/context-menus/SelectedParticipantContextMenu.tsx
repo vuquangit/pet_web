@@ -34,7 +34,7 @@ export const CustomIcon: FC<CustomIconProps> = ({ type }) => {
 
 export const SelectedParticipantContextMenu: FC<Props> = ({ points }) => {
   const { id = '' } = useParams()
-  const user = useAppSelector((state) => state.auth)
+  const user = useAppSelector((state) => state.auth.currentUser)
   const selectedUser = useSelector((state: RootState) => state.groupSidebar.selectedUser)
   const group = useSelector((state: RootState) => selectGroupById(state, id))
   const { removeGroupRecipient, updateGroupOwner } = useGroups()

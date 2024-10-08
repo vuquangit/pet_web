@@ -14,7 +14,7 @@ type Props = {
 }
 
 export const FriendListItem: FC<Props> = ({ friend, online, onContextMenu }) => {
-  const user = useAppSelector((state) => state.auth)
+  const user = useAppSelector((state) => state.auth.currentUser)
 
   const friendUserInstance = user?.id === friend.sender.id ? friend.receiver : friend.sender
 

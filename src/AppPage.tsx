@@ -10,18 +10,18 @@ import { useAppSelector, useAppDispatch } from '@/store/hook'
 import { SocketContext } from '@/context/SocketContext'
 
 // components
-import { CallReceiveDialog } from '@/components/calls/CallReceiveDialog';
+import { CallReceiveDialog } from '@/components/calls/CallReceiveDialog'
 import UserCheckIcon from '@/assets/icons/user-check.svg'
 
 // hooks
-import { useVideoCallRejected } from '@/hooks/sockets/useVideoCallRejected';
-import { useVideoCallHangUp } from '@/hooks/sockets/useVideoCallHangUp';
-import { useVideoCallAccept } from '@/hooks/sockets/useVideoCallAccept';
-import { useVideoCall } from '@/hooks/sockets/call/useVideoCall';
-import { useVoiceCall } from '@/hooks/sockets/call/useVoiceCall';
-import { useVoiceCallAccepted } from '@/hooks/sockets/call/useVoiceCallAccepted';
-import { useVoiceCallHangUp } from '@/hooks/sockets/call/useVoiceCallHangUp';
-import { useVoiceCallRejected } from '@/hooks/sockets/call/useVoiceCallRejected';
+import { useVideoCallRejected } from '@/hooks/sockets/useVideoCallRejected'
+import { useVideoCallHangUp } from '@/hooks/sockets/useVideoCallHangUp'
+import { useVideoCallAccept } from '@/hooks/sockets/useVideoCallAccept'
+import { useVideoCall } from '@/hooks/sockets/call/useVideoCall'
+import { useVoiceCall } from '@/hooks/sockets/call/useVoiceCall'
+import { useVoiceCallAccepted } from '@/hooks/sockets/call/useVoiceCallAccepted'
+import { useVoiceCallHangUp } from '@/hooks/sockets/call/useVoiceCallHangUp'
+import { useVoiceCallRejected } from '@/hooks/sockets/call/useVoiceCallRejected'
 import { useFriendRequestReceived } from '@/hooks/sockets/friend-requests/useFriendRequestReceived'
 import { useToast } from '@/hooks/useToast'
 import useFriends from '@/hooks/useFriends'
@@ -31,7 +31,7 @@ type AppPageProps = {
 }
 
 export const AppPage: React.FC<AppPageProps> = ({ children }) => {
-  const user = useAppSelector((state) => state.auth)
+  const user = useAppSelector((state) => state.auth.currentUser)
   const socket = useContext(SocketContext)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -65,7 +65,7 @@ export const AppPage: React.FC<AppPageProps> = ({ children }) => {
   }, [])
 
   useFriendRequestReceived()
-  useVideoCall();
+  useVideoCall()
 
   useEffect(() => {
     console.log('Registering all events for AppPage')
@@ -141,13 +141,13 @@ export const AppPage: React.FC<AppPageProps> = ({ children }) => {
     }
   }, [call])
 
-  useVideoCallAccept();
-  useVideoCallRejected();
-  useVideoCallHangUp();
-  useVoiceCall();
-  useVoiceCallAccepted();
-  useVoiceCallHangUp();
-  useVoiceCallRejected();
+  useVideoCallAccept()
+  useVideoCallRejected()
+  useVideoCallHangUp()
+  useVoiceCall()
+  useVoiceCallAccepted()
+  useVoiceCallHangUp()
+  useVoiceCallRejected()
 
   useEffect(() => {
     if (connection) {
@@ -178,8 +178,10 @@ export const AppPage: React.FC<AppPageProps> = ({ children }) => {
     }
   }, [connection])
 
-  return <>
-    {isReceivingCall && caller && <CallReceiveDialog />}
-    {children}
-  </>
+  return (
+    <>
+      {isReceivingCall && caller && <CallReceiveDialog />}
+      {children}
+    </>
+  )
 }

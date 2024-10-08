@@ -29,7 +29,7 @@ export const MessagePanel: FC<Props> = ({ sendTypingStatus, isRecipientTyping })
   const { id: routeId = '' } = useParams()
   const { error } = useToast({ theme: 'dark' })
 
-  const user = useAppSelector((state: RootState) => state.auth)
+  const user = useAppSelector((state: RootState) => state.auth?.currentUser)
   const { messageCounter } = useAppSelector((state: RootState) => state.systemMessages)
   const { attachments } = useAppSelector((state: RootState) => state.messagePanel)
   const conversation = useAppSelector((state: RootState) => selectConversationById(state, routeId))

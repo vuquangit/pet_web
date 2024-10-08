@@ -5,7 +5,7 @@ import { useLazySearchFriendsQuery } from '@/services/friend'
 import { RecipientResultContainer } from './recipients/RecipientResultContainer'
 import { RecipientField } from './recipients/RecipientField'
 import { Button, InputField } from '@/components/Form'
-import { User } from '@/interfaces/chat'
+import { IUser } from '@/interfaces/user'
 import useConversations from '@/hooks/useConversations'
 import { useDebounce } from '@/hooks/useDebounce'
 
@@ -15,8 +15,8 @@ type Props = {
 
 export const CreateConversationForm: FC<Props> = ({ setShowModal }) => {
   const [query, setQuery] = useState<string>('')
-  const [userResults, setUserResults] = useState<User[]>([])
-  const [selectedUser, setSelectedUser] = useState<User>()
+  const [userResults, setUserResults] = useState<IUser[]>([])
+  const [selectedUser, setSelectedUser] = useState<IUser>()
   const [searching, setSearching] = useState<boolean>(false)
   const [message, setMessage] = useState<string>('')
   const [isShowModalFriends, setIsShowModalFriends] = useState<boolean>(false)
@@ -29,7 +29,6 @@ export const CreateConversationForm: FC<Props> = ({ setShowModal }) => {
   // search friends
   useEffect(() => {
     if (!debouncedQuery) return
-
     ;(async () => {
       try {
         setSearching(true)
@@ -64,7 +63,7 @@ export const CreateConversationForm: FC<Props> = ({ setShowModal }) => {
     }
   }
 
-  const handleUserSelect = (user: User) => {
+  const handleUserSelect = (user: IUser) => {
     setSelectedUser(user)
     setUserResults([])
     setQuery('')

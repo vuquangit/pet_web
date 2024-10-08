@@ -16,7 +16,7 @@ import { SocketContext } from '@/context/SocketContext'
 import { AcceptedCallPayload } from '@/interfaces/chat'
 
 export function useVoiceCallAccepted() {
-  const user = useAppSelector((state) => state.auth)
+  const user = useAppSelector((state) => state.auth.currentUser)
   const socket = useContext(SocketContext)
   const dispatch = useDispatch<AppDispatch>()
   const { peer, localStream } = useSelector((state: RootState) => state.call)

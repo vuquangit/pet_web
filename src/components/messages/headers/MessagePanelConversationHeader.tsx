@@ -15,7 +15,7 @@ import { useAppSelector, useAppDispatch } from '@/store/hook'
 import { UserAvatar } from '@/components/users/UserAvatar'
 
 export const MessagePanelConversationHeader = () => {
-  const user = useAppSelector((state) => state.auth) as any
+  const user = useAppSelector((state) => state.auth.currentUser) as any
   const { id = '' } = useParams()
   const socket = useContext(SocketContext)
 
@@ -65,10 +65,13 @@ export const MessagePanelConversationHeader = () => {
 
   return (
     <div className="flex w-full flex-shrink-0 items-center justify-between border-b border-solid border-[#63636325] bg-[#49494925] px-8 py-2.5">
-      <Link className="flex items-center gap-3" to={`/profile/${recipient?.id}`}>
+      <Link
+        className="flex items-center gap-3"
+        to={`/profile/${recipient?.id}`}
+      >
         <UserAvatar
           user={recipient}
-          className="w-10 h-10"
+          className="h-10 w-10"
         />
         <span className="text-xl font-bold">{recipient?.name || ''}</span>
       </Link>

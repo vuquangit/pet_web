@@ -2,13 +2,13 @@ import React, { FC, Dispatch, SetStateAction } from 'react'
 
 import { InputField } from '@/components/Form'
 import { SelectedRecipientChip } from './SelectedRecipientChip'
-import { User } from '@/interfaces/chat'
+import { IUser } from '@/interfaces/user'
 
 type Props = {
   valueQuery: string
-  selectedUser: User | undefined
+  selectedUser: IUser | undefined
   setQuery: Dispatch<SetStateAction<string>>
-  setSelectedUser: Dispatch<SetStateAction<User | undefined>>
+  setSelectedUser: Dispatch<SetStateAction<IUser | undefined>>
 }
 
 export const RecipientField: FC<Props> = ({
@@ -16,19 +16,20 @@ export const RecipientField: FC<Props> = ({
   valueQuery,
   setQuery,
   setSelectedUser,
-}) => selectedUser ? (
-  <>
-    <span>To:</span>
-    <SelectedRecipientChip
-      user={selectedUser}
-      setSelectedUser={setSelectedUser}
+}) =>
+  selectedUser ? (
+    <>
+      <span>To:</span>
+      <SelectedRecipientChip
+        user={selectedUser}
+        setSelectedUser={setSelectedUser}
+      />
+    </>
+  ) : (
+    <InputField
+      label="Recipient"
+      value={valueQuery}
+      placeholder="Enter username, name or email"
+      onChange={setQuery}
     />
-  </>
-) : (
-  <InputField
-    label="Recipient"
-    value={valueQuery}
-    placeholder="Enter username, name or email"
-    onChange={setQuery}
-  />
-)
+  )

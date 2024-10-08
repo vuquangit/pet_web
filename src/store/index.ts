@@ -56,6 +56,7 @@ export const setupStore = (preloadedState?: Partial<RootState>) =>
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware()
+        // .concat(logger),
         .concat(authApi.middleware)
         .concat(testApi.middleware)
         .concat(oauthApi.middleware)
@@ -63,7 +64,6 @@ export const setupStore = (preloadedState?: Partial<RootState>) =>
         .concat(groupApi.middleware)
         .concat(conversationsApi.middleware)
         .concat(userApi.middleware),
-    // .concat(logger),
     preloadedState,
   })
 

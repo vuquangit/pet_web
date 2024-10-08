@@ -12,7 +12,7 @@ import { useAppSelector } from '@/store/hook'
 
 export const SelectedMessageContextMenu = () => {
   const { id: routeId } = useParams()
-  const user = useAppSelector((state) => state.auth)
+  const user = useAppSelector((state) => state.auth.currentUser)
   const dispatch = useDispatch<AppDispatch>()
   const conversationType = useSelector((state: RootState) => selectType(state))
   const { selectedMessage: message, points } = useSelector(

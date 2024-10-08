@@ -14,7 +14,7 @@ type Props = {
 
 export const UserSidebarItem: FC<Props> = ({ item }) => {
   const { pathname } = useLocation()
-  const user = useAppSelector((state) => state.auth)
+  const user = useAppSelector((state) => state.auth.currentUser)
   const friendRequests = useAppSelector((state: RootState) => state.friends.friendRequests)
 
   const Icon = getUserSidebarIcon(item.id)

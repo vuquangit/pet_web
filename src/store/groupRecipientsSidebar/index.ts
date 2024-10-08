@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Points, User } from '@/interfaces/chat'
+import { Points } from '@/interfaces/chat'
+import { IUser } from '@/interfaces/user'
 
 export interface GroupRecipientSidebarState {
   showSidebar: boolean
   showUserContextMenu: boolean
-  selectedUser?: User
+  selectedUser?: IUser
   points: Points
 }
 
@@ -24,7 +25,7 @@ export const groupRecipientSidebarSlice = createSlice({
     toggleContextMenu: (state, action: PayloadAction<boolean>) => {
       state.showUserContextMenu = action.payload
     },
-    setSelectedUser: (state, action: PayloadAction<User>) => {
+    setSelectedUser: (state, action: PayloadAction<IUser>) => {
       state.selectedUser = action.payload
     },
     setContextMenuLocation: (state, action: PayloadAction<Points>) => {

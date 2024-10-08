@@ -13,7 +13,7 @@ import useFriends from '@/hooks/useFriends'
 import { useAppSelector } from '@/store/hook'
 
 export const FriendContextMenu = () => {
-  const user = useAppSelector((state) => state.auth)
+  const user = useAppSelector((state) => state.auth.currentUser)
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
   const { points, selectedFriendContextMenu } = useSelector((state: RootState) => state.friends)

@@ -1,4 +1,4 @@
-import { IAuthMe } from './auth'
+import { IUser } from './user'
 
 export type CreateUserParams = {
   username: string
@@ -29,12 +29,10 @@ export type UserPeer = {
   id: string
 }
 
-export type User = IAuthMe
-
 export type Conversation = {
   id: string
-  creator: User
-  recipient: User
+  creator: IUser
+  recipient: IUser
   createdAt: string
   lastMessageSent: MessageType
 }
@@ -53,7 +51,7 @@ export type MessageType = {
   id: string
   content?: string
   createdAt: string
-  author: User
+  author: IUser
   conversation: Conversation
   attachments?: MessageAttachment[]
 }
@@ -62,7 +60,7 @@ export type GroupMessageType = {
   id: string
   content?: string
   createdAt: string
-  author: User
+  author: IUser
   group: Group
   attachments?: MessageAttachment[]
 }
@@ -137,9 +135,9 @@ export type ConversationTypeData = {
 export type Group = {
   id: string
   title?: string
-  users: User[]
-  creator: User
-  owner: User
+  users: IUser[]
+  creator: IUser
+  owner: IUser
   messages: GroupMessageType[]
   createdAt: number
   lastMessageSent: MessageType
@@ -183,12 +181,12 @@ export type ContextMenuItemType = {
 
 export type AddGroupUserMessagePayload = {
   group: Group
-  user: User
+  user: IUser
 }
 
 export type RemoveGroupUserMessagePayload = {
   group: Group
-  user: User
+  user: IUser
 }
 
 export type UpdateGroupOwnerParams = {
@@ -207,15 +205,15 @@ export type FriendRequestStatus = 'accepted' | 'pending' | 'rejected'
 
 export type Friend = {
   id: string
-  sender: User
-  receiver: User
+  sender: IUser
+  receiver: IUser
   created_at: number
 }
 
 export type FriendRequest = {
   id: string
-  sender: User
-  receiver: User
+  sender: IUser
+  receiver: IUser
   created_at: number
   status: FriendRequestStatus
 }
@@ -280,7 +278,7 @@ export type Attachment = {
 export type FriendRequestDetailsType = {
   status: string
   displayName: string
-  user: User
+  user: IUser
   incoming: boolean
 }
 
@@ -300,14 +298,14 @@ export type SelectableTheme = 'dark' | 'light'
 export type CallPayload = {
   recipientId: string
   conversationId: string
-  caller: User
+  caller: IUser
 }
 
 export type HandleCallType = 'accept' | 'reject'
 
 export type AcceptedCallPayload = {
-  acceptor: User
-  caller: User
+  acceptor: IUser
+  caller: IUser
   conversation: Conversation
 }
 
@@ -320,8 +318,8 @@ export type CallInitiatePayload = {
   localStream: MediaStream
   isCalling: boolean
   activeConversationId: string
-  caller: User
-  receiver: User
+  caller: IUser
+  receiver: IUser
   callType: CallType
 }
 

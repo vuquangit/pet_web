@@ -1,13 +1,11 @@
 import React, { FC, Dispatch, SetStateAction } from 'react'
 
-// import { SelectedRecipientPillStyle } from '../../utils/styles';
-import { User } from '@/interfaces/chat'
-// import { CircleX } from 'akar-icons';
+import { IUser } from '@/interfaces/user'
 import CloseIcon from '@/assets/icons/close.svg'
 
 type Props = {
-  user: User
-  setSelectedUser: Dispatch<SetStateAction<User | undefined>>
+  user: IUser
+  setSelectedUser: Dispatch<SetStateAction<IUser | undefined>>
 }
 
 export const SelectedRecipientChip: FC<Props> = ({ user, setSelectedUser }) => {

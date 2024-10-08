@@ -20,7 +20,7 @@ import { AcceptedCallPayload } from '@/interfaces/chat'
  * accepted the call.
  */
 export function useVideoCallAccept() {
-  const user = useAppSelector((state) => state.auth)
+  const user = useAppSelector((state) => state.auth.currentUser)
   const socket = useContext(SocketContext)
   const dispatch = useDispatch<AppDispatch>()
   const { peer, localStream } = useSelector((state: RootState) => state.call)

@@ -11,7 +11,7 @@ import { useAppSelector } from '@/store/hook'
 export function useVideoCall() {
   const socket = useContext(SocketContext)
   const dispatch = useDispatch<AppDispatch>()
-  const user = useAppSelector((state) => state.auth)
+  const user = useAppSelector((state) => state.auth.currentUser)
   const { isReceivingCall } = useSelector((state: RootState) => state.call)
 
   useEffect(() => {

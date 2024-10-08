@@ -1,7 +1,7 @@
 import React, { Dispatch, FC, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { User } from '@/interfaces/chat'
+import { IUser } from '@/interfaces/user'
 import { useLazySearchFriendsQuery } from '@/services/friend'
 import { RecipientResultContainer } from './recipients/RecipientResultContainer'
 import { SelectedGroupRecipientChip } from './recipients/SelectedGroupRecipientChip'
@@ -17,12 +17,12 @@ export const CreateGroupForm: FC<Props> = ({ setShowModal }) => {
   const [title, setTitle] = useState<string>('')
   const [message, setMessage] = useState<string>('')
   const [query, setQuery] = useState<string>('')
-  const [results, setResults] = useState<User[]>([])
-  const [selectedRecipients, setSelectedRecipients] = useState<User[]>([])
+  const [results, setResults] = useState<IUser[]>([])
+  const [selectedRecipients, setSelectedRecipients] = useState<IUser[]>([])
   const [searching, setSearching] = useState<boolean>(false)
   const [isShowModalFriends, setIsShowModalFriends] = useState<boolean>(false)
 
-  const debouncedQuery = useDebounce(query, 1000);
+  const debouncedQuery = useDebounce(query, 1000)
   const navigate = useNavigate()
   const [searchFriends] = useLazySearchFriendsQuery()
   const { createGroup } = useGroups()
@@ -30,7 +30,6 @@ export const CreateGroupForm: FC<Props> = ({ setShowModal }) => {
   // search friends
   useEffect(() => {
     if (!debouncedQuery) return
-
     ;(async () => {
       try {
         setSearching(true)
@@ -39,9 +38,8 @@ export const CreateGroupForm: FC<Props> = ({ setShowModal }) => {
         const { result } = await searchFriends(query).unwrap()
         const resultData = result?.data || []
         setResults(resultData)
-
       } catch (err) {
-        console.log('Search user error', err);
+        console.log('Search user error', err)
       } finally {
         setSearching(false)
       }
@@ -62,12 +60,12 @@ export const CreateGroupForm: FC<Props> = ({ setShowModal }) => {
     navigate(`/groups/${groupId}`)
   }
 
-  const handleUserSelect = (user: User) => {
+  const handleUserSelect = (user: IUser) => {
     const exists = selectedRecipients.find((u) => u.id === user.id)
     if (!exists) setSelectedRecipients((prev) => [...prev, user])
   }
 
-  const removeUser = (user: User) =>
+  const removeUser = (user: IUser) =>
     setSelectedRecipients((prev) => prev.filter((u) => u.id !== user.id))
 
   return (
@@ -91,7 +89,7 @@ export const CreateGroupForm: FC<Props> = ({ setShowModal }) => {
         placeholder="Enter name, username or email to search"
         onChange={setQuery}
         onFocus={() => {
-          console.log('focus');
+          console.log('focus')
           setIsShowModalFriends(true)
         }}
       />

@@ -13,8 +13,8 @@ import ThemeSwitch from '../ThemeSwitch'
 const Header: React.FC = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const isAuthenticated = useAppSelector((state) => !!state.auth.role)
-  const user = useAppSelector((state) => state.auth)
+  const isAuthenticated = useAppSelector((state) => !!state.auth.currentUser)
+  const user = useAppSelector((state) => state.auth.currentUser)
 
   const handleLogout = () => {
     console.log('Logout')

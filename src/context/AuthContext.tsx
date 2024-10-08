@@ -1,9 +1,9 @@
 import { createContext } from 'react'
-import { User } from '@/interfaces/chat'
+import { IUser } from '@/interfaces/user'
 
 type AuthContextType = {
-  user?: User
-  updateAuthUser: (data: User) => void
+  user?: IUser
+  updateAuthUser: (data: IUser) => void
 }
 
 export const AuthContext = createContext<AuthContextType>({
